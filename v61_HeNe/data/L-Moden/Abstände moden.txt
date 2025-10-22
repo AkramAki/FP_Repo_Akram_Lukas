@@ -1,0 +1,9 @@
+Abstand Spiegel kante 1,3cm=> überall 2,6 addieren
+Moden_1.txt: bei Resonatorlänge 53,7cm
+Moden_2.txt: Resonatorlänge 70,2cm	
+Moden_3.txt: 90,0cm
+Moden_4.txt: 110,cm
+Moden_5.txt: 130cm
+Moden_6.txt: 149,9cm
+Moden_7.txt: 170,2 cm
+Moden_8.txt: 190cm
