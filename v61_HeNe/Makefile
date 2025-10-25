@@ -1,17 +1,18 @@
 all: build/v61.pdf
 
 # hier Python-Skripte:
-build/plot.pdf: plot.py ../matplotlibrc ../header-matplotlib.tex | build
+build/Polarisation.pdf: polarisation.py ../matplotlibrc ../header-matplotlib.tex | build
 	# so that matplotlib can find the tex header when running
 	# LaTeX in the tmp directory
 	# and set the matplotlibrc
-	TEXINPUTS=$$(pwd)/..: MATPLOTLIBRC=../matplotlibrc python plot.py
+	TEXINPUTS=$$(pwd)/..: MATPLOTLIBRC=../matplotlibrc python polarisation.py
 
 # hier weitere Abhängigkeiten für build/v61.pdf deklarieren:
-build/v61.pdf: build/plot.pdf
+build/v61.pdf: build/Polarisation.pdf
 
 build/v61.pdf: FORCE | build
 	# to find header and bib files in the main directory
+	python wavelength.py
 	TEXINPUTS=..: \
 	BIBINPUTS=..: \
 	max_print_line=1048576 \
