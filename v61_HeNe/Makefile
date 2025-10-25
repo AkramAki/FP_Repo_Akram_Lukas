@@ -7,8 +7,15 @@ build/Polarisation.pdf: polarisation.py ../matplotlibrc ../header-matplotlib.tex
 	# and set the matplotlibrc
 	TEXINPUTS=$$(pwd)/..: MATPLOTLIBRC=../matplotlibrc python polarisation.py
 
+build/TEM00.pdf: TEM.py ../matplotlibrc ../header-matplotlib.tex | build
+	# so that matplotlib can find the tex header when running
+	# LaTeX in the tmp directory
+	# and set the matplotlibrc
+	TEXINPUTS=$$(pwd)/..: MATPLOTLIBRC=../matplotlibrc python TEM.py
+
+
 # hier weitere Abhängigkeiten für build/v61.pdf deklarieren:
-build/v61.pdf: build/Polarisation.pdf
+build/v61.pdf: build/Polarisation.pdf build/TEM00.pdf
 
 build/v61.pdf: FORCE | build
 	# to find header and bib files in the main directory
