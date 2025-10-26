@@ -48,8 +48,8 @@ for name, value, uncertainty in zip("Ixo", params01, uncertainties01):
 fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.errorbar(x_01, I_01, yerr=dI_01,fmt="k." ,label="TEM01-Measurement")
 ax.plot(x,f01(x,*params01),label="TEM01-Fit")
-# ax.set_xlabel(r"$x\,[\unit{\mm}]$")
-# ax.set_ylabel(r"$I\,[\unit{\milli\A}]")
+ax.set_xlabel(r"$x\,[\unit{\mm}]$")
+ax.set_ylabel(r"$I\,[\unit{\milli\A}]$")
 ax.legend(loc="best")
 
 fig.savefig("build/TEM01.pdf")
