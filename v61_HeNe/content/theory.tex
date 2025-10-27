@@ -25,7 +25,20 @@ with $R_{\symup{i}}$ being the mirrors curvature radius.
 If both mirrors are flat, the expression always equals $1$. 
 If only one of the mirrors is flat the expressions is equal to $(1-\frac{L}{r})^2$, therefore the maximum length of the resonator is $L=2r$.  
 
-Mathematically the transitions in the active medium can be described using rate equations:
+The amplification can be described as
+\begin{equation*}
+    G(f,z)=\frac{I(f,z)}{I(f,0)}=\exp(-\alpha(f)z)
+\end{equation*}
+where $\alpha$ is the population and freqeuncy dependent absorption
+\begin{equation*}
+    \alpha(f)=(N_1-\frac{g_1}{g_2}N_2)\sigma(f)
+\end{equation*}
+with the absorption cross section $\sigma$. 
+When considering losses with a rate of $\gamma$, the amplification condition requires the population inversion to be
+\begin{equation*}
+    \Delta N>\frac{\gamma}{2\sigma L}
+\end{equation*}
+with $L$ being the medium length. 
 
 \subsection{Characteristics of a helium-neon-laser}
 The helium-neon configuration is used as a four level system to create coherent red light ($\lambda=633\,\unit{\nm}$) using the $3s_2\rightarrow2p_4$ transition in neon. 
@@ -35,10 +48,11 @@ The spectral width of the transition is increased by approximately $1500\,\unit{
 The broadening is a result of the statistical distribution of velocities in the medium, therefore this effect is called doppler broadening. 
 
 \subsection{Transverse modes}
+\label{subsec:trans_modes}
 Transverse modes are intensity profiles of the beam perpendicular to the direction of propagation and usually called TEM-modes. %double check
 Slicing through the profile of the corresponding electric field in $x$-direction yields
 \begin{equation*}
-E_{\symup{m}}(x)=H_{\symup{m}}\left(\frac{\sqrt{2}}{w_0}x\right)\exp(-\left(\frac{\sqrt{2}}{w_0}x\right)^2/2)
+E_{\symup{m}}(x)=H_{\symup{m}}\left(\frac{\sqrt{2}}{w_0}x\right)\exp\left(-\left(\frac{\sqrt{2}}{4w_0}x\right)^2\right)
 \end{equation*}
 with $H_{\symup{m}}$ as the hermite-polynomials and $w_0$ as the beam width.
 
@@ -46,6 +60,6 @@ with $H_{\symup{m}}$ as the hermite-polynomials and $w_0$ as the beam width.
 Coherent light with wavelength $\lambda$ can be diffracted at a grating with grating constant $g$. 
 The resulting pattern on a screen with distance $l$ to the grating forms sharp interference maxima, which might be described as
 \begin{equation*}
-    \lambda=\frac{g}{k}\sin(\arctan(\frac{a_{\symup{k}}}{l}))
+    \lambda=\frac{g}{k}\sin\left(\arctan\left(\frac{a_{\symup{k}}}{l}\right)\right)
 \end{equation*}
 with $a_{\symup{k}}$ being the distance between the maxima of order zero and order $k$ on the screen.
