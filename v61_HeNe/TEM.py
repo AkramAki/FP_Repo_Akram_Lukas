@@ -34,9 +34,9 @@ fig.savefig("build/TEM00.pdf")
 
 #TEM01 Fit
 def f01(x,I_0,x_0,sigma):
-    return I_0*2*np.sqrt(2)*(x-x_0)/sigma*np.exp(-(x-x_0)**2/sigma**2)
+    return (I_0*2*np.sqrt(2)*(x-x_0)/sigma*np.exp(-(x-x_0)**2/sigma**2))**2
 
-params01, covariance_matrix = curve_fit(f01, x_01, I_01, sigma=dI_01)
+params01, covariance_matrix = curve_fit(f01, x_01, I_01, p0=np.asarray([-1.2,-5,10]), sigma=dI_01)
 
 uncertainties01 = np.sqrt(np.diag(covariance_matrix))
 

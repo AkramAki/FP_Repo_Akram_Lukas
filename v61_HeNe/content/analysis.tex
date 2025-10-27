@@ -1,5 +1,89 @@
-\section{Analysis}
+\section{Analysis} %% Change [] for units to /
 \label{sec:analysis}
+
+\subsection{Stability}
+By changing the distance between the mirrors the stability condition, 
+which was described in \autoref{subsec:principle}, could be tested.
+When using mirrors with a radius of curvature of $R=1400\,\unit{\mm}$ on both ends no loss of stability was observable, even for the 
+longest distance of $L=(217.2\pm0.2)\,\unit{\cm}$. 
+When using a flat mirror on one end and keeping the same curved mirror on the other, 
+stability was lost at a distance of $L=(88,6\pm0.2)\,\unit{\cm}$.
+
+\subsection{Polarization}
+The power was measured as a function of polarization angle and is documented in \autoref{tab:polarization}. % double check name
+\begin{table}
+   \centering
+   \caption{Power $P$ for varying polarization angle $\theta$.}
+   \label{tab:polarization}
+   \sisetup{table-format = 3.0} 
+   \begin{tblr}{
+       colspec = {S S[table-format=1.3] S[table-format=1.3]},
+       row{1} = {guard, mode = math},
+       vline{3}={2}{-}{text=\clap{$\pm$}},
+    }
+       \toprule 
+       \theta \mathbin{/} \unit{\degree} &\SetCell[c=2]{c} P \mathbin{/} \unit{\milli\watt}\\
+       \midrule
+       %data here
+        0	& 0.994   & 0.001   \\
+        18	& 0.188   & 0.001   \\
+        36	& 0.038   & 0.001   \\
+        54	& 0.616   & 0.001   \\
+        72	& 1.778   & 0.005   \\
+        90	& 2.915   & 0.003   \\
+        108	& 3.815   & 0.01    \\
+        126	& 3.83    & 0.05    \\
+        144	& 3.387   & 0.05    \\
+        162	& 2.188   & 0.03    \\
+        180	& 1.03    & 0.001   \\
+        198	& 0.201   & 0.001   \\
+        216	& 0.034   & 0.001   \\
+        234	& 0.636   & 0.001   \\
+        252	& 1.81    & 0.003   \\
+        270	& 2.985   & 0.005   \\
+        288	& 3.83    & 0.005   \\
+        306	& 3.957   & 0.005   \\
+        324	& 3.31    & 0.01    \\
+        342	& 2.083   & 0.03    \\
+        360	& 1.01    & 0.002   \\
+       \bottomrule
+   \end{tblr}
+\end{table}
+The same data is visualized in \autoref{fig:polarization}, together with a fit using the law of malus described in 
+\autoref{sec:theory}. % update to subsec?
+\begin{figure}
+   \centering
+   \includegraphics[width =0.48\textwidth]{build/Polarisation.pdf}
+   \caption{.}
+   \label{fig:polarization}
+\end{figure}
+The fit yields 
+\begin{align*}
+    P_0&=(3.97\pm0.02)\,\unit{milli\watt} \\
+    \theta_0&=(120.44\pm0.06)\,\unit{\degree}\;. \\
+\end{align*}
+
+\subsection{Transverse modes}
+Both the TEM00- and the TEM01-modes were observable and measured along $x$-direction. 
+The corresponding data is documented in \autoref{tab:TEM}. 
+
+% \begin{table}
+%    \centering
+%    \caption{Measurement of TEM00- and TEM01-modes as diode current $I$ along the $x$-direction.}
+%    \label{tab:}
+%    \sisetup{table-format = 3.0} 
+%    \begin{tblr}{
+%        colspec = {S S S},
+%        row{1} = {guard, mode = math}
+%    }
+%        \toprule 
+%        & SetCell[c=2]{c} \text{TEM00-mode} && SetCell[c=2]{c} \text{TEM01-mode}
+%        x \mathbin{/} \unit{\milli\meter} &\SetCell[c=2]{c} I_{00} \mathbin{/} \unit{\micro\ampere} && &\SetCell[c=2]{c} I_{01} \mathbin{/} \unit{\micro\ampere} \\
+%        \midrule
+%        %data here
+%        \bottomrule
+%    \end{tblr}
+% \end{table}
 
 % templates
 
@@ -20,12 +104,6 @@
 %    \end{tblr}
 %\end{table}
 
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{}
-%    \caption{.}
-%    \label{fig:}
-%\end{figure}
 
 %\begin{wrapfigure}[20]{r}{0.5\textwidth}
 %    \begin{center}
