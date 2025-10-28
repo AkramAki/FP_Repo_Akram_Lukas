@@ -71,9 +71,9 @@ The corresponding data is documented in \autoref{tab:TEM}.
    \centering
    \caption{Measurement of TEM00- and TEM01-modes as diode current $I$ along the $x$-direction.}
    \label{tab:TEM}
-   \sisetup{table-format = 3.0} 
+   \sisetup{table-format = 1.4} 
    \begin{tblr}{
-       colspec = {S S S S S},
+       colspec = {S[table-format=3.0] S S S S},
        row{1} = {guard, mode = math},
        vline{3,5}={2}{-}{text=\clap{$\pm$}},
    }
@@ -145,19 +145,34 @@ fitted according to the zeroth order mode discussed in \autoref{subsec:trans_mod
    \caption{Diode current $I$ with respect to position on $x$ axis, fitted with the TEM00-mode.}
    \label{fig:TEM00}
 \end{figure}
+The approximated function uses the parameters
+\begin{align*}
+   I &= (4.7 \pm 0.1)\,\unit{\milli\ampere}\\
+   x &= -(4.9 \pm 0.1)\,\unit{\mm}\\
+   o &= (8.65 \pm 0.06)\,\unit{\mm}\;.
+\end{align*}
 
 The TEM01-mode is plotted and fitted analogously in \autoref{fig:TEM01}
+
+
+
 \begin{figure}
    \centering
    \includegraphics[width =0.7\textwidth]{build/TEM00.pdf}
    \caption{Diode current $I$ with respect to position on $x$ axis, fitted with the TEM00-mode.}
    \label{fig:TEM01}
 \end{figure}
+This fit yields
+\begin{align*}
+   I &= -(0.79 \pm 0.03)\,\unit{\milli\ampere}\\
+   x &= -(4.5 \pm 0.1)\,\unit{\mm}\\
+   o &= (11.3 \pm 0.1)\,\unit{\mm}\;.
+\end{align*}
 
 
 \subsection{Determining the wavelength}
 The wavelength can be determined via the interference pattern as described in \autoref{subsec:interference}, 
-using the data aquired and displayed in \autoref{tab:grating}. 
+using the data acquired and displayed in \autoref{tab:grating}. 
 The uncertainty of the measured positions $x$ is $\Delta x=0.2\,\unit{\cm}$
 \begin{table}
    \centering
@@ -183,6 +198,7 @@ The uncertainty of the measured positions $x$ is $\Delta x=0.2\,\unit{\cm}$
        \bottomrule
    \end{tblr}
 \end{table}
+Using \eqref{eq:wavelength} this yields a mean wavelength of $\lambda=(640\pm4)\,\unit{\nm}$.
 
 % templates
 
