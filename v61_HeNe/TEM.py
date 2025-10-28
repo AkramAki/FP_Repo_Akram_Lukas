@@ -11,7 +11,7 @@ x=np.linspace(-30,20,200)
 
 # TEM00 Fit
 def f00(x,I_0,x_0,sigma):
-    return I_0*np.exp(-(x-x_0)**2/sigma**2)
+    return I_0*(np.exp(-(x-x_0)**2/sigma**2))**2 # Variable names are scuffed, this is just E_m^2, see theory 
 
 params00, covariance_matrix = curve_fit(f00, x_00, I_00, sigma=dI_00)
 
@@ -34,7 +34,7 @@ fig.savefig("build/TEM00.pdf")
 
 #TEM01 Fit
 def f01(x,I_0,x_0,sigma):
-    return (I_0*2*np.sqrt(2)*(x-x_0)/sigma*np.exp(-(x-x_0)**2/sigma**2))**2
+    return I_0*(2*np.sqrt(2)*(x-x_0)/sigma*np.exp(-(x-x_0)**2/sigma**2))**2 
 
 params01, covariance_matrix = curve_fit(f01, x_01, I_01, p0=np.asarray([-1.2,-5,10]), sigma=dI_01)
 
