@@ -25,8 +25,8 @@ for name, value, uncertainty in zip("Ixo", params00, uncertainties00):
 fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.errorbar(x_00, I_00, yerr=dI_00,fmt="k." ,label="TEM00-Measurement")
 ax.plot(x,f00(x,*params00),label="TEM00-Fit")
-ax.set_xlabel(r"$x\,[\unit{\mm}]$")
-ax.set_ylabel(r"$I\,[\unit{\milli\A}]$")
+ax.set_xlabel(r"$x \mathbin{/} \unit{\mm}$")
+ax.set_ylabel(r"$I \mathbin{/} \unit{\micro\A}$")
 ax.legend(loc="best")
 
 fig.savefig("build/TEM00.pdf")
@@ -48,8 +48,32 @@ for name, value, uncertainty in zip("Ixo", params01, uncertainties01):
 fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.errorbar(x_01, I_01, yerr=dI_01,fmt="k." ,label="TEM01-Measurement")
 ax.plot(x,f01(x,*params01),label="TEM01-Fit")
-ax.set_xlabel(r"$x\,[\unit{\mm}]$")
-ax.set_ylabel(r"$I\,[\unit{\milli\A}]$")
+ax.set_xlabel(r"$x \mathbin{/} \unit{\mm}$")
+ax.set_ylabel(r"$I \mathbin{/} \unit{\micro\A}$")
 ax.legend(loc="best")
 
 fig.savefig("build/TEM01.pdf")
+
+# #TEM01 Fit, asymmetrical
+# def asym_peak(x, x_0, sigma, A_l, A_r, bg):
+#     y = (2*np.sqrt(2)*(x-x_0)/sigma * np.exp(-((x-x_0)**2)/sigma**2))**2
+#     weights = np.where(x<=x_0, A_l, A_r)
+#     return weights * y + bg
+
+# params01, covariance_matrix = curve_fit(asym_peak, x_01, I_01,p0=np.asarray([-5,10,1.2,0.8,0.1]), sigma=dI_01)
+
+# uncertainties01 = np.sqrt(np.diag(covariance_matrix))
+
+# print("TEM01 fit params: ")
+# for name, value, uncertainty in zip("xolrb", params01, uncertainties01):
+#     print(f"{name} = {value} ± {uncertainty}")
+
+# # TEM01 plot
+# fig, ax = plt.subplots(1, 1, layout="constrained")
+# ax.errorbar(x_01, I_01, yerr=dI_01,fmt="k." ,label="TEM01-Measurement")
+# ax.plot(x,asym_peak(x,*params01),label="TEM01-Fit")
+# ax.set_xlabel(r"$x\,[\unit{\mm}]$")
+# ax.set_ylabel(r"$I\,[\unit{\milli\A}]$")
+# ax.legend(loc="best")
+
+# fig.savefig("build/TEM01_asymmetrical.pdf")

@@ -7,33 +7,35 @@ and descriptions of polarization, longitudinal and transverse modes as well as i
 \subsection{Working principle of lasers}
 \label{subsec:principle}
 Lasers consist of three main parts: The pump, an active medium and a resonator. 
-The pump is used to create an population inversion in the active medium. 
+The pump is used to create a population inversion in the active medium. 
 The coherent laser light is then created by stimulated emission in the active medium. 
-Since an population inversion is needed in order to amplify the emission, 
+Photons that are created by stimulated emission have the same properties as the photons that induce the stimulated emission. 
+Because of this the laser beam is coherent. 
+Since a population inversion is needed in order to amplify the emission, 
 at least a three level system is needed because the population inversion would counteract against the pump. 
-To create the amplification the resonator used. 
-A resonator is a set of two mirrors, one completely reflective and one partially transmittive, which allows light with the wavelength $\lambda=n\cdot L/2$ to be amplified. 
-This resonance condition is equivalent to $f=\frac{cL}{2n}$ with $f$ being the light frequency. 
-A resonator also gives rise to many different modes, which are described by different order of $n\in \mathbb{N}$ and equdistant in frequency. 
-Multiple of these modes can be excited if the spectral envelope, created by the linewidth of the laser transition in the active medium. 
+The resonator is used in order to achieve the needed amplification. 
+A resonator is a set of two mirrors, one completely reflective and one partially transmissive, which allows light with the wavelength $\lambda=n\cdot L/2$ to be amplified. 
+This resonance condition is equivalent to $f=\frac{nc}{2L}$ with $f$ being the light frequency. 
+A resonator also gives rise to many different modes, which are described by different order of $n\in \mathbb{N}$ and equidistant in frequency. 
+Multiple of these modes can be excited if the spectral envelope, created by the linewidth of the laser transition in the active medium, is covering multiple modes. 
 
 In order for a laser to be stable, the stability condition 
 \begin{equation*}
-    0\leq(1-\frac{L}{R_1})(1-\frac{L}{R_2})\leq1
+    0\leq(1-\frac{L}{R_1})(1-\frac{L}{R_2})\leq1\;,
 \end{equation*}
-with $R_{\symup{i}}$ being the mirrors curvature radius. 
+with $R_{\symup{i}}$ being the mirrors curvature radius, has to be fullfilled. 
 If both mirrors are flat, the expression always equals $1$. 
-If only one of the mirrors is flat the expressions is equal to $(1-\frac{L}{r})^2$, therefore the maximum length of the resonator is $L=2r$.  
+If only one of the mirrors is flat the expression is equal to $(1-\frac{L}{r})^2$, therefore the maximum length of the resonator is $L=2r$.  
 
 The amplification can be described as
 \begin{equation*}
     G(f,z)=\frac{I(f,z)}{I(f,0)}=\exp(-\alpha(f)z)
 \end{equation*}
-where $\alpha$ is the population and freqeuncy dependent absorption
+where $\alpha$ is the population and frequency dependent absorption
 \begin{equation*}
     \alpha(f)=(N_1-\frac{g_1}{g_2}N_2)\sigma(f)
 \end{equation*}
-with the absorption cross section $\sigma$. 
+with the absorption cross section $\sigma$ and degeneracies $g_{\symup{i}}$ of state $\ket{i}$ . 
 When considering losses with a rate of $\gamma$, the amplification condition requires the population inversion to be
 \begin{equation*}
     \Delta N>\frac{\gamma}{2\sigma L}
@@ -44,17 +46,17 @@ with $L$ being the medium length.
 The helium-neon configuration is used as a four level system to create coherent red light ($\lambda=633\,\unit{\nm}$) using the $3s_2\rightarrow2p_4$ transition in neon. 
 The $3s_2$ state is populated by pumping Helium into an excited state via gas discharge that is caused by a current applied on the medium 
 and collisions transferring energy from excited helium atoms to neon in order to populate the $3s_2$ neon state. 
-The spectral width of the transition is increased by approximately $1500\,\unit{\mega\hertz}$, because the neon atoms are moving, which causes a doppler shift. 
-The broadening is a result of the statistical distribution of velocities in the medium, therefore this effect is called doppler broadening. 
+The spectral width of the transition is increased by approximately $1500\,\unit{\mega\hertz}$, because the neon atoms are moving, which causes a Doppler shift. 
+The broadening is a result of the statistical distribution of velocities in the medium, therefore this effect is called Doppler broadening. 
 
 \subsection{Transverse modes}
 \label{subsec:trans_modes}
 Transverse modes are intensity profiles of the beam perpendicular to the direction of propagation and usually called TEM-modes. %double check
 Slicing through the profile of the corresponding electric field in $x$-direction yields
-\begin{equation*}
+\begin{equation}
     E_{\symup{m}}(x)=H_{\symup{m}}\left(\frac{\sqrt{2}}{w_0}x\right)\exp\left(-\left(\frac{\sqrt{2}}{4w_0}x\right)^2\right)
     \label{eq:t_modes}
-\end{equation*}
+\end{equation}
 with $H_{\symup{m}}$ as the hermite-polynomials and $w_0$ as the beam width.
 
 \subsection{Interference at a grating}
@@ -65,4 +67,4 @@ The resulting pattern on a screen with distance $l$ to the grating forms sharp i
     \lambda=\frac{g}{k}\sin\left(\arctan\left(\frac{a_{\symup{k}}}{l}\right)\right)
     \label{eq:wavelength}
 \end{equation}
-with $a_{\symup{k}}$ being the distance between the maxima of order zero and order $k$ on the screen.
+with $a_{\symup{k}}$ being the distance between the maximum of order zero and order $k$ on the screen.
