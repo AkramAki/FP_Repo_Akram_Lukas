@@ -8,22 +8,32 @@ and descriptions of polarization, longitudinal and transverse modes as well as i
 \label{subsec:principle}
 Lasers consist of three main parts: The pump, an active medium and a resonator. 
 The pump is used to create a population inversion in the active medium. 
-The coherent laser light is then created by stimulated emission in the active medium. 
+The coherent laser light is then created by stimulated emission in the active medium. \cite{Demtröder_laser}
 Photons that are created by stimulated emission have the same properties as the photons that induce the stimulated emission. 
 Because of this the laser beam is coherent. 
 Since a population inversion is needed in order to amplify the emission, 
-at least a three level system is needed because the population inversion would counteract against the pump. 
+at least a three level system is needed because the population inversion would counteract against the pump. \\
+
 The resonator is used in order to achieve the needed amplification. 
 A resonator is a set of two mirrors, one completely reflective and one partially transmissive, which allows light with the wavelength $\lambda=n\cdot L/2$ to be amplified. 
 This resonance condition is equivalent to $f=\frac{nc}{2L}$ with $f$ being the light frequency. 
-A resonator also gives rise to many different modes, which are described by different order of $n\in \mathbb{N}$ and equidistant in frequency. 
+A resonator also gives rise to many different modes, which are described by different order of $n\in \mathbb{N}$ and equidistant in frequency. \cite{Eichler}
 Multiple of these modes can be excited if the spectral envelope, created by the linewidth of the laser transition in the active medium, is covering multiple modes. 
+This is visualized in \autoref{fig:long_modes}. 
+
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{content/Images/longitudinal_modes.png}
+   \caption{Longitudinal modes in cavity, overlapped with spectrum of a laser, taken from \cite{Hammond}.}
+   \label{fig:long_modes}
+\end{figure}
+
 
 In order for a laser to be stable, the stability condition 
 \begin{equation*}
     0\leq(1-\frac{L}{R_1})(1-\frac{L}{R_2})\leq1\;,
 \end{equation*}
-with $R_{\symup{i}}$ being the mirrors curvature radius, has to be fullfilled. 
+with $R_{\symup{i}}$ being the mirrors curvature radius, has to be fullfilled \cite{Eichler}. 
 If both mirrors are flat, the expression always equals $1$. 
 If only one of the mirrors is flat the expression is equal to $(1-\frac{L}{r})^2$, therefore the maximum length of the resonator is $L=2r$.  
 
@@ -40,14 +50,21 @@ When considering losses with a rate of $\gamma$, the amplification condition req
 \begin{equation*}
     \Delta N>\frac{\gamma}{2\sigma L}
 \end{equation*}
-with $L$ being the medium length. 
+with $L$ being the medium length. \cite{Demtröder_laser}
 
 \subsection{Characteristics of a helium-neon-laser}
 The helium-neon configuration is used as a four level system to create coherent red light ($\lambda=633\,\unit{\nm}$) using the $3s_2\rightarrow2p_4$ transition in neon. 
 The $3s_2$ state is populated by pumping Helium into an excited state via gas discharge that is caused by a current applied on the medium 
 and collisions transferring energy from excited helium atoms to neon in order to populate the $3s_2$ neon state. 
-The spectral width of the transition is increased by approximately $1500\,\unit{\mega\hertz}$, because the neon atoms are moving, which causes a Doppler shift. 
+The Energy levels of a helium-neon-gas are shown in \autoref{fig:HeNe}. 
+The spectral width of the transition is increased by approximately $1500\,\unit{\mega\hertz}$, because the neon atoms are moving, which causes a Doppler shift. \cite{Eichler}
 The broadening is a result of the statistical distribution of velocities in the medium, therefore this effect is called Doppler broadening. 
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width =0.7\textwidth]{content/Images/He-Ne_niveaus.png}
+   \caption{Energy levels of He-Ne gas, taken from \cite{Eichler}.}
+   \label{fig:HeNe}
+\end{figure}
 
 \subsection{Transverse modes}
 \label{subsec:trans_modes}
@@ -57,7 +74,14 @@ Slicing through the profile of the corresponding electric field in $x$-direction
     E_{\symup{m}}(x)=H_{\symup{m}}\left(\frac{\sqrt{2}}{w_0}x\right)\exp\left(-\left(\frac{\sqrt{2}}{4w_0}x\right)^2\right)
     \label{eq:t_modes}
 \end{equation}
-with $H_{\symup{m}}$ as the hermite-polynomials and $w_0$ as the beam width.
+with $H_{\symup{m}}$ as the hermite-polynomials and $w_0$ as the beam width. \cite{Eichler}
+The first transverse modes are shown in \autoref{fig:trans_modes}. 
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{content/Images/transverse_modes.png}
+   \caption{$x$-slices of the first transverse modes, taken from \cite{Demtröder_laser}.}
+   \label{fig:trans_modes}
+\end{figure}
 
 \subsection{Interference at a grating}
 \label{subsec:interference}
@@ -67,4 +91,4 @@ The resulting pattern on a screen with distance $l$ to the grating forms sharp i
     \lambda=\frac{g}{k}\sin\left(\arctan\left(\frac{a_{\symup{k}}}{l}\right)\right)
     \label{eq:wavelength}
 \end{equation}
-with $a_{\symup{k}}$ being the distance between the maximum of order zero and order $k$ on the screen.
+with $a_{\symup{k}}$ being the distance between the maximum of order zero and order $k$ on the screen. \cite{interference_grating}
