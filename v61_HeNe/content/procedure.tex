@@ -1,2 +1,103 @@
 \section{Experimental Setup and Procedure}
 \label{sec:procedure}
+In the following, the experimental setup of the Helium-Neon laser resonator is described, followed by the complete procedure 
+performed in this work.
+
+
+\subsection{Procedure}
+The experiment was performed on a linear optical rail as shown in \autoref{fig:experimental_setup}. 
+All optical components were mounted on this rail with adjustable holders. 
+The HeNe laser tube used had a length of $l = 408 \,\mathrm{mm}$ and was filled with a He:Ne gas mixture at a ratio 5:1. 
+A pre-adjusted alignment laser ($\lambda = 532\,\mathrm{nm}$, $P \approx 0.1\,\mathrm{mW}$) was used for the initial coarse alignment of
+the resonator axis. Two resonator mirrors were available: (i) one concave output coupler with radius of curvature $r = 1400 \,\mathrm{mm}$ and a 
+transmission $T \approx 1.5..1.8\%$ and (ii) either a planar high-reflectivity mirror or a second concave high-reflectivity mirror 
+($r = 1400 \,\mathrm{mm}$, $R \ge 99\%$). Two alignment apertures with crosshairs were placed at maximum distance on the rail.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 1\textwidth]{content/Images/experimental_setup.png}
+    \caption{Experimental setup of the resonator on an optical rail. Image adapted from \cite{Versuchsanleitung}.}
+    \label{fig:experimental_setup}
+\end{figure}
+
+After alignment, the internal discharge of the HeNe tube was driven at $I = 6.5\,\mathrm{mA}$ (as recommended).
+
+\subsection{Alignment}
+Before any measurements can be performed, the optical axis of the resonator must be 
+established. Therefore, a precise alignment of all components on the optical rail is required until stable lasing is achieved.
+The alignment was done in the following order:
+\begin{enumerate}
+    \item alignment laser on rail, apertures placed at maximum rail separation,
+    \item alignment laser beam centered on both crosshairs,
+    \item placement of the two resonator mirrors and the discharge tube such that the backreflection returns to the center of the rear aperture,
+    \item switch off the alignment laser, apply the discharge current, and fine tune mirror angular orientation until stable lasing occurred.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width =1\textwidth]{content/Images/alignment.png}
+    \caption{Alignment procedure for the Helium-Neon Laser. Image adapted from \cite{Versuchsanleitung}.}
+\end{figure}
+
+
+\subsection{Measurement Tasks}
+After alignment, the following tasks were performed.  
+For each task it is explicitly stated which data points must be recorded.
+
+\subsubsection{Verification of Resonator Stability}
+
+Two resonator configurations were investigated: planar--concave and concave--concave ($r = 1400\,\mathrm{mm}$ each).  
+For each configuration:
+\begin{enumerate}
+    \item maximize output power with photodiode
+    \item increase mirror separation $L$ stepwise
+\end{enumerate}
+
+For every step of $L$ check whether stable laser activity can be observed. Repeat until stability is not 
+achievable and record the length for later comparison against the theoretical value.
+
+\subsubsection{Observation of TEM Modes}
+A tungsten wire of diameter $d = \qty{0.005}{\milli\meter}$ was inserted into the resonator between tube and 
+output coupler. First, the mode structure was visually inspected on a screen (qualitative identification). 
+To enlarge the image on the screen and make the mode structure more clearly distinguishable, a lens 
+was placed in front of the screen. The tungsten wire was then used once as a mode stop: it was first positioned centrally in 
+the beam to block the central intensity maximum of the TEM\textsubscript{00} mode, such that a TEM\textsubscript{01}-like mode 
+became dominant and could be observed. Afterwards, the wire was moved once more to a position where it blocked one of 
+the two lateral maxima of this TEM\textsubscript{01}-like mode, thereby suppressing this higher mode and 
+allowing the TEM\textsubscript{00} mode to be isolated again for measurement.
+Afterwards, the screen was removed and replaced by the photodiode. For the quantitative measurement, 
+the photodiode was moved horizontally across the beam to record the transverse intensity distribution.
+For each measurement the mode index (e.g.\ TEM$_{00}$ or TEM$_{01}$) was noted, and the photodiode voltage $U(x)$ was 
+recorded as a function of the horizontal detector position $x$.
+
+
+\subsubsection{Determination of Polarization}
+
+A polarizer was placed after the output coupler.  
+The polarizer was rotated in steps of $\qty{18}{\deg}$.
+For each rotation angle $\phi$ record:
+\begin{itemize}
+    \item $\phi$ in degrees
+    \item photodiode power $P(\phi)$
+\end{itemize}
+
+The resulting $P(\phi)$ curve was later compared to the theoretical prediction given by Malus’ law.
+
+\subsubsection{Multimode Operation and Beat Frequencies}
+
+Without inserting a Fabry--Perot etalon, the laser operated in multimode regime, i.e.\ several longitudinal modes oscillated simultaneously. 
+To investigate this, a fast photodiode with a bandwidth of up to $\qty{1}{\giga\hertz}$ was placed behind the output coupler. 
+Its signal was recorded with a spectrum analyser. 
+The measurement was repeated for multiple resonator lengths $L$. For each value of $L$ the Fourier spectrum was acquired and the corresponding beat 
+frequencies were extracted. 
+For each resonator length $L$ (in $\unit{\milli\meter}$) the beat frequencies $f_{\mathrm{beat}}(L)$ corresponding to the peaks in the Fourier 
+spectrum were recorded.
+
+
+\subsubsection{Determination of the Laser Wavelength}
+
+The wavelength of the He--Ne laser was determined using a transmission grating with a grating constant of 
+$\qty{80}{\per\milli\meter}$. The laser beam was directed onto the grating, and the resulting diffraction pattern was projected onto 
+a screen at a distance $\qty{85.2(0.2)}{\milli\meter}$. The horizontal positions $x_n$ of the $n$-th order maxima were measured, 
+and from these the wavelength was determined using the grating equation.
+For each measurement the screen distance $D$ and the horizontal positions $x_n$ of the diffraction maxima were recorded.

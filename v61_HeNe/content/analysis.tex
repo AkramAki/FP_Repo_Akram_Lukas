@@ -178,6 +178,28 @@ This fit yields
    \end{split}
 \end{align}
 
+
+\subsection{Analysis of Multimode Operation and Beat Frequencies}
+
+\autoref{fig:L-Moden} shows the beat frequencies $f_{\mathrm{beat}}(L)$ extracted from the Fourier 
+spectra for all investigated resonator lengths $L$. For each cavity length, the mean spacing between adjacent spectral peaks was taken as $\Delta f$.
+
+The theoretical curve according to
+$$
+\Delta f(L) = \frac{c}{2L}
+$$
+is shown as a dashed line. For clarity, the corresponding theoretical values at the same discrete measured lengths are additionally indicated by 
+square markers. All theory values were calculated using $c = \qty{2.99792458e8}{\meter\per\second}$ and the resonator lengths.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{build/L-Moden.pdf}
+    \caption{Beat frequencies $\Delta f$ as a function of the corrected resonator length $L$. 
+    Circles: measured values. Dashed line: theoretical prediction. Squares: theoretical values at the measured $L$.}
+    \label{fig:L-Moden}
+\end{figure}
+
+
 \subsection{Determining the wavelength}
 The wavelength can be determined via the interference pattern as described in \autoref{subsec:interference}, 
 using the data acquired and displayed in \autoref{tab:grating}. 
