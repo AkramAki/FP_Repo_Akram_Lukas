@@ -1,79 +1,153 @@
-# import matplotlib.pyplot as plt
-# import numpy as np
-# from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.optimize import curve_fit
+from scipy import integrate
 
 
-# T1_raw,I1_raw,F1,P1=np.genfromtxt("data/run_1.txt",skip_header=1,unpack=True) # run_1_corr corrects the .3 scale
+kB = 8.617*10**(-5) # boltzmann constant
 
-# T1=T1_raw-273.15
-# I1=I1_raw/10*F1
+T_raw,I_raw,F,P=np.genfromtxt("data/run_1.txt",skip_header=1,unpack=True) # run_1_corr corrects the .3 scale
 
-# # define background
-# I_background1=np.concatenate([I1[0:25],I1[-11:]])
-# T_background1=np.concatenate([T1[0:25],T1[-11:]])
+T=T_raw+273.15
+I=-I_raw/10*F
 
-# # Fit background
-# def f(x,I_0,a,y_0):
-#     return -I_0*(np.exp(a*x))+y_0 
+# heating rate
+b_array = np.gradient(T, 1)
+b=np.mean(b_array)
 
-# params1, covariance_matrix1 = curve_fit(f, T_background1, I_background1,p0=[1,0.0001,1])
+# mean uncertainty
+std_b = np.std(b_array, ddof=1)
+std_mean_b = std_b / np.sqrt(len(b_array))
 
-# uncertainties1 = np.sqrt(np.diag(covariance_matrix1))
+print("heating rate: ", b, "+- ",std_mean_b)
 
-# print("Background fit params: ")
-# for name, value, uncertainty in zip("Iay", params1, uncertainties1):
-#     print(f"{name} = {value} ± {uncertainty}")
+# define background
+I_background=np.concatenate([I[0:32],I[-11:]])
+T_background=np.concatenate([T[0:32],T[-11:]])
 
-# x=np.linspace(T1[0],T1[-1],50)
+# Fit background
+def f(x,a,y_0):
+    return (np.exp(a*x))+y_0 
 
-# # Plot current with coloured background
-# fig, ax = plt.subplots(1, 1, layout="constrained")
-# ax.plot(T1,I1,".",label="Data")
-# ax.plot(T_background1,I_background1,"gx",label="Backgorund")
-# ax.plot(x,f(x,*params1),"b",label="Background fit")
-# ax.set_xlabel(r"$T \mathbin{/} \unit{\celsius}$")
-# ax.set_ylabel(r"$I \mathbin{/} \unit{\pico\ampere}$")
+params, covariance_matrix = curve_fit(f, T_background, I_background,p0=[0.0001,1])
 
-# ax.legend(loc="best")
+uncertainties = np.sqrt(np.diag(covariance_matrix))
 
-# fig.savefig("build/Current1.pdf")
+print("Background fit params: ")
+for name, value, uncertainty in zip("ay", params, uncertainties):
+    print(f"{name} = {value} ± {uncertainty}")
 
-# # Clear relaxation current of background
-# I1_sig=I1-f(T1,*params1)
+x=np.linspace(T[0],T[-1],50)
+
+# Plot current with background
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(T,I,".",label="Data")
+ax.plot(T_background,I_background,"gx",label="Backgorund")
+ax.plot(x,f(x,*params),"b",label="Background fit")
+ax.set_xlabel(r"$T \mathbin{/} \unit{\celsius}$")
+ax.set_ylabel(r"$I \mathbin{/} \unit{\pico\ampere}$")
+
+ax.legend(loc="best")
+
+fig.savefig("build/Current1.pdf")
+
+# Clear relaxation current of background
+I_sig=I-f(T,*params)
 
 
+# T index where I is max
+T_max_ind = 43
+T_max=-13.9+273.15 # T_max in kelvin
 
-# # T index where I is max
-# T1_max = 43
+# use linear fit to determine W for T<T_max (Polarization method)
+I_lin=I_sig[32:T_max_ind]
+T_lin=T[32:T_max_ind]
 
-# # use linear fit to determine W for T<T_max
-# I1_lin=I1_sig[32:T1_max]
-# T1_lin=T1[32:T1_max]
 
-# print(I1_lin)
-# print(T1_lin)
+# Fit background
+def lin(x,m,a):
+    return m*x+a
 
-# # Fit background
-# def lin(x,m,a):
-#     return m*x+a
+params_lin, covariance_matrix_lin = curve_fit(lin, 1/T_lin, np.log(I_lin))
 
-# params1_lin, covariance_matrix1_lin = curve_fit(lin, 1/T1_lin, np.log(-I1_lin))
+uncertainties_lin = np.sqrt(np.diag(covariance_matrix_lin))
 
-# uncertainties1_lin = np.sqrt(np.diag(covariance_matrix1_lin))
+print("Linear fit params: ")
+for name, value, uncertainty in zip("ma", params_lin, uncertainties_lin):
+    print(f"{name} = {value} ± {uncertainty}")
 
-# print("Linear fit params: ")
-# for name, value, uncertainty in zip("Ima", params1_lin, uncertainties1_lin):
-#     print(f"{name} = {value} ± {uncertainty}")
+W=-params_lin[0]*kB
 
-# print("Activation energy for linear fit: ",params1_lin[0]*8.617*10**(-5)) # with k_b in ev/K
+print("Activation energy for linear fit: ",W) # with k_b in ev/K
 
-# x_lin=np.linspace(T1_lin[0],T1_lin[-1],50)
+x_lin=np.linspace(T_lin[0],T_lin[-1],50)
 
-# # Plot new current
-# fig, ax = plt.subplots(1, 1, layout="constrained")
-# ax.plot(1/T1,np.log(np.abs(-I1_sig)),".",label="Filtered current")
-# ax.plot(1/x_lin,lin(x,*params1_lin),"b",label="Activation fit")
+# Plot Polarization method
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(T,I_sig,".",label="Filtered current")
+ax.plot(x_lin,np.exp(params_lin[0]/x_lin+params_lin[1]),"b",label="Activation fit")
 
-# ax.legend(loc="best")
+ax.legend(loc="best")
 
-# fig.savefig("build/Current_filtered.pdf")
+fig.savefig("build/Polarization_method1.pdf")
+
+# Determine W with integral method
+
+Int_complete = integrate.cumulative_trapezoid(I_sig, T, initial=0) #Integration over complete T[:]
+Int_Max = Int_complete[T_max_ind] # Integration until T_max
+Int_i = Int_Max - Int_complete # Integration from T[i] to T_max
+
+# Values needed for fitting, again start at 32, as this is the beginning of the peak
+I_int = I_sig[32:T_max_ind]
+T_int = T[32:T_max_ind]
+Int = Int_i[32:T_max_ind]
+
+print(Int)
+print(I_int)
+
+# Define x and y for fitting
+Y = np.log(Int / I_int)
+X = 1 / T_int
+
+
+params_int, covariance_matrix_int = curve_fit(lin, X, Y)
+
+uncertainties_int = np.sqrt(np.diag(covariance_matrix_int))
+
+print("Integration fit params: ")
+for name, value, uncertainty in zip("ma", params_int, uncertainties_int):
+    print(f"{name} = {value} ± {uncertainty}")
+
+W_int = params_int[0] *kB  
+print("Activation energy for integration fit: ",W_int) # with k_b in ev/K
+
+x_int=np.linspace(T_int[0],T_int[-1],50)
+
+# Plot Integration method
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(T,I_sig,".",label="Filtered current")
+ax.plot(T_int,Int/np.exp(params_int[0]/T_int+params_int[1]),"b",label="Activation fit")
+
+ax.legend(loc="best")
+
+fig.savefig("build/Integration_method1.pdf")
+
+# Get tau_zero
+
+tau_zero_lin = kB * T_max**2 / (W * b) * np.exp(-W / (kB * T_max))
+tau_zero_int = kB * T_max**2 / (W_int * b) * np.exp(-W_int / (kB * T_max))
+
+print("tau_zero lin: ", tau_zero_lin, "tau_zero int: ", tau_zero_int)
+
+# plot tau
+
+x_tau=np.linspace(T[0],T[-1])
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(x_tau,tau_zero_lin*np.exp(W/(kB*x_tau)),label="Polarization method")
+ax.plot(x_tau,tau_zero_int*np.exp(W_int/(kB*x_tau)),label="Integration method")
+
+ax.set_yscale("log")
+ax.legend(loc="best")
+
+fig.savefig("build/tau.pdf")
+
