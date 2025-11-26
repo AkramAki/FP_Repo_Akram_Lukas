@@ -1,14 +1,14 @@
 all: build/v48.pdf
 
 # hier Python-Skripte:
-build/Current1.pdf build/Polarization_method1.pdf build/Integration_method1.pdf build/tau.pdf: plot.py ../matplotlibrc ../header-matplotlib.tex | build
+build/Current1.pdf: plot.py ../matplotlibrc ../header-matplotlib.tex | build
 	# so that matplotlib can find the tex header when running
 	# LaTeX in the tmp directory
 	# and set the matplotlibrc
 	TEXINPUTS=$$(pwd)/..: MATPLOTLIBRC=../matplotlibrc python plot.py
 
 # hier weitere Abhängigkeiten für build/v48.pdf deklarieren:
-build/v48.pdf: build/Current1.pdf build/Polarization_method1.pdf build/Integration_method1.pdf build/tau.pdf
+build/v48.pdf: build/Current1.pdf
 
 build/v48.pdf: FORCE | build
 	# to find header and bib files in the main directory
