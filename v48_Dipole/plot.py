@@ -6,26 +6,25 @@ from scipy import integrate
 
 kB = 8.617*10**(-5) # boltzmann constant
 
-T_raw,I_raw,F,P=np.genfromtxt("data/run_1.txt",skip_header=1,unpack=True) # run_1_corr corrects the .3 scale
+T_raw,I_raw,F,P=np.genfromtxt("data/run_1_corr.txt",skip_header=1,unpack=True) # run_1_corr corrects the .3 scale
 
 T=T_raw+273.15
-I=-I_raw*10*F
+I=-I_raw*10*F # I in pA and change sign for log later
 
 T0=T[0]
 Tend=T[-1]
 
 
-# fig, ax = plt.subplots(1, 1, layout="constrained")
-# ax.plot(np.arange(T.size),T,".",label="Data")
-# ax.set_ylabel(r"$T \mathbin{/} \unit{\celsius}$")
-# ax.set_xlabel(r"$t \matbin{/} \unit{\minute}$")
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(np.arange(T.size),T,".")
+ax.set_ylabel(r"$T \mathbin{/} \unit{\celsius}$")
+ax.set_xlabel(r"$t \mathbin{/} \unit{\minute}$")
 
-# ax.legend(loc="best")
 
-# fig.savefig("build/heating_rate_1.pdf")
+fig.savefig("build/heating_rate_1.pdf")
 
 # heating rate
-b_array = np.gradient(T, 1)
+b_array = np.gradient(T[20:], 1)
 b=np.mean(b_array)
 
 # mean uncertainty
@@ -39,15 +38,16 @@ I_background=np.concatenate([I[0:32],I[-11:]])
 T_background=np.concatenate([T[0:32],T[-11:]])
 
 # Fit background
-def f(x,a,y_0):
-    return (np.exp(a*x))+y_0 
+def f(x,a,y_0,b):
+    # return (np.exp(a*x))+y_0 
+    return b*np.exp(-a/x)+y_0
 
-params, covariance_matrix = curve_fit(f, T_background, I_background,p0=[0.0001,1])
+params, covariance_matrix = curve_fit(f, T_background, I_background,p0=[0.0001,1,1])
 
 uncertainties = np.sqrt(np.diag(covariance_matrix))
 
 print("Background fit params: ")
-for name, value, uncertainty in zip("ay", params, uncertainties):
+for name, value, uncertainty in zip("ayb", params, uncertainties):
     print(f"{name} = {value} ± {uncertainty}")
 
 x=np.linspace(T[0],T[-1],50)
@@ -89,9 +89,9 @@ print("Linear fit params: ")
 for name, value, uncertainty in zip("ma", params_lin, uncertainties_lin):
     print(f"{name} = {value} ± {uncertainty}")
 
-W=-params_lin[0]*kB
+W1=-params_lin[0]*kB
 
-print("Activation energy for linear fit: ",W) # with k_b in ev/K
+print("Activation energy for linear fit: ",W1) # with k_b in ev/K
 
 x_lin=np.linspace(T_lin[0],T_lin[-1],50)
 
@@ -115,9 +115,6 @@ I_int = I_sig[32:T_max_ind]
 T_int = T[32:T_max_ind]
 Int = Int_i[32:T_max_ind]
 
-print(Int)
-print(I_int)
-
 # Define x and y for fitting
 Y = np.log(Int / I_int)
 X = 1 / T_int
@@ -131,8 +128,8 @@ print("Integration fit params: ")
 for name, value, uncertainty in zip("ma", params_int, uncertainties_int):
     print(f"{name} = {value} ± {uncertainty}")
 
-W_int = params_int[0] *kB  
-print("Activation energy for integration fit: ",W_int) # with k_b in ev/K
+W1_int = params_int[0] *kB  
+print("Activation energy for integration fit: ",W1_int) # with k_b in ev/K
 
 x_int=np.linspace(T_int[0],T_int[-1],50)
 
@@ -147,8 +144,8 @@ fig.savefig("build/Integration_method1.pdf")
 
 # Get tau_zero
 
-tau_zero_lin_1 = kB * T_max**2 / (W * b) * np.exp(-W / (kB * T_max))
-tau_zero_int_1 = kB * T_max**2 / (W_int * b) * np.exp(-W_int / (kB * T_max))
+tau_zero_lin_1 = kB * T_max**2 / (W1 * b) * np.exp(-W1 / (kB * T_max))
+tau_zero_int_1 = kB * T_max**2 / (W1_int * b) * np.exp(-W1_int / (kB * T_max))
 
 print("tau_zero lin: ", tau_zero_lin_1, "tau_zero int: ", tau_zero_int_1)
 
@@ -157,22 +154,21 @@ print("tau_zero lin: ", tau_zero_lin_1, "tau_zero int: ", tau_zero_int_1)
 
 
 ######      Run 2           ######
+print("RUN2\n")
 
-
-T_raw,I_raw,F,P=np.genfromtxt("data/run_2_raw.txt",skip_header=1,unpack=True)
+T_raw,I_raw,F,P=np.genfromtxt("data/run_2_corr.txt",skip_header=1,unpack=True)
 
 T=T_raw+273.15
 I=-I_raw*10*F
 
 
-# fig, ax = plt.subplots(1, 1, layout="constrained")
-# ax.plot(np.arange(T.size),T,".",label="Data")
-# ax.set_ylabel(r"$T \mathbin{/} \unit{\celsius}$")
-# ax.set_xlabel(r"$t \matbin{/} \unit{\minute}$")
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(np.arange(T.size),T,".",label="Data")
+ax.set_ylabel(r"$T \mathbin{/} \unit{\celsius}$")
+ax.set_xlabel(r"$t \mathbin{/} \unit{\minute}$")
 
-# ax.legend(loc="best")
 
-# fig.savefig("build/heating_rate_2.pdf")
+fig.savefig("build/heating_rate_2.pdf")
 
 # heating rate
 b_array = np.gradient(T, 1)
@@ -189,15 +185,17 @@ I_background=np.concatenate([I[0:15],I[-16:]])
 T_background=np.concatenate([T[0:15],T[-16:]])
 
 # Fit background
-def f(x,a,y_0):
-    return (np.exp(a*x))+y_0 
+def f(x,a,b,y_0):
+    # return (np.exp(a*x))+y_0 
+    return b*np.exp(-a/x)+y_0
 
-params, covariance_matrix = curve_fit(f, T_background, I_background,p0=[0.0001,1])
+
+params, covariance_matrix = curve_fit(f, T_background, I_background,p0=[0.0001,1,-36])
 
 uncertainties = np.sqrt(np.diag(covariance_matrix))
 
 print("Background fit params: ")
-for name, value, uncertainty in zip("ay", params, uncertainties):
+for name, value, uncertainty in zip("aby", params, uncertainties):
     print(f"{name} = {value} ± {uncertainty}")
 
 x=np.linspace(T[0],T[-1],50)
@@ -239,9 +237,9 @@ print("Linear fit params: ")
 for name, value, uncertainty in zip("ma", params_lin, uncertainties_lin):
     print(f"{name} = {value} ± {uncertainty}")
 
-W=-params_lin[0]*kB
+W2=-params_lin[0]*kB
 
-print("Activation energy for linear fit: ",W) # with k_b in ev/K
+print("Activation energy for linear fit: ",W2) # with k_b in ev/K
 
 x_lin=np.linspace(T_lin[0],T_lin[-1],50)
 
@@ -265,8 +263,6 @@ I_int = I_sig[15:T_max_ind]
 T_int = T[15:T_max_ind]
 Int = Int_i[15:T_max_ind]
 
-print(Int)
-print(I_int)
 
 # Define x and y for fitting
 Y = np.log(Int / I_int)
@@ -281,8 +277,8 @@ print("Integration fit params: ")
 for name, value, uncertainty in zip("ma", params_int, uncertainties_int):
     print(f"{name} = {value} ± {uncertainty}")
 
-W_int = params_int[0] *kB  
-print("Activation energy for integration fit: ",W_int) # with k_b in ev/K
+W2_int = params_int[0] *kB  
+print("Activation energy for integration fit: ",W2_int) # with k_b in ev/K
 
 x_int=np.linspace(T_int[0],T_int[-1],50)
 
@@ -297,8 +293,8 @@ fig.savefig("build/Integration_method2.pdf")
 
 # Get tau_zero
 
-tau_zero_lin_2 = kB * T_max**2 / (W * b) * np.exp(-W / (kB * T_max))
-tau_zero_int_2 = kB * T_max**2 / (W_int * b) * np.exp(-W_int / (kB * T_max))
+tau_zero_lin_2 = kB * T_max**2 / (W2 * b) * np.exp(-W2 / (kB * T_max))
+tau_zero_int_2 = kB * T_max**2 / (W2_int * b) * np.exp(-W2_int / (kB * T_max))
 
 print("tau_zero lin: ", tau_zero_lin_2, "tau_zero int: ", tau_zero_int_2)
 
@@ -306,10 +302,10 @@ print("tau_zero lin: ", tau_zero_lin_2, "tau_zero int: ", tau_zero_int_2)
 # plot tau
 x_tau=np.linspace(T0,Tend,100)
 fig, ax = plt.subplots(1, 1, layout="constrained")
-ax.plot(x_tau,tau_zero_lin_1*np.exp(W/(kB*x_tau)),label=r"Polarization method $b_1$")
-ax.plot(x_tau,tau_zero_int_1*np.exp(W_int/(kB*x_tau)),label=r"Integration method $b_1$")
-ax.plot(x_tau,tau_zero_lin_2*np.exp(W/(kB*x_tau)),label=r"Polarization method $b_2$")
-ax.plot(x_tau,tau_zero_int_2*np.exp(W_int/(kB*x_tau)),label=r"Integration method $b_2$")
+ax.plot(x_tau,tau_zero_lin_1*np.exp(W1/(kB*x_tau)),label=r"Polarization method $b_1$")
+ax.plot(x_tau,tau_zero_int_1*np.exp(W1_int/(kB*x_tau)),label=r"Integration method $b_1$")
+ax.plot(x_tau,tau_zero_lin_2*np.exp(W2/(kB*x_tau)),label=r"Polarization method $b_2$")
+ax.plot(x_tau,tau_zero_int_2*np.exp(W2_int/(kB*x_tau)),label=r"Integration method $b_2$")
 
 ax.set_yscale("log")
 ax.legend(loc="best")
