@@ -2,163 +2,197 @@
 \label{sec:analysis}
 In this chapter values for the heating rate $b$, activation Energy $W$, characteristic depolarization time scale $\tau_0$ 
 and the temperature dependence of the depolarization time $\tau(T)$ will be calculated from two datasets with different heating rates
-according to the polarization and integration method derived in CHAPTER. %% Reference and check tau 0 name
-The data is shown in the APPENDIX. %% Reference
-\subsection{Heating rate $b=  \,\unit{\kelvin\per\minute}$}
+according to the polarization and integration method derived in \autoref{sec:theory}. 
+The data is shown in the appendix. 
+\subsection{Heating rate $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$}
 In this section, the first dataset with heating rate
 \begin{equation*}
-    b=
+    b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}
 \end{equation*}
 will be analyzed. 
+The temperature change over time is shown in \autoref{fig:temp_1}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/heating_rate_1.pdf}
+   \caption{Temperature $T$ over time $t$.}
+   \label{fig:temp_1}
+\end{figure}
 First the exponential background around the depolarization peak is fitted according to 
-\begin{equation*}
-    I_{\text{background}}=
-\end{equation*}
-in the Range $T\in    $ which yields
+\begin{equation}
+    I_{\text{background}}=a\exp(-b/T)+y_0
+    \label{eq:background}
+\end{equation}
+in the Range $T\in[203.15\,\unit{\kelvin},240.45\,\unit{\kelvin}]\,\bigcup\,[274.15\,\unit{\kelvin},288.35\,\unit{\kelvin}]$ which yields
 \begin{align*}
-    .
+    a&=(4025\pm3373)\,\unit{\pico\ampere}.\\
+    b&=(2123\pm214)\,\unit{\kelvin}\\
+    y_0&=-(0.44\pm0.04)\,\unit{\pico\ampere}
 \end{align*}
 for the fit parameters. 
-The measured depolarization current with background fit is depicted in \autoref{fig:data_1}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/Current1.pdf}
-%    \caption{Measured depolarization current and background fit at $b=  $.}
-%    \label{fig:data_1}
-%\end{figure}
+The measured depolarization current with background fit is depicted in \autoref{fig:Current_1}.
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Current1.pdf}
+   \caption{Measured depolarization current and background fit at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:Current_1}
+\end{figure}
 This background is then removed from the measured current to obtain the depolarization current. 
 
 \subsubsection{Polarization method}
-The filtered current is then used to determine the activation energy $W$ from EQUATION %% Reference
+The filtered current is then used to determine the activation energy $W$ according to the Polarizaiton method explained in \autoref{sec:theory}
 by fitting 
 \begin{equation*}
-.
+    \ln(I)=\frac{m}{T}+n
 \end{equation*}
-in the range $T\in   $,
+in the range $T\in[240.45\,\unit{\kelvin},T_{\text{max}}=259.25\,\unit{\kelvin}]$,
 where $T_{\text{max}}$ is the Temperature corresponding to the maximum depolarization current. 
 This fit is shown in \autoref{fig:Polarization_method1}
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/Polarization_method1.pdf}
-%    \caption{Filtered depolarization current and fit according to polarization method at $b=  $.}
-%    \label{fig:Polarization_method1}
-%\end{figure}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Polarization_method1.pdf}
+   \caption{Linearized depolarization current fitted according to the polarization method at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:Polarization_method1}
+\end{figure}
 This in turn yields
 \begin{align*}
-.
+    m &= -(8114\pm 595)\,\unit{\kelvin}\\
+    n &= 33\pm2
 \end{align*}
 therefore resulting in 
 \begin{equation*}
-W_{\text{Pol,}1}=
+W_{\text{Pol,}1}=-k_{\text{B}}m=(0.7\pm0.05)\,\unit{\electronvolt}
 \end{equation*}
-Using this result, the characteristic depolarization current $\tau_0$ can be calculated when using EQUATION %% Reference
+Using this result, the characteristic depolarization current $\tau_0$ can be calculated 
+as
+\begin{equation}
+    \tau_0=\frac{k_{\text{B}}T_{\text{max}}^2}{W_{\text{Pol,}1}*b_1}\exp(-\frac{W_{\text{Pol,}1}}{k_{\text{B}}T_{\text{max}}})
+    \label{eq:tau0}
+\end{equation}
 which results in 
 \begin{equation*}
-\tau_{0_{\text{Pol,}1}}=
+\tau_{0_{\text{Pol,}1}}=(1.3\pm3.0)\cdot10^{-13}\unit{\second}
 \end{equation*}
 
 \subsubsection{Integration method}
-Analogously the activation energy $W$ is obtained using the integration method shown in EQUATION, by determining the integral
+Analogously the activation energy $W$ is obtained using the integration method shown in \autoref{sec:theory}, by determining the integral
 \begin{equation*}
-\int{I(T)}^{}_{} =  %
+F=\int^{T_{\text{max}}}_{T}{I(T)}%
 \end{equation*}
 and then fitting 
 \begin{equation*}
-.
+\ln(\frac{F}{I})=\frac{m}{T}+n.
 \end{equation*}
-in the range $T\in$, which yields 
+in the range $T\in[240.45\,\unit{\kelvin},T_{\text{max}}=259.25\,\unit{\kelvin}]$, which yields 
 \begin{align*}
-.
+    m&=(17536\pm1040)\,\unit{\kelvin}\\
+    n&=-67\pm4\\
 \end{align*}
 and results in
 \begin{align*}
-    W_{\text{Int,}1}=  \\
-    \tau_{0_{\text{Int,}1}}= 
+    W_{\text{Int,}1}&=(1.51\pm0.09)\,\unit{\electronvolt}  \\
+    \tau_{0_{\text{Int,}1}}&=(1\pm4)\cdot10^{-29}\,\unit{\second} 
 \end{align*}
-where $tau_0$ was once again determined using EQUATION. %% Reference
+where $tau_0$ was once again determined using \eqref{eq:tau0}. 
 The corresponding fit is visualized in \autoref{fig:Integration_method1}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/Integration_method1.pdf}
-%    \caption{Filtered depolarization current and fit according to integration method at $b=  $.}
-%    \label{fig:Integration_method1}
-%\end{figure}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Integration_method1.pdf}
+   \caption{Linearized depolarization current and fit according to integration method at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:Integration_method1}
+\end{figure}
 
 
 
 
 
-\subsection{Heating rate $b=  \,\unit{\kelvin\per\minute}$}
+\subsection{Heating rate $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$}
 Now the dataset with heating rate
 \begin{equation*}
-    b=
+    b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}
 \end{equation*}
 will be analyzed. 
-Again, the exponential background around the depolarization peak is fitted and removed first according to 
-\begin{equation*}
-    I_{\text{background}}=
-\end{equation*}
-in the Range $T\in    $ which yields
+The temperature change over time is shown in \autoref{fig:temp_2}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/heating_rate_2.pdf}
+   \caption{Temperature $T$ over time $t$.}
+   \label{fig:temp_2}
+\end{figure}
+Again, the exponential background around the depolarization peak is fitted and removed first according to \eqref{eq:background}
+in the Range $T\in[214.25\,\unit{\kelvin},242.55\,\unit{\kelvin}]\,\bigcup\,[271.15\,\unit{\kelvin},287.35\,\unit{\kelvin}]$ which yields
 \begin{align*}
-.
+    a&=-(0.0002\pm0.0003)\,\unit{\pico\ampere}\\
+    b&=-(-2201\pm338)\,\unit{\kelvin}\\
+    y_0&=(1.7\pm0.3)\,\unit{\pico\ampere}
 \end{align*}
 for the fit parameters. 
 The measured depolarization current with background fit is depicted in \autoref{fig:data_2}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/Current2.pdf}
-%    \caption{Measured depolarization current and background fit at $b=  $.}
-%    \label{fig:data_2}
-%\end{figure}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Current2.pdf}
+   \caption{Measured depolarization current $I$ and background fit at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:data_2}
+\end{figure}
 
 \subsubsection{Polarization method}
-Analogously to the first dataset the activation energy $W$ is determined by fitting in the range $T\in   $, 
+Analogously to the first dataset the activation energy $W$ is determined by fitting in the range $T\in[242.55\,\unit{\kelvin},T_{\text{max}}=258.45\,\unit{\kelvin}]$, 
 with parameters 
 \begin{align*}
-.
+    m&=-(6669\pm357)\,\unit{\kelvin}\\
+    n&=27\pm1
 \end{align*}
 which resuls in 
 \begin{align*}
-W_{\text{Pol,}2}= \\
-\tau_{0_{\text{Pol,}2}}=
+W_{\text{Pol,}2}&=(0.575\pm0.03)\,\unit{\electronvolt} \\
+\tau_{0_{\text{Pol,}2}}&=(4\pm6)\cdot10{-11}\,\unit{\second}
 \end{align*}
 The fit is shown in \autoref{fig:Polarization_method2}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/Polarization_method2.pdf}
-%    \caption{Filtered depolarization current and fit according to polarization method at $b=  $.}
-%    \label{fig:Polarization_method2}
-%\end{figure}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Polarization_method2.pdf}
+   \caption{Filtered depolarization current and fit according to polarization method at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:Polarization_method2}
+\end{figure}
 
 \subsubsection{Integration method}
-Analogously the activation energy $W$ is obtained by integration and the following fit in the range $T\in$, which yields
+Analogously the activation energy $W$ is obtained by integration and the following fit in the range $T\in[242.55\,\unit{\kelvin},T_{\text{max}}=258.45\,\unit{\kelvin}]$, which yields
 \begin{align*}
-.
+    m&=(19458\pm1855)\,\unit{\kelvin}.\\
+    n&=-76\pm7
 \end{align*}
 in the range $T\in$, which results in 
 \begin{align*}
-    W_{\text{Int,}2}=  \\
-    \tau_{0_{\text{Int,}2}}= 
+    W_{\text{Int,}2}&=(1.68\pm0.16)\,\unit{\electronvolt}  \\
+    \tau_{0_{\text{Int,}2}}&=(0.5\pm3.5)\cdot10^{-35}\,\unit{\second}
 \end{align*}
-where $tau_0$ was once again determined using EQUATION. %% Reference
+where $tau_0$ was once again determined using \eqref{eq:tau0}. 
 The corresponding fit is visualized in \autoref{fig:Integration_method2}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/Integration_method2.pdf}
-%    \caption{Filtered depolarization current and fit according to integration method at $b=  $.}
-%    \label{fig:Integration_method2}
-%\end{figure}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Integration_method2.pdf}
+   \caption{Filtered depolarization current and fit according to integration method at $b=  $.}
+   \label{fig:Integration_method2}
+\end{figure}
 
 \subsection{Depolarization time}
-From these results, summarized in TABLE %% Reference
+From these results, which read
+\begin{align*}
+    W_{\text{Pol,}1}&=-k_{\text{B}}m=(0.7\pm0.05)\,\unit{\electronvolt}\\
+    \tau_{0_{\text{Pol,}1}}&=(1.3\pm3.0)\cdot10^{-13}\unit{\second}\\
+    W_{\text{Int,}1}&=(1.51\pm0.09)\,\unit{\electronvolt}  \\
+    \tau_{0_{\text{Int,}1}}&=(1\pm4)\cdot10^{-29}\,\unit{\second}\\ 
+    W_{\text{Pol,}2}&=(0.575\pm0.03)\,\unit{\electronvolt} \\
+    \tau_{0_{\text{Pol,}2}}&=(4\pm6)\cdot10{-11}\,\unit{\second}\\
+    W_{\text{Int,}2}&=(1.68\pm0.16)\,\unit{\electronvolt}  \\
+    \tau_{0_{\text{Int,}2}}&=(0.5\pm3.5)\cdot10^{-35}
+\end{align*}
 the depolarization time $\tau(T)$ is plotted for all four cases and shown in \autoref{fig:Tau}. 
-The corresponding fit is visualized in \autoref{fig:Integration_method1}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width =0.48\textwidth]{build/tau.pdf}
-%    \caption{Resulting depolarization times $\tau(T)$.}
-%    \label{fig:Tau}
-%\end{figure}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/tau.pdf}
+   \caption{Resulting depolarization times $\tau(T)$.}
+   \label{fig:Tau}
+\end{figure}
 
 
 % templates
