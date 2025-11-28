@@ -1,2 +1,61 @@
 \section{Discussion}
 \label{sec:discussion}
+
+The experiment successfully demonstrates the thermally stimulated relaxation of
+defect-dipoles in a doped ionic crystal. For both heating rates, a well-defined
+depolarisation peak is observed (see \autoref{fig:Current_1} and \autoref{fig:data_2}),
+indicating that the preparation procedure and the alignment of dipoles were largely
+successful. Nevertheless, the quantitative results show several systematic deviations that
+must be addressed.
+
+A first point of discussion concerns the extracted activation energies. For both datasets,
+Method~I (low-temperature approximation) yields significantly smaller activation energies
+than Method~II (integral method). For the first heating rate, the values differ by more
+than a factor of two, and similar discrepancies appear for the second dataset. Such a
+mismatch suggests that either the assumptions of Method~I are not fully satisfied in the
+chosen fitting region, or that Method~II is strongly affected by noise.
+
+The low-temperature approximation requires a temperature interval in which the current follows a simple exponential increase with temperature. However, the semi-logarithmic fits in
+\autoref{fig:Polarization_method1} and \autoref{fig:Polarization_method2} show noticeable curvature,
+indicating that the exponential regime is rather narrow. This makes the fitted slopes
+sensitive to small variations in the background-corrected current.
+
+Method~II, on the other hand, amplifies fluctuations because the integral
+\[
+    S(T) = \int_T^{T_{\text{max}}} I(T')\,\text{d}T'
+\]
+becomes small near $T_{\text{max}}$. As a result, the ratio $S(T)/I(T)$ is very
+susceptible to noise in both the integral and the instantaneous current. This is clearly
+visible in the scattered data points in \autoref{fig:Integration_method1} and
+\autoref{fig:Integration_method2}. Consequently, Method~II produces activation energies and
+especially relaxation times $\tau_0$ spanning unphysical ranges, including values as small
+as $10^{-35}\,\text{s}$.
+
+A second systematic uncertainty arises from the background subtraction. Although the
+exponential fits in \autoref{fig:Current_1} and \autoref{fig:data_2} describe the raw data reasonably
+well, small deviations from the true background propagate directly into both evaluation
+methods. Because the methods rely on logarithmic transformations, even minor
+overestimation or underestimation of the background can cause large shifts in the fitted
+slopes.
+
+The characteristic relaxation times $\tau_0$, extracted using the extremum condition
+\eqref{eq:tau0}, also show significant spread. While Method~I yields values that are at
+least of the correct order of magnitude ($10^{-13}$-$10^{-11}\,\text{s}$), Method~II
+produces values that are many orders of magnitude too small. This strong sensitivity is
+expected, as $\tau_0$ depends exponentially on $W$ and inversely on the heating rate, so
+even a small deviation in $W$ leads to large multiplicative errors in $\tau_0$.
+
+Finally, a comparison of the two heating rates reveals limited reproducibility. Both the
+shape of the depolarisation peak and the extracted parameters differ for the two datasets.
+Possible reasons include slight variations in thermal contact between the sample and
+coldfinger, differences in the effective polarisation time, or temperature gradients in the
+vacuum chamber, consistent with the experimental layout shown in the setup
+(see page~4 of the report). 
+
+In summary, the experiment qualitatively confirms the expected behaviour of thermally
+stimulated depolarisation, but the quantitative agreement between evaluation methods is
+limited. The main sources of uncertainty are noise amplification in the integral method,
+the narrowness of the low-temperature exponential regime, and imperfections in
+background subtraction. Improved temperature control, higher-resolution current
+measurements, and more carefully selected fitting intervals would likely reduce these
+systematic deviations in future measurements.

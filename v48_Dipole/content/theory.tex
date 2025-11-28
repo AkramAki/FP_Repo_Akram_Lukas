@@ -1,2 +1,116 @@
 \section{Theory}
 \label{sec:theory}
+
+In this experiment the temperature-dependent reorientation of electric dipoles in 
+a doped ionic crystal is examined.  
+When an external electric field is applied, defect-dipoles align; 
+after switching the field off and heating the sample at a controlled rate, 
+these dipoles relax back towards a random distribution.  
+This relaxation generates a measurable depolarisation current, from which 
+the activation energy $W$ and the characteristic relaxation time $\tau_0$ can be extracted.
+
+% -------------------------------------------------------------
+\subsection{Defects and Dipole Formation in Ionic Crystals}
+Ionic crystals consist of two interpenetrating sublattices of positively and negatively 
+charged ions arranged in a regular three-dimensional structure.  
+In a real crystal, deviations from perfect periodicity occur naturally: 
+vacancies, interstitials and substitutional impurities.
+When an ion of different charge replaces a host ion, charge neutrality requires the 
+formation of compensating point defects, often in the form of nearby vacancies.  
+A dopant-vacancy pair behaves as an electric dipole because the two charges occupy 
+different lattice sites separated by a fixed distance.
+These dipoles are not static, both the dopant and the relevant vacancy can hop 
+between local positions if sufficient thermal energy is available.  
+This thermally activated hopping underlies the temperature dependence of the dipole dynamics.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width =0.5\textwidth]{content/images/different_vacancys.png}
+    \caption{Schematic illustration of a dopant ion and an associated vacancy forming a 
+    microscopic electric dipole in an ionic crystal \cite{defect_dipole_fig}.}
+\end{figure}
+\newpage
+
+% -------------------------------------------------------------
+\subsection{Alignment of Dipoles in an External Field}
+At sufficiently high temperatures and without an external field, the dipoles are randomly oriented.  
+When an electric field $E$ is applied, transitions aligning the dipole with the field 
+become energetically favorable, so the system develops a nonzero macroscopic polarisation $P$.
+Because each reorientation requires overcoming the local potential barrier of the lattice, 
+the rate of reorientation is thermally activated.  
+This is described by the relaxation time
+$$
+    \tau(T) = \tau_0 \exp\!\left( \frac{W}{k_{\mathrm{B}} T} \right),
+$$
+where $W$ is the activation barrier and $\tau_0$ is the high-temperature limit of the relaxation time.
+
+After the dipoles have been aligned at a temperature where $\tau(T)$ is short compared to the 
+field application time, the sample is cooled so that the dipoles become effectively frozen in place.
+
+% -------------------------------------------------------------
+\subsection{Thermally Stimulated Depolarisation}
+Once the frozen‐in dipoles are created, the external field is removed.  
+Heating the sample again shortens the relaxation time 
+and the dipoles begin to return to an equilibrium distribution of random orientations.  
+This collective reorientation produces a transient depolarisation current.
+
+Let $N(T)$ be the number of dipoles that still remain aligned at temperature $T$.  
+Their decay follows
+$$
+    \frac{\mathrm{d} N}{\mathrm{d} t}
+    = -\frac{N(T)}{\tau(T)}.
+$$
+Because the polarisation is proportional to the number of aligned dipoles,  
+the depolarisation current is
+$$
+    I(T) = -\frac{\mathrm{d}P}{\mathrm{d}t}
+         \propto \frac{N(T)}{\tau(T)}.
+$$
+
+In the experiment the sample is heated at a constant rate
+$$
+    b = \frac{\mathrm{d}T}{\mathrm{d}t},
+$$
+which allows one to express all temperature derivatives in terms of $T$ alone.
+
+% -------------------------------------------------------------
+\subsection{Determining the Activation Energy $W$}
+Two standard approaches are applied to determine the activation energy.
+
+\subsubsection{Method I: Low-Temperature Approximation}
+At temperatures well below the current maximum, the integral contributions in the 
+exact expression for $I(T)$ become negligible.  
+The current reduces to an exponential dependence,
+$$
+    I(T) \propto \exp\!\left( -\frac{W}{k_{\mathrm{B}} T} \right),
+$$
+so that a plot of
+$$
+    \ln I(T) \quad \text{vs.} \quad \frac{1}{T}
+$$
+yields a straight line with slope $-W/k_{\mathrm{B}}$.
+
+\subsubsection{Method II: Integral Method via Polarisation}
+A second method avoids approximations by expressing the instantaneous relaxation time as
+$$
+    \tau(T) = \frac{1}{I(T)} \int_T^{T_\text{end}} I(T')\, \mathrm{d}T',
+$$
+using the constant heating rate $b$.  
+Taking the logarithm gives
+$$
+    \ln \tau(T) = \ln \tau_0 + \frac{W}{k_{\mathrm{B}} T},
+$$
+so that plotting $\ln \tau$ against $1/T$ again yields a straight line with slope $W/k_{\mathrm{B}}$.
+
+% -------------------------------------------------------------
+\subsection{Characteristic Relaxation Time \texorpdfstring{\(\tau_0\)}{tau0}}
+The temperature $T_\text{max}$ at which the depolarisation current reaches its maximum 
+contains direct information about $\tau_0$.  
+Using the condition for the extremum of the exact current expression one obtains a relation of the form
+$$
+    \tau_0 = f(T_\text{max}, W, b),
+$$
+where $b$ is the heating rate.  
+After $W$ is known from one of the previous methods, this expression yields the 
+characteristic microscopic hopping time of the dipoles.
+\newpage
