@@ -1,2 +1,61 @@
 \section{Theory}
 \label{sec:theory}
+In this chapter the theoretical background that is needed to describe the scanning tunneling microscope (stm) is laid down. 
+\subsection{Tunneling}
+The quantum mechanical phenomenon of tunneling arises, because the wave function $\psi$ that is obtained by solving the 
+Schrödinger equation for a given potential $V(x)$ has nonzero values at positions $x$ which, classically, would be considered a 
+potential barrier. 
+Therefore particles described by this wavefunction also have a nonzero probability to be measured in or behind a potential barrier. 
+If those particles are charged one can measure the tunneling as a current. 
+This tunneling current is approximated as
+\begin{equation*}
+    . %% Gleichung einfügen
+\end{equation*}
+\subsection{Piezo crystals}
+Piezo crystals are defined by their property to change their polarization when mechanical stress is applied and inversely 
+expand or shrink when voltage is applied, which is called the inverse piezoelectric effect. 
+The relation between expansion and voltage is ideally linear. 
+Piezo crystals are built by heating them up, 
+then polarizing them and cooling down again in order to ensure a long living polarization. 
+
+\subsection{Layout of a scanning tunneling microscope}
+A scanning tunneling microscope consists of a thin and conducting tip, which receives tunneling current. 
+In order to obtain a one atom resolution, the end of the tip needs to be only one atom wide. 
+The potential barrier is realized by the medium in between the tip and sample. 
+Moreover the microscope is made of piezo tubes which move the sample via the inverse piezoelectric effect, which allows 
+piezo crystals to expand linear to a voltage that is applied. 
+By using multiple tubes and different voltages which drive the tubes in different directions a controlled movement in x-,y- and z- 
+direction is possible. 
+The sample can then be moved in z-direction until a tunneling current is measurable and scanned along x- and y-direction to analyze 
+the lattice structure of the sample. 
+
+\subsection{Errors and corrections}
+Multiple errors can occur while scanning the sample. 
+Some of them arise from inaccuracies of the piezos, such as nonlinearity, hysteresis, creep, cross coupling and aging. 
+Nonlinearity between voltage and expansion of the piezos causes uncertainties in sample position, 
+while hysteresis causes a difference in results when changing the propagation direction of the scan. 
+Creep describes a slow drift of piezo expansion after a voltage spike which also disturbs the movement accuracy. 
+Cross coupling means that x-,y- and z-movement of the piezos are not completely decoupled 
+and therefore the movement along the sample might not be straight but distorted. 
+Aging is important when piezos have not been used for longer periods of time, 
+as the polarization is lost and the response to voltage inputs is smaller. 
+The other way around the response is larger when they have been used frequently. 
+On top of that the measurements might be disturbed by vibrations and thermal expansion 
+as the stm is sensitive to small changes in distance. 
+Most of these errors have to be corrected mathematically, 
+while hysteresis can be compensated by seperating measurements in different directions. 
+
+\subsection{PID-controlling}
+A PID-controller is used to control an oscillating value $V$ to a certain setpoint $S$ by regulating an input $I$.
+To realize this three terms are used which which contribute to the input as following:
+\begin{equation*}
+    I(V)=P\cdot(S-V)+I\cdot\int{(S-V)}\;\mathrm{d}t+D\cdot\frac{\mathrm{d}(S-V)}{\mathrm{d}t}\,,
+\end{equation*}
+where $S-V$ is the error of the current value compared to the setpoint. 
+
+\subsection{Highly oriented pyrolytic graphite}
+Highly oriented pyrolytic graphite (HOPG) is a extremely periodic form of graphite, where misorientation is small. 
+It has a hexagonal crystal structure which is layered in 2d-layers that are bound by van-der-Waals interaction. 
+Since two layers are always misplaced compared to the neighbouring layers, 
+there are two nonequivalent positions in the hexagonal structure:
+Some Atoms have an atom right below it, while others do not. 
