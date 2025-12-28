@@ -1,2 +1,75 @@
 \section{Experimental Setup and Procedure}
 \label{sec:procedure}
+In the following, the experimental procedure for operating the STM 
+and acquiring data on HOPG and gold is described. 
+The procedure follows the instructions provided for experiment V42.
+
+
+\subsection{Preparation and cleaning}
+Before starting the experiment, all participants wore protective gloves to avoid contamination. 
+All tools used during the experiment, including the STM setup, probe holder, and the wire used for 
+tip fabrication, were thoroughly cleaned using ethanol and lint-free wipes that do not scratch surfaces 
+or leave dust or cloth residues. This step is crucial, as even small contaminations can significantly
+affect the tunneling current and image quality.
+
+
+\subsection{Tip fabrication}
+The STM tip was fabricated from a cleaned metal wire of "unknown" material. A short section of wire was cut 
+and held firmly at one end using tweezers. A wire cutter was then applied at an angle of approximately $\qty{45}{\deg}$ 
+at the position where the tip was to be formed. The cutter was pressed lightly into the wire to create a small 
+notch and then pulled to tear off a piece of the wire. This method aims to produce a very sharp tip, 
+ideally terminating in a single atom.
+
+
+\subsection{Sample preparation and mounting}
+The HOPG sample was initially used as provided and assumed to be pre-prepared. In later stages of the 
+experiment, the HOPG surface was cleaved using tape to test whether surface contamination rather than tip quality 
+limited the measurements. The gold sample was used as provided.
+
+The STM tip was mounted first and positioned below a small gold lever. After mounting, the probe assembly was inserted 
+into the STM. Care was taken not to exert mechanical force on the gold lever during insertion, as this 
+could damage the setup.
+
+
+\subsection{Approach procedure}
+The sample was moved towards the tip using the manual coarse approach controlled by the STM software. During 
+this process, the reflection of the tip on the sample surface was observed. When the tip and its reflection 
+appeared very close, the manual approach was stopped to prevent mechanical contact.
+
+Subsequently, the automatic approach function of the STM control software was activated. The software then adjusted 
+the tip--sample distance until a tunneling current was detected. A successful approach was indicated by a stable signal 
+and a green status indicator in the software interface.
+
+
+\subsection{Measurement procedure on HOPG}
+For HOPG measurements, the initial scan size was set to $200\,\mathrm{nm}$ (or full screen). The tunneling current was 
+set to $1\,\mathrm{A}$ and the scan speed to $0.2\,\mathrm{lines/s}$. Under optimal conditions, a flat scan line should 
+be visible. A straight but tilted line indicates that the sample is slightly angled, while a fuzzy or unstable line 
+suggests insufficient tip quality.
+
+If a stable and sufficiently flat scan was obtained, the scan size was gradually reduced from $200\,\mathrm{nm}$ to 
+$40$--$30\,\mathrm{nm}$ and finally to $2$--$2.5\,\mathrm{nm}$. At small scan sizes, the scan speed was reduced to 
+$0.06\,\mathrm{lines/s}$ to improve image stability. At the smallest scan sizes, the atomic lattice structure of HOPG
+should become visible.
+
+In practice, obtaining a sufficiently flat and stable scan proved difficult. Although a mostly flat scan was 
+achieved once, the STM tip was later damaged, and repeated attempts to fabricate a suitable tip were largely unsuccessful.
+
+
+\subsection{Measurement procedure on gold}
+Gold measurements were intended to be performed using a tip that had already produced atomic resolution images on 
+HOPG. The approach procedure was identical to that used for HOPG. For gold, the tunneling current was set to 
+$1.5\,\mathrm{A}$, the scan size to full screen, and the scan speed to $0.3\,\mathrm{lines/s}$.
+
+During the experiment, the STM tip was damaged by moving too far into the sample, making further measurements with that tip impossible.
+
+
+\subsection{Data acquisition and storage}
+After each scan, the STM control software automatically saved the acquired data. The data were stored in the native 
+\texttt{.nid} file format of the software. After the experiment, suitable measurement files were identified and 
+extracted for further analysis.
+
+Due to the limited amount of usable data obtained during the experiment, additional STM data sets in \texttt{.nid} 
+format were provided by the experiment supervisor from other student groups. These data were used to complete the 
+analysis tasks. The reason behind the limited amount of data stems from the fact that most of the produced tips where 
+not sufficient enough to create useable data and thus our experimental time was used up on learning how to create tips.
