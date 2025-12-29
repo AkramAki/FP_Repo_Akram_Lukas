@@ -1,4 +1,5 @@
-\section{Theory}
+\section{Theory} %% Maybe FT explanation or mention that gold atoms cannot be resolved because they are delocolized
+%% Citations
 \label{sec:theory}
 In this chapter the theoretical background that is needed to describe the scanning tunneling microscope (stm) is laid down. 
 \subsection{Tunneling}
@@ -9,14 +10,16 @@ Therefore particles described by this wavefunction also have a nonzero probabili
 If those particles are charged one can measure the tunneling as a current. 
 This tunneling current is approximated as
 \begin{equation*}
-    . %% Gleichung einfügen
+    I\propto\frac{U}{d}\exp(-Kd\sqrt{\bar{\phi}})\,,
 \end{equation*}
+where $U$ is the applied voltage between tip and sample, $d$ their distance, $K\approx1.025\cdot10^{10}\,\unit{\meter^{-1}\electronvolt^{-\frac{1}{2}}}$
+and $\bar{\phi}$ the averaged work function. \cite{Lüth}
 \subsection{Piezo crystals}
-Piezo crystals are defined by their property to change their polarization when mechanical stress is applied and inversely 
+Piezo crystals are defined by their property to change their polarization when mechanical pressure is applied and inversely 
 expand or shrink when voltage is applied, which is called the inverse piezoelectric effect. 
 The relation between expansion and voltage is ideally linear. 
 Piezo crystals are built by heating them up, 
-then polarizing them and cooling down again in order to ensure a long living polarization. 
+then polarizing them and cooling down again in order to ensure a long living polarization. \cite{Howland}
 
 \subsection{Layout of a scanning tunneling microscope}
 A scanning tunneling microscope consists of a thin and conducting tip, which receives tunneling current. 
@@ -24,10 +27,12 @@ In order to obtain a one atom resolution, the end of the tip needs to be only on
 The potential barrier is realized by the medium in between the tip and sample. 
 Moreover the microscope is made of piezo tubes which move the sample via the inverse piezoelectric effect, which allows 
 piezo crystals to expand linear to a voltage that is applied. 
-By using multiple tubes and different voltages which drive the tubes in different directions a controlled movement in x-,y- and z- 
+By using multiple tubes and different voltages which drive the tubes in different directions a controlled movement in $x$-,$y$- and $z$- 
 direction is possible. 
-The sample can then be moved in z-direction until a tunneling current is measurable and scanned along x- and y-direction to analyze 
+The sample can then be moved in $z$-direction until a tunneling current is measurable and scanned along x- and y-direction to analyze 
 the lattice structure of the sample. 
+There are two methods of measuring when using a scanning tunelling microscope: Either one tries to keep the current constant, 
+while varying the distance $d$ or the other way around. \cite{Lüth}
 
 \subsection{Errors and corrections}
 Multiple errors can occur while scanning the sample. 
@@ -39,9 +44,9 @@ Cross coupling means that x-,y- and z-movement of the piezos are not completely 
 and therefore the movement along the sample might not be straight but distorted. 
 Aging is important when piezos have not been used for longer periods of time, 
 as the polarization is lost and the response to voltage inputs is smaller. 
-The other way around the response is larger when they have been used frequently. 
+The other way around the response is larger when they have been used frequently. \cite{Howland}
 On top of that the measurements might be disturbed by vibrations and thermal expansion 
-as the stm is sensitive to small changes in distance. 
+as the stm is sensitive to small changes in distance \cite{Lüth}. 
 Most of these errors have to be corrected mathematically, 
 while hysteresis can be compensated by seperating measurements in different directions. 
 
@@ -51,11 +56,11 @@ To realize this three terms are used which which contribute to the input as foll
 \begin{equation*}
     I(V)=P\cdot(S-V)+I\cdot\int{(S-V)}\;\mathrm{d}t+D\cdot\frac{\mathrm{d}(S-V)}{\mathrm{d}t}\,,
 \end{equation*}
-where $S-V$ is the error of the current value compared to the setpoint. 
+where $S-V$ is the error of the current value compared to the setpoint. \cite{Heater}
 
 \subsection{Highly oriented pyrolytic graphite}
 Highly oriented pyrolytic graphite (HOPG) is a extremely periodic form of graphite, where misorientation is small. 
-It has a hexagonal crystal structure which is layered in 2d-layers that are bound by van-der-Waals interaction. 
+It has a hexagonal crystal structure which is layered in 2d-plains that are bound by van-der-Waals interaction. 
 Since two layers are always misplaced compared to the neighbouring layers, 
 there are two nonequivalent positions in the hexagonal structure:
 Some Atoms have an atom right below it, while others do not. 
