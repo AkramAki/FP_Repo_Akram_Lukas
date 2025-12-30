@@ -7,7 +7,7 @@ where height information is displayed along the $x$-$y$-plane.
 \begin{figure}
    \centering
    \includegraphics[width =0.7\textwidth]{analysis/gold/profiles_forward.png}
-   \caption{Forward measurement of the gold sample.}
+   \caption{Forward measurement of the gold sample with profile slices.}
    \label{fig:gold_forward}
 \end{figure}
 The height of the tip was changed according to the method of constant current, see \autoref{sec:theory}. 
@@ -15,11 +15,23 @@ This dataset was available from previous measurements.
 It is not possible to resolve single atoms in a gold sample, as gold is a conductor, therefore the electrons which create the tip current are strongly delocalized 
 and do not depict a crystal structure. 
 In \autoref{fig:gold_forward} multiple lines are marked, which indicate profiles that where taken to obtain the height of jumps in the data. 
-The backwards measurement is displayed in \autoref{fig:gold_backwards}, but has to be corrected, as the white stripes on the right side of 
-the picture indicate that the tip was dislocated from the sample. 
-Therefore the faulty part auf the data was cut out and the colour scheme was rescaled for the remainder of the measurement. 
+The backwards measurement is displayed in \autoref{fig:gold_backwards}, but should to be adjusted, as the white stripes on the right side of 
+the picture indicate that the tip was dislocated from the sample and therefore skew the color scheme. 
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{analysis/gold/backwards_scan_raw.png}
+   \caption{Raw backwards measurement of the gold sample.}
+   \label{fig:gold_backwards}
+\end{figure}
+The color scale is manually adjusted so that the higher end corresponds to the value of the forward scan. 
 This corrected picture in \autoref{fig:gold_backwards_corr} is used to read out more profiles with jumps and obtain their height analogously 
 to the forward scan. 
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{analysis/gold/profiles_backwards_corr.png}
+   \caption{Corrected backwards measurement of the gold sample with profile slices.}
+   \label{fig:gold_backwards_corr}
+\end{figure}
 Each forward profile is pictured in \autoref{fig:gold_profiles_forwards} together with the readout of jump height provided from the software, 
 where vertical lines mark the beginning and end of each jump. 
 Analogously backwards profiles are pictured in \autoref{fig:gold_profiles_backwards}.
@@ -42,23 +54,26 @@ Analogously backwards profiles are pictured in \autoref{fig:gold_profiles_backwa
 \end{figure}
 \begin{figure}
     \centering
-    \begin{subfigure}{0.9\textwidth}
+    \begin{subfigure}{0.8\textwidth}
         \centering
-        \includegraphics[width =1\textwidth]{analysis/gold/forward_line_1.png}
+        \includegraphics[width =1\textwidth]{analysis/gold/backwards_line_1.png}
     \end{subfigure}
-    \begin{subfigure}{0.9\textwidth}
+    \begin{subfigure}{0.8\textwidth}
         \centering
-        \includegraphics[width =1\textwidth]{analysis/gold/forward_line_2.png}
+        \includegraphics[width =1\textwidth]{analysis/gold/backwards_line_2.png}
     \end{subfigure}
-    \begin{subfigure}{0.9\textwidth}
+    \begin{subfigure}{0.8\textwidth}
         \centering
-        \includegraphics[width =1\textwidth]{analysis/gold/forward_line_3.png}
+        \includegraphics[width =1\textwidth]{analysis/gold/backwards_line_3.png}
     \end{subfigure}
     \caption{Profiles obtained from backwards scan slices with jump height readout.}
     \label{fig:gold_profiles_backwards}
 \end{figure}
 The resulting heights are listed in \autoref{tab:heights}. 
-
+The average height is \begin{equation*}
+    \bar{d} = \SI{6.79 \pm 2.52}{\nano\meter}\,,
+\end{equation*}
+where the uncertainty is the standard deviation of the measured heights. 
 \begin{table}
    \centering
    \caption{Jump heights in gold scans.}
@@ -69,14 +84,14 @@ The resulting heights are listed in \autoref{tab:heights}.
        row{1} = {guard, mode = math}
    }
     \toprule 
-        \text{Profile} & d \mathbin{/} \unit{\nano\meter} \\
+        \text{Profile} & \lvert d \rvert \mathbin{/} \unit{\nano\meter} \\
     \midrule
-        \text{Forwards scan 1} & 1 \\
-        \text{Forwards scan 2} & 1 \\
-        \text{Forwards scan 3} & 1 \\
-        \text{Backwards scan 1} & 1 \\
-        \text{Backwards scan 2} & 1 \\
-        \text{Backwards scan 3} & 1 \\
+        \text{Forwards scan 1} & 4.14 \\
+        \text{Forwards scan 2} & 4.86 \\
+        \text{Forwards scan 3} & 8.25 \\
+        \text{Backwards scan 1} & 5.21 \\
+        \text{Backwards scan 2} & 6.75 \\
+        \text{Backwards scan 3} & 11.55 \\
     \bottomrule
    \end{tblr}
 \end{table}
