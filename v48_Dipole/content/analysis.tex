@@ -37,6 +37,15 @@ The measured depolarization current with background fit is depicted in \autoref{
    \label{fig:Current_1}
 \end{figure}
 This background is then removed from the measured current to obtain the depolarization current. 
+The corresponding values are listed in \autoref{tab:Current_1_no_background} and the resulting plot is shown in \autoref{fig:Current_1_no_background}. 
+
+%%% CORR: table of those values
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Current1_no background.pdf}
+   \caption{Background corrected depolarization current at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:Current_1_no_background}
+\end{figure}
 
 \subsubsection{Polarization method}
 The filtered current is then used to determine the activation energy $W$ according to the Polarizaiton method explained in \autoref{sec:theory}
@@ -46,17 +55,20 @@ by fitting
 \end{equation*}
 in the range $T\in[240.45\,\unit{\kelvin},T_{\text{max}}=259.25\,\unit{\kelvin}]$,
 where $T_{\text{max}}$ is the Temperature corresponding to the maximum depolarization current. 
-This fit is shown in \autoref{fig:Polarization_method1}
+This fit is shown in \autoref{fig:Polarization_method1}.
 \begin{figure}
    \centering
    \includegraphics[width =0.7\textwidth]{build/Polarization_method1.pdf}
    \caption{Linearized depolarization current fitted according to the polarization method at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.}
    \label{fig:Polarization_method1}
 \end{figure}
+
+%%% CORR: corresponding values
+
 This in turn yields
 \begin{align*}
     m &= -(8114\pm 595)\,\unit{\kelvin}\\
-    n &= 33\pm2
+    n &= 33\pm2 %%% CORR: Unit
 \end{align*}
 therefore resulting in 
 \begin{equation*}
@@ -101,7 +113,7 @@ The corresponding fit is visualized in \autoref{fig:Integration_method1}.
    \label{fig:Integration_method1}
 \end{figure}
 
-
+%%% CORR: Table with all values
 
 
 

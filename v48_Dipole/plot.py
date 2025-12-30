@@ -79,6 +79,22 @@ fig.savefig("build/Current1.pdf")
 # Clear relaxation current of background
 I_sig=I-uf(T,*params)
 
+# Print background corrected current
+print("Background corrected current: ")
+for t,i in zip(T,I_sig):
+    print(f" {t} \t {i} \n")
+
+
+# Plot current without background
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(T,noms(I_sig),".",label="Background corrected data")
+ax.set_xlabel(r"$T \mathbin{/} \unit{\celsius}$")
+ax.set_ylabel(r"$I \mathbin{/} \unit{\pico\ampere}$")
+
+ax.legend(loc="best")
+
+fig.savefig("build/Current1_no background.pdf")
+
 
 # T index where I is max
 T_max_ind = 43
@@ -238,6 +254,22 @@ fig.savefig("build/Current2.pdf")
 
 # Clear relaxation current of background
 I_sig=I-uf(T,*params)
+
+# Print background corrected current
+print("Background corrected current: ")
+for t,i in zip(T,I_sig):
+    print(f" {t} \t {i} \n")
+
+
+# Plot current without background
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(T,noms(I_sig),".",label="Background corrected data")
+ax.set_xlabel(r"$T \mathbin{/} \unit{\celsius}$")
+ax.set_ylabel(r"$I \mathbin{/} \unit{\pico\ampere}$")
+
+ax.legend(loc="best")
+
+fig.savefig("build/Current2_no background.pdf")
 
 
 # T index where I is max
