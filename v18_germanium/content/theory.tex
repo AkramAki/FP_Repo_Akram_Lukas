@@ -1,2 +1,193 @@
 \section{Theory}
 \label{sec:theory}
+High-purity germanium (HPGe) detectors are widely used in $\gamma$-ray spectroscopy due
+to their excellent energy resolution and well-understood interaction mechanisms.
+In this experiment, the detector is employed to calibrate energy, determine the full-energy
+detection probability, and analyse characteristic spectral structures of monoenergetic
+$\gamma$ radiation. The relevant physical processes are discussed below.
+
+
+\subsection{Photoelectric Effect}
+In the photoelectric effect, an incident $\gamma$ photon is completely absorbed by a
+bound atomic electron, which is ejected from the atom with kinetic energy
+\begin{equation}
+  E_e = E_\gamma - E_\text{B},
+\end{equation}
+where $E_\text{B}$ denotes the binding energy of the electron.
+The vacancy in the atomic shell is subsequently filled by outer electrons, leading to the
+emission of characteristic X-rays or Auger electrons, whose energies are typically absorbed
+locally in the detector.
+
+As a result, the full photon energy is deposited within the detector crystal, making the
+photoelectric effect the primary mechanism responsible for the formation of the photopeak
+in $\gamma$ spectra.
+The probability of photoelectric absorption increases strongly with the atomic number $Z$
+of the absorber material and decreases rapidly with increasing photon energy.
+
+For germanium detectors, the photoelectric effect dominates at low $\gamma$ energies and
+is essential for achieving high full-energy detection probabilities and precise energy
+measurements.
+
+
+\subsection{Interaction of Photons with Matter and the Extinction Coefficient}
+Photons interacting with matter are attenuated according to the exponential law
+\begin{equation}
+  I(x) = I_0 \, \mathrm{e}^{-\mu(E_\gamma) x},
+\end{equation}
+where $I_0$ is the incident intensity, $x$ the traversed material thickness, and
+$\mu(E_\gamma)$ the energy-dependent extinction coefficient.
+The extinction coefficient is the sum of contributions from individual interaction processes,
+\begin{equation}
+  \mu(E_\gamma) = \mu_\text{ph} + \mu_\text{C} + \mu_\text{pp},
+\end{equation}
+corresponding to the photoelectric effect, Compton scattering, and pair production.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/extinction.png}
+    \caption{Energy dependence of the dominant $\gamma$ interaction mechanisms in matter.
+    At low energies the photoelectric effect dominates, while Compton scattering prevails
+    at intermediate energies. Pair production becomes relevant only above
+    \qty{1.022}{\mega\electronvolt} \cite{plot_extinction_germanium}.}
+\end{figure}
+
+At low photon energies, the photoelectric effect dominates,
+at intermediate energies, Compton scattering is the most probable interaction and depends
+primarily on the electron density of the material and
+at high energies, pair production becomes increasingly important, but only above the
+kinematic threshold of
+\begin{equation}
+  E_\gamma = 2 m_e c^2 \approx \qty{1.022}{\mega\electronvolt}.
+\end{equation}
+
+
+\subsection{Compton Scattering and Differential Cross Section}
+In Compton scattering, a photon transfers part of its energy to an electron and is scattered
+under an angle $\theta$. Energy and momentum conservation lead to the Compton formula
+\begin{equation}
+  E'_\gamma =
+  \frac{E_\gamma}{1 + \frac{E_\gamma}{m_e c^2} (1 - \cos\theta)},
+\end{equation}
+where $E'_\gamma$ is the energy of the scattered photon.
+
+The maximum energy transfer occurs for backscattering ($\theta = \pi$), yielding the
+Compton edge energy
+\begin{equation}
+  E_\text{CE} =
+  E_\gamma \left(
+  1 - \frac{1}{1 + 2 E_\gamma / (m_e c^2)}
+  \right).
+\end{equation}
+
+The probability of Compton scattering into a given solid angle is described by the
+Klein--Nishina differential cross section,
+\begin{equation}
+  \frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}
+  = \frac{r_e^2}{2}
+  \left( \frac{E'_\gamma}{E_\gamma} \right)^2
+  \left(
+    \frac{E'_\gamma}{E_\gamma}
+    + \frac{E_\gamma}{E'_\gamma}
+    - \sin^2\theta
+  \right),
+\end{equation}
+where $r_e$ is the classical electron radius.
+This angular dependence directly shapes the Compton continuum observed in measured spectra.
+
+
+\subsection{Pair Production}
+At sufficiently high photon energies, $\gamma$ radiation can produce an electron--positron
+pair in the Coulomb field of a nucleus. This process becomes possible only if the photon
+energy exceeds the combined rest energy of the particles,
+\begin{equation}
+  E_\gamma \geq 2 m_e c^2 \approx \qty{1.022}{\mega\electronvolt}.
+\end{equation}
+
+In pair production, the incident photon is completely absorbed and its energy is converted
+into rest mass and kinetic energy of the electron and positron. The probability of this
+process increases with photon energy and atomic number $Z$.
+After losing its kinetic energy, the positron annihilates with an electron, emitting two
+photons of energy \qty{511}{\kilo\electronvolt}.
+
+Depending on whether these annihilation photons are absorbed or escape the detector,
+distinct spectral features arise. If one annihilation photon escapes, a \emph{single escape
+peak} appears at
+\begin{equation}
+  E_\text{SE} = E_\gamma - \qty{511}{\kilo\electronvolt},
+\end{equation}
+while the escape of both photons leads to a \emph{double escape peak} at
+\begin{equation}
+  E_\text{DE} = E_\gamma - \qty{1022}{\kilo\electronvolt}.
+\end{equation}
+
+Although pair production is of minor importance at moderate energies, its characteristic
+escape peaks provide a clear experimental signature at higher $\gamma$ energies and
+support the interpretation of measured spectra.
+
+
+\subsection{Signal Formation and Energy Resolution}
+In a germanium detector, deposited energy creates electron--hole pairs.
+The number of charge carriers is
+\begin{equation}
+  N = \frac{E_\text{dep}}{\varepsilon},
+\end{equation}
+with $\varepsilon \approx \qty{2.96}{\electronvolt}$ for germanium.
+Here, $\varepsilon$ denotes the mean energy required to produce one electron--hole pair in
+germanium. The finite number of charge carriers and their statistical fluctuations impose a fundamental
+limit on the achievable energy resolution.
+
+Compared to indirect semiconductors, germanium benefits from a small mean ionisation energy,
+leading to narrower intrinsic line widths.
+Additional line broadening arises from electronic noise, incomplete charge collection,
+and statistical variations in charge amplification.
+
+
+\subsection{Monochromatic \texorpdfstring{$\gamma$}{gamma} Spectra and Their Interpretation}
+A spectrum recorded from a monoenergetic $\gamma$ source exhibits several characteristic
+structures:
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/mono_gamma_spectrum.png}
+  \caption{Typical spectral features of a monoenergetic $\gamma$ source.
+  Each structure can be traced back to a specific interaction mechanism \cite{physwiki_gamma_spectrum}.}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Photopeak:}  
+  Results from complete absorption of the photon energy, typically through a combination
+  of Compton scattering followed by a photoelectric interaction. Its narrow width reflects
+  the excellent energy resolution of the detector.
+
+  \item \textbf{Compton plateu:}  
+  Arises from events where the photon undergoes a single Compton scatter and then escapes
+  the detector. The shape of the continuum is governed by the Klein--Nishina cross section.
+
+  \item \textbf{Compton edge:}  
+  Marks the maximum energy transfer in a single Compton interaction and corresponds to
+  backscattered photons.
+
+  \item \textbf{Backscatter peak:}  
+  Caused by photons that are first scattered outside the detector and then fully absorbed
+  after re-entering the crystal. Its position is determined by the Compton formula for
+  $\theta \approx \pi$.
+\end{itemize}
+
+The comparison of measured positions of the Compton edge and backscatter peak with their
+theoretical values provides a sensitive consistency check for the energy calibration.
+
+\newpage
+\subsection{Full-Energy Detection Probability}
+The full-energy detection probability quantifies the likelihood that an emitted photon
+deposits its entire energy in the detector:
+\begin{equation}
+  \varepsilon_\text{FE} =
+  \frac{N_\text{photopeak}}{N_\text{emitted}}.
+\end{equation}
+
+It depends on the detector dimensions, the extinction coefficient, and the photon energy.
+For increasing energy, the probability of multiple Compton interactions without full
+absorption rises, leading to a decreasing photopeak efficiency.
+
+This behaviour explains why, despite a high total absorption probability, only a fraction
+of events contribute to the photopeak.
