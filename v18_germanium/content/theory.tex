@@ -178,16 +178,47 @@ theoretical values provides a sensitive consistency check for the energy calibra
 
 \newpage
 \subsection{Full-Energy Detection Probability}
-The full-energy detection probability quantifies the likelihood that an emitted photon
-deposits its entire energy in the detector:
+The full-energy detection probability (also referred to as the full-energy peak efficiency)
+quantifies the likelihood that an emitted $\gamma$ photon deposits its entire energy in the
+detector volume and is therefore registered in the photopeak.
+It is defined as
 \begin{equation}
-  \varepsilon_\text{FE} =
-  \frac{N_\text{photopeak}}{N_\text{emitted}}.
+  \varepsilon_\text{FE}(E)
+  =
+  \frac{N_\text{photopeak}(E)}{N_\text{emitted}(E)}.
 \end{equation}
 
-It depends on the detector dimensions, the extinction coefficient, and the photon energy.
-For increasing energy, the probability of multiple Compton interactions without full
-absorption rises, leading to a decreasing photopeak efficiency.
+In an experiment, the number of photopeak events is obtained from the background-corrected
+line content of the corresponding full-energy peak.
+The number of emitted photons of energy $E$ is given by
+\begin{equation}
+  N_\text{emitted}(E)
+  =
+  A \cdot t_\text{live} \cdot I_\gamma(E),
+\end{equation}
+where $A$ denotes the activity of the source, $t_\text{live}$ the live time of the
+measurement, and $I_\gamma(E)$ the emission probability of the $\gamma$ transition.
 
-This behaviour explains why, despite a high total absorption probability, only a fraction
-of events contribute to the photopeak.
+Combining these expressions yields the experimentally relevant form of the full-energy
+detection probability:
+\begin{equation}
+  \boxed{
+  \varepsilon_\text{FE}(E)
+  =
+  \frac{N_\text{photopeak}(E)}
+  {A \cdot t_\text{live} \cdot I_\gamma(E)}
+  }.
+\end{equation}
+
+The full-energy detection probability depends on the detector material and dimensions, the
+source--detector geometry, and the photon energy.
+At low photon energies, the photoelectric effect dominates, resulting in a high probability
+of complete energy absorption.
+With increasing energy, Compton scattering becomes more likely, and photons may escape the
+detector after partial energy deposition.
+At even higher energies, processes such as pair production and the escape of annihilation
+photons further reduce the contribution to the full-energy peak.
+
+Consequently, despite a non-negligible total interaction probability, only a fraction of
+detected events contributes to the photopeak, leading to a decreasing
+$\varepsilon_\text{FE}$ with increasing photon energy.
