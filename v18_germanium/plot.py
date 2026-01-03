@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
-from plot_functions import read_spe, subtract_background, centroid_in_window, pick_calibration_peaks
-from plot_functions import plot_spectrum, activity_at_time, line_content_sideband, full_energy_efficiency
+from scipy.optimize import curve_fit
+from plot_functions import read_spe, subtract_background, centroid_in_window
+from plot_functions import plot_spectrum, activity_at_time, pick_calibration_peaks
+from plot_functions import line_content_sideband, full_energy_efficiency, peak_widths_with_baseline
 
 # --- Eu-152 reference energies (keV) from Radiacode https://www.radiacode.com/isotope/eu-152?lang=de ---
 # key is energy in keV
@@ -196,6 +198,7 @@ print()
 print("E_keV\t\tI_gamma\t\tpeak_ch\t\tN_line\t\teps_FE")
 for E, I, c, N, e in rows:
     print(f"{E:8.3f}\t{I:0.5f}\t\t{c:7.2f}\t\t{N:10.2f}\t{e:0.6e}")
+print()
 
 # --- arrays ready for efficiency fit later ---
 # energies_keV: x-values
@@ -203,6 +206,49 @@ for E, I, c, N, e in rows:
 # N_lines:      line contents (if you need them later)
 
 
+# power-law model
+def efficiency_powerlaw(E_keV, a, b):
+    return a * (E_keV)**b
+
+# --- fit ---
+popt, pcov = curve_fit(
+    efficiency_powerlaw,
+    energies_keV,
+    eps_FE,
+)
+
+a_fit, b_fit = popt
+a_err, b_err = np.sqrt(np.diag(pcov))
+
+print("Power Law Fit of efficiency Q = a * E ** b")
+print(f"a = {a_fit:.4f} ± {a_err:.4f}")
+print(f"b = {b_fit:.4f} ± {b_err:.4f}")
+print()
+
+
+E_plot = np.linspace(min(energies_keV)*0.9, max(energies_keV)*1.1, 300)
+
+fig, ax = plt.subplots()
+
+ax.plot(energies_keV, eps_FE * 100, "o", label="Measured values")
+ax.plot(
+    E_plot,
+    efficiency_powerlaw(E_plot, a_fit, b_fit) * 100,
+    "-",
+    label=r"Fit: $Q(E) = a\,(E/1\,\mathrm{keV})^b$"
+)
+
+ax.set_xscale("log")
+ax.set_yscale("log")
+
+ax.set_xlabel(r"Energy $E$ (\unit{\kilo\electronvolt})")
+ax.set_ylabel(r"Efficiency $Q$ (\%)")
+
+ax.legend()
+ax.grid(True, which="both", alpha=0.3, color="white")
+ax.set_facecolor("gainsboro")
+
+fig.savefig("build/efficiency_powerlaw_fit.pdf", bbox_inches="tight")
 
 
 
@@ -253,6 +299,127 @@ for x, txt in [
 fig.savefig("build/Cs.pdf", bbox_inches="tight")
 
 
+# Axes in energy (keV)
+ch = np.arange(len(Cs_channels_corrected), dtype=float)
+E_axis_keV = a * ch + b
+y_cs = np.asarray(Cs_channels_corrected, dtype=float)
+
+# 1) Photopeak energy
+E_gamma_keV = float(photo_E)
+# 2) Photopeak line content + local background
+N_photopeak, N_raw_pp, bg_pp = line_content_sideband(
+    spectrum=Cs_channels_corrected,
+    peak_center_idx=photo_idx,
+    peak_half_width=23,
+    sideband_width=10,
+    sideband_gap=4,
+    plot_diagnostics=True,
+    savepath="build/Cs_photopeak_linecontent.pdf",
+    energy=E_gamma_keV,
+)
+# 3) Half-width (FWHM) and tenth-width using SAME baseline
+widths, peak_height = peak_widths_with_baseline(
+    E_axis_keV, y_cs, photo_idx, bg_pp, levels=(0.5, 0.1)
+)
+
+xL_50, xR_50, fwhm_keV = widths[0.5]
+xL_10, xR_10, tenth_width_keV = widths[0.1]
+# 4) Compton edge and backscatter line (from above)
+E_compton_edge_keV = float(compton_edge_E)
+E_backscatter_keV = float(backscatter_E)
+# 5) Compton continuum content using the SAME baseline
+E_low_keV = 50.0
+
+mask_cont = (E_axis_keV >= E_low_keV) & (E_axis_keV <= E_compton_edge_keV)
+
+# exclude photopeak window if it somehow is included
+exclude_pp = 15
+pp_lo = max(photo_idx - exclude_pp, 0)
+pp_hi = min(photo_idx + exclude_pp, len(y_cs) - 1)
+mask_cont[pp_lo:pp_hi + 1] = False
+
+# integration of the compton continuum
+N_compton_continuum = float(
+    np.sum(y_cs[mask_cont])
+)
+
+# ------------------------------------------------------------
+# Console output
+# ------------------------------------------------------------
+print("\n=== Cs-137 monoenergetic spectrum results ===")
+print(f"Photopeak energy:        {E_gamma_keV:.2f} keV")
+print(f"FWHM (half-width):       {fwhm_keV:.2f} keV")
+print(f"Tenth-width (10%):       {tenth_width_keV:.2f} keV")
+print(f"Compton edge position:   {E_compton_edge_keV:.2f} keV")
+print(f"Backscatter line pos.:   {E_backscatter_keV:.2f} keV")
+print(f"Photopeak line content:  {N_photopeak:.2f} counts")
+print(f"Compton continuum cont.: {N_compton_continuum:.2f} counts")
+
+### Plot for all of these printed values
+fig, (ax_comp, ax_pp) = plt.subplots(
+    1, 2, figsize=(11, 4)
+)
+
+# ============================================================
+# Right panel: Photopeak region
+# ============================================================
+ax_pp.step(E_axis_keV, y_cs - bg_pp, where="mid", color="C0")
+ax_pp.set_yscale("log")
+
+# photopeak + widths
+ax_pp.axvline(E_gamma_keV, color="C3", linestyle="--", label="Photopeak")
+ax_pp.axvspan(xL_50, xR_50, color="C3", alpha=0.25, label="FWHM")
+ax_pp.axvspan(xL_10, xR_10, color="C3", alpha=0.12, label="Tenth-width")
+
+# zoom around photopeak
+pp_margin = 3 * fwhm_keV
+ax_pp.set_xlim(E_gamma_keV - pp_margin, E_gamma_keV + pp_margin)
+ax_pp.set_ylim(1, 1000)
+
+
+ax_pp.set_xlabel(r"$E_{\mathrm{dep}}$ (keV)")
+ax_pp.set_ylabel("Counts")
+ax_pp.set_title("Photopeak region minus local background")
+ax_pp.legend(fontsize=9)
+ax_pp.grid(True, which="both", alpha=0.3)
+
+# ============================================================
+# Left panel: Compton region
+# ============================================================
+ax_comp.step(E_axis_keV, y_cs, where="mid", color="C0")
+ax_comp.set_yscale("log")
+
+# Compton features
+ax_comp.axvline(E_backscatter_keV, color="C1", linestyle="--", label="Backscatter peak")
+ax_comp.axvline(E_compton_edge_keV, color="C2", linestyle="--", label="Compton edge")
+ax_comp.axvspan(
+    E_low_keV,
+    E_compton_edge_keV,
+    color="C2",
+    alpha=0.10,
+    label="Compton continuum",
+)
+
+# zoom on Compton region
+ax_comp.set_xlim(E_low_keV, E_compton_edge_keV * 1.05)
+ax_comp.set_ylim(1, 100)
+
+ax_comp.set_xlabel(r"$E_{\mathrm{dep}}$ (keV)")
+ax_comp.set_title("Compton region")
+ax_comp.legend(fontsize=9)
+ax_comp.grid(True, which="both", alpha=0.3)
+
+# ============================================================
+# Finalize
+# ============================================================
+fig.suptitle("Cs-137 monoenergetic spectrum analysis", fontsize=12)
+fig.tight_layout(rect=[0, 0, 1, 0.95])
+
+fig.savefig("build/Cs_analysis_twopanel.pdf", bbox_inches="tight")
+
+
+
+
 
 
 ##### Next task
@@ -268,3 +435,17 @@ fig, ax = plot_spectrum(
     savepath="build/Ba.pdf"
 )
 
+
+
+##### Next task
+
+unknown_channels, unknown_time = read_spe("data/Ba_Akram_Lukas.Spe")
+
+unknown_channels_corrected = subtract_background(unknown_channels, unknown_time, background_channels, background_time)
+fig, ax = plot_spectrum(
+    unknown_channels_corrected,
+    calibration=(a, b),
+    logy=True,
+    title="unknown — Calibrated.",
+    savepath="build/unknown.pdf"
+)

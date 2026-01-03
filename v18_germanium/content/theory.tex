@@ -222,3 +222,57 @@ photons further reduce the contribution to the full-energy peak.
 Consequently, despite a non-negligible total interaction probability, only a fraction of
 detected events contributes to the photopeak, leading to a decreasing
 $\varepsilon_\text{FE}$ with increasing photon energy.
+
+
+\subsection{Solid Angle of a Circular Detector}
+The solid angle $\Omega$ subtended by a detector surface $A$ at the position of a point
+source is defined as
+\begin{equation}
+  \Omega = \int_A \frac{\cos\theta}{r^2}\,\mathrm{d}A,
+\end{equation}
+where $r$ denotes the distance from the source to the surface element $\mathrm{d}A$ and
+$\theta$ is the angle between the surface normal and the line of sight.
+
+For a flat circular detector of radius $R$ located at a distance $d$ from the source and
+oriented perpendicular to the source--detector axis, cylindrical coordinates
+$(\rho,\varphi)$ may be used.
+In this geometry, $r = \sqrt{d^2 + \rho^2}$ and $\cos\theta = d / \sqrt{d^2 + \rho^2}$, while
+the surface element is given by $\mathrm{d}A = \rho\,\mathrm{d}\rho\,\mathrm{d}\varphi$.
+Inserting these expressions yields
+\begin{equation}
+  \Omega
+  =
+  \int_0^{2\pi}\!\!\int_0^{R}
+  \frac{d\,\rho}{(d^2 + \rho^2)^{3/2}}
+  \,\mathrm{d}\rho\,\mathrm{d}\varphi.
+\end{equation}
+
+Evaluating the integrals leads to the closed-form expression
+\begin{equation}
+  \Omega
+  =
+  2\pi
+  \left(
+  1 - \frac{d}{\sqrt{d^2 + R^2}}
+  \right),
+\end{equation}
+which describes the solid angle subtended by a circular detector as a function of its
+radius and the source--detector distance.
+The solid angle determines the purely geometrical fraction of isotropically emitted
+$\gamma$ quanta that reach the detector.
+Normalising the solid angle to the full solid angle $4\pi$ yields the geometrical
+acceptance $\Omega / 4\pi$.
+
+The total detection probability is then obtained by combining this geometrical factor
+with the full-energy detection probability $\varepsilon_\text{FE}(E)$, which accounts for
+the interaction and absorption processes within the detector material:
+\begin{equation}
+  P_\text{det}(E)
+  =
+  \frac{\Omega}{4\pi}
+  \cdot
+  \varepsilon_\text{FE}(E).
+\end{equation}
+This expression shows that the probability for detecting a $\gamma$ quantum in the
+full-energy peak is determined by both the source--detector geometry and the intrinsic
+detector response.

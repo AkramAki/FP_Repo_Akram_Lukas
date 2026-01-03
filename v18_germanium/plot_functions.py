@@ -401,3 +401,36 @@ def line_content_sideband(
         fig.savefig(savepath, bbox_inches="tight")
 
     return N_line, N_peak_raw, bg_per_ch
+
+def peak_widths_with_baseline(x, y, peak_idx, bg_per_ch, levels=(0.5, 0.1)):
+    """
+    Compute peak widths at given relative levels using a provided local baseline.
+    """
+    y = np.asarray(y, dtype=float)
+    x = np.asarray(x, dtype=float)
+    p = int(peak_idx)
+
+    y_peak = float(y[p])
+    peak_height = y_peak - bg_per_ch
+    if peak_height <= 0:
+        raise ValueError("Peak height above baseline is not positive.")
+
+    widths = {}
+    for lvl in levels:
+        thr = bg_per_ch + lvl * peak_height
+
+        # left crossing
+        i = p
+        while i > 0 and y[i] > thr:
+            i -= 1
+        x_left = x[i]
+
+        # right crossing
+        j = p
+        while j < len(y) - 1 and y[j] > thr:
+            j += 1
+        x_right = x[j]
+
+        widths[lvl] = (float(x_left), float(x_right), float(x_right - x_left))
+
+    return widths, peak_height
