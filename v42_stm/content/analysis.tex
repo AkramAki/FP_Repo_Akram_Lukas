@@ -1,6 +1,203 @@
 \section{Analysis}% Introduce software
 \label{sec:analysis}
+For the analysis of the STM measurements, the software Gwyddion \cite{gwyddion} is used.
+\subsection{HOPG}
+There are multiple HOPG measurements where the method of constant current was used, 
+which are depicted in \autoref{fig:hopg_1} and \autoref{fig:hopg_2} and were taken on different days. 
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_1_forwards.png}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_1_backwards.png}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_2_forwards.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_2_backwards.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_3_forwards.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_3_backwards.png}
+    \end{subfigure}
+    \caption{HOPG stm scans with lattice vectors over multiple unit cells.}
+    \label{fig:hopg_1}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_4_forwards.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_4_backwards.png}
+    \end{subfigure} 
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_5_forwards.png} 
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/Scan_5_backwards.png}
+    \end{subfigure} 
+    \caption{HOPG stm scans with lattice vectors over multiple unit cells.}
+    \label{fig:hopg_2}
+\end{figure}
 
+The pictures show the leveled data, where remaining tilt in the signal was removed by the software. 
+The lattices vectors are added manually into the picture and scaled over multiple unit cells to reduce uncertainty. 
+Length of those vectors are provided by the software and listet in \autoref{tab:hopg_distances}. 
+\begin{table}
+   \centering
+   \caption{Lattice vector lengths read out from real space.}
+   \label{tab:hopg_distances}
+   \sisetup{table-format = 1.3} 
+   \begin{tblr}{
+       colspec = {S S S},
+       row{1} = {guard, mode = math}
+   }
+       \toprule 
+       d \mathbin{/} \unit{\nano\meter} \\
+       \midrule
+       0.222 \\
+       0.202 \\
+       0.195 \\
+       0.215 \\
+       0.200 \\
+       0.173 \\
+       0.210 \\
+       0.218 \\
+       0.189 \\
+       0.178 \\
+       0.188 \\
+       0.184 \\
+       0.161 \\
+       0.195 \\
+       0.200 \\
+       0.188 \\
+       0.183 \\
+       0.181 \\
+       0.213 \\
+       0.180 \\
+       0.179 \\
+       0.214 \\
+       0.182 \\
+       0.180 \\
+       \bottomrule
+   \end{tblr}
+\end{table}
+Each value is estimated to have an uncertainty of $\pm\SI{0.15}{\nano\meter}$ 
+due to manual readout and disambiguities when identifiying atoms in the image.
+The resulting mean distance is 
+\begin{equation*}
+    \bar{d} = \SI{0.188\pm0.026}{\nano\meter}\,.
+\end{equation*} 
+One of the measurements was not used for this analysis, as the atoms could not be properly identified. 
+Furthermore the two dimensional fourier transform of each measurement 
+was calculated by the software and is depicted in \autoref{fig:hopg_fft_1} and \autoref{fig:hopg_fft_2}. 
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.43\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_1_FFT_1.png}
+    \end{subfigure}
+    \begin{subfigure}{0.55\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_1_FFT_2.png}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_2_FFT_1.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_2_FFT_2.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_3_FFT_1.png}
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_3_FFT_2.png}
+    \end{subfigure}
+    \caption{HOPG two dimensional fourier transforms of the stm scans with reciprocal lattice vectors.}
+    \label{fig:hopg_fft_1}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.43\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_4_FFT_1.png}
+    \end{subfigure}
+        \begin{subfigure}{0.55\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_4_FFT_2.png}
+    \end{subfigure} 
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_5_FFT_1.png} 
+    \end{subfigure}
+        \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width =1\textwidth]{analysis/HOPG/FFT/Scan_5_FFT_2.png}
+    \end{subfigure} 
+    \caption{HOPG two dimensional fourier transforms of the stm scans with reciprocal lattice vectors.}
+    \label{fig:hopg_fft_2}
+\end{figure}
+There the reciprocal lattice is visibile, and its lattice vectors were also included manually. 
+Analogous to before the lengths were read out and since the length of the reciprocal lattice vectors is inverse
+to the real space lattice vectors, the real space lattice vectors where calculated from this data. 
+The resulting distances are listed in \autoref{tab:hopg_distances_fft}.
+The one measurement not used before was also not used here for consistency.
+\begin{table}
+   \centering
+   \caption{Lattice vector lengths resulting from the two dimensional fourier transform.}
+   \label{tab:hopg_distances_fft}
+   \sisetup{table-format = 1.3} 
+   \begin{tblr}{
+       colspec = {S},
+       row{1} = {guard, mode = math}
+   }
+       \toprule 
+       d_{\text{FFT}} \mathbin{/} \unit{\nano\meter} \\
+       \midrule
+        0.161 \\ 
+        0.165 \\ 
+        0.164 \\
+        0.167 \\ 
+        0.120 \\ 
+        0.164 \\
+        0.141 \\ 
+        0.135 \\ 
+        0.152 \\ 
+        0.134 \\ 
+        0.164 \\ 
+        0.132 \\
+        0.132 \\ 
+        0.164 \\ 
+        0.167 \\ 
+        0.132 \\
+       \bottomrule
+   \end{tblr}
+\end{table}
+And the resulting mean distance is
+\begin{equation*}
+    \bar{d}_\text{FFT} = \SI{0.150\pm0.007}{\nano\meter}\,.
+\end{equation*}
+Analogous to before the uncertainty is estimated from manual readout and identification of the peaks in the image and accounted for with an uncertainty of $\pm\SI{1.2}{\nano\meter^{-1}}$ in reciprocal space which results in 
+$\Delta d_\text{FFT} \approx \pm\SI{0.03}{\nano\meter}$ in real space after inversion. 
 \subsection{Gold}
 The forward measurement of the Gold sample is displayed in \autoref{fig:gold_forward}, 
 where height information is displayed along the $x$-$y$-plane. 
@@ -37,15 +234,15 @@ where vertical lines mark the beginning and end of each jump.
 Analogously backwards profiles are pictured in \autoref{fig:gold_profiles_backwards}.
 \begin{figure}
     \centering
-    \begin{subfigure}{0.9\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width =1\textwidth]{analysis/gold/forward_line_1.png}
     \end{subfigure}
-    \begin{subfigure}{0.9\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width =1\textwidth]{analysis/gold/forward_line_2.png}
     \end{subfigure}
-    \begin{subfigure}{0.9\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width =1\textwidth]{analysis/gold/forward_line_3.png}
     \end{subfigure}
@@ -54,15 +251,15 @@ Analogously backwards profiles are pictured in \autoref{fig:gold_profiles_backwa
 \end{figure}
 \begin{figure}
     \centering
-    \begin{subfigure}{0.8\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width =1\textwidth]{analysis/gold/backwards_line_1.png}
     \end{subfigure}
-    \begin{subfigure}{0.8\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width =1\textwidth]{analysis/gold/backwards_line_2.png}
     \end{subfigure}
-    \begin{subfigure}{0.8\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width =1\textwidth]{analysis/gold/backwards_line_3.png}
     \end{subfigure}
