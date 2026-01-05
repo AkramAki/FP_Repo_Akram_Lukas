@@ -101,6 +101,7 @@ def pick_calibration_peaks(
     distance=15,
     logy=True,
     xlim=None,
+    savepath="build/pick_peaks.pdf"
 ):
     """
     Find peaks, plot them with indices, and return peak indices + positions.
@@ -129,7 +130,7 @@ def pick_calibration_peaks(
     for k, p in enumerate(peaks_idx):
         ax.text(p, y[p], f"{k}", fontsize=9, va="bottom", ha="center")
 
-    fig.savefig("build/pick_peaks.pdf")
+    fig.savefig(savepath)
 
     return peaks_idx
 
@@ -263,6 +264,9 @@ def activity_at_time(A0_bq, t0, t, half_life_s):
     lam = np.log(2.0) / half_life_s
     return float(A0_bq * np.exp(-lam * dt_s))
 
+def omega(d, R):
+    return(2 * np.pi * (1 - (d / np.sqrt(d * d + R * R))))
+
 
 def full_energy_efficiency(N_photopeak, A_bq, t_live_s, I_gamma):
     """
@@ -288,7 +292,8 @@ def full_energy_efficiency(N_photopeak, A_bq, t_live_s, I_gamma):
     denom = A_bq * t_live_s * I_gamma
     if denom <= 0:
         raise ValueError("A_bq, t_live_s, and I_gamma must be positive.")
-    return float(N_photopeak / denom)
+    return float(N_photopeak / denom ) 
+
 
 def line_content_sideband(
     spectrum,
@@ -434,3 +439,68 @@ def peak_widths_with_baseline(x, y, peak_idx, bg_per_ch, levels=(0.5, 0.1)):
         widths[lvl] = (float(x_left), float(x_right), float(x_right - x_left))
 
     return widths, peak_height
+
+import numpy as np
+
+def klein_nishina_dsigma_dE(E, E_gamma, A=1.0, m_ec2=510.99895):
+    """
+    Klein-Nishina differential cross section written as dσ/dE,
+    where E is the kinetic energy transferred to the electron.
+
+    Parameters
+    ----------
+    E : array_like
+        Electron energy transfer (same units as E_gamma), e.g. keV.
+    E_gamma : float
+        Incident photon energy (same units as E), e.g. keV.
+    A : float, optional
+        Overall scale factor for fitting (absorbs detector effects, bin width, etc.).
+        Default: 1.0
+    m_ec2 : float, optional
+        Electron rest energy in same units as E (default 510.99895 keV).
+
+    Returns
+    -------
+    y : ndarray
+        Model values proportional to dσ/dE (scaled by A).
+        Values outside the physical range 0 < E < E_max are set to 0.
+
+    Notes
+    -----
+    Physical upper limit (Compton edge for electron):
+        E_max = E_gamma * (1 - 1/(1 + 2*E_gamma/m_ec2))
+              = E_gamma * (2*E_gamma/m_ec2) / (1 + 2*E_gamma/m_ec2)
+
+    For fitting counts, A typically captures:
+      - overall normalization
+      - bin width
+      - efficiency / acceptance in the chosen region
+    """
+    E = np.asarray(E, dtype=float)
+
+    # Physical maximum electron energy (Compton edge)
+    alpha = E_gamma / m_ec2
+    E_max = E_gamma * (2 * alpha) / (1 + 2 * alpha)
+
+    # Initialize output
+    y = np.zeros_like(E, dtype=float)
+
+    # Mask physical region and avoid singular endpoints
+    eps = 1e-12
+    mask = (E > eps) & (E < (E_gamma - eps)) & (E <= (E_max - eps))
+
+    if not np.any(mask):
+        return y
+
+    Em = E[mask]
+    Eg = float(E_gamma)
+
+    # Core bracket term in your LaTeX expression
+    ratio = Em / (Eg - Em)                 # E / (Eγ - E)
+    bracket = 2.0 + (ratio**2) * (1.0 + (Eg - Em) / Eg - 2.0 * (Eg - Em) / Em)
+
+    # Constant prefactor (3/8 * σ_Th / (m_ec2)) is absorbed into A for fitting
+    # If you want absolute units, multiply A by (3/8)*sigma_th/m_ec2.
+    y[mask] = A * (bracket / m_ec2)
+
+    return y

@@ -34,3 +34,371 @@
 %        \label{fig:}
 %    \end{center}
 %\end{wrapfigure}
+
+For the entire analysis, the measured background spectrum is subtracted from all spectra. The background is scaled by the ratio of live times,
+\begin{equation*}
+  N_{\text{corr}} = N_{\text{meas}} - \frac{t_{\text{live}}}{t_{\text{bg}}} \, N_{\text{bg}},
+\end{equation*}
+so that all spectra discussed in the following are background-corrected by construction.
+
+\subsection{Energy calibration using \texorpdfstring{$^{152}$Eu}{Eu-152}}
+
+The first step of the analysis is the identification of prominent peaks in the raw \qty{152}{Eu} spectrum. A peak-finding algorithm based on \texttt{scipy.find\_peaks} is applied to the spectrum shown in
+\autoref{fig:eu_pick_peaks}, which is still expressed in ADC channels. The algorithm returns several candidate peaks; from these, the peaks with indices
+\[
+  [3, 5, 6, 7, 8, 9, 10]
+\]
+are selected as usable for the energy calibration.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/pick_peaks.pdf}
+    \caption{Background-subtracted \qty{152}{Eu} spectrum in channels. The marked structures correspond to peaks identified by the peak-finding algorithm. The indices of the detected peaks are used to select suitable candidates for the energy calibration.}
+    \label{fig:eu_pick_peaks}
+\end{figure}
+
+These selected peaks are then manually assigned to known \qty{152}{Eu} gamma-ray lines taken from the literature. The corresponding gamma energies and emission probabilities are summarized in \autoref{tab:eu_lines}.
+
+\begin{table}
+    \centering
+    \caption{Gamma-ray lines of \qty{152}{Eu} used for the energy calibration, together with their emission probabilities from \cite{radiacode_eu152}.}
+    \label{tab:eu_lines}
+    \sisetup{table-format = 4.4}
+    \begin{tblr}{
+        colspec = {S[table-format = 4.2] S},
+        row{1} = {guard, mode = math}
+    }
+        \toprule
+        E_\gamma \mathbin{/} \unit{\kilo\electronvolt} & I_\gamma \\
+        \midrule
+        121.78  & 0.2853 \\
+        244.69  & 0.0755 \\
+        344.27  & 0.2659 \\
+        411.11  & 0.0224 \\
+        443.96  & 0.0283 \\
+        778.90  & 0.1293 \\
+        867.38  & 0.0423 \\
+        964.05  & 0.1451 \\
+        1085.83 & 0.1011 \\
+        1112.07 & 0.1367 \\
+        1408.01 & 0.2087 \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+Using the assigned peaks, a linear calibration of the form
+\begin{equation}
+  E(\text{channel}) = a \cdot \text{channel} + b
+  \label{eq:energy_calibration}
+\end{equation}
+is performed. The calibration result is visualized in \autoref{fig:eu_calibration_assignment}. The orange crosses indicate the peak positions in channel space together with the assigned gamma energies used for the fit. The grey horizontal lines correspond to known \qty{152}{Eu} gamma energies after applying the calibration. A correct assignment is indicated by the intersection of these grey lines with the orange crosses. Alternative assignments were tested but resulted in clear mismatches and were therefore rejected.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/Eu-152.pdf}
+    \caption{Energy calibration using \qty{152}{Eu}. Orange crosses show the peaks used in the calibration together with the assigned gamma energies. Grey horizontal lines indicate known \qty{152}{Eu} gamma energies after applying the calibration. The numbers next to the orange markers denote which gamma energy was assigned to the respective peak.}
+    \label{fig:eu_calibration_assignment}
+\end{figure}
+
+The resulting calibration parameters are
+\begin{align*}
+  a &= \qty{0.12}{\kilo\electronvolt} \text{ per channel} , \\
+  b &= \qty{-1.024}{\kilo\electronvolt}. 
+\end{align*}
+
+The quality of the calibration is further evaluated using the calibration curve and the residuals shown in \autoref{fig:calibration_quality}. In both plots, the blue points correspond to the calibration points marked in \autoref{fig:eu_calibration_assignment}. The residuals demonstrate that the maximum deviation between calibrated and literature energies is on the order of \qty{0.4}{\kilo\electronvolt}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.49\textwidth]{build/calibration_fit.pdf}
+    \includegraphics[width =0.49\textwidth]{build/calibration_residuals.pdf}
+    \caption{Left: linear energy calibration according to \autoref{eq:energy_calibration}. Right: residuals of the calibration. The blue points correspond to the calibration peaks shown in \autoref{fig:eu_calibration_assignment}.}
+    \label{fig:calibration_quality}
+\end{figure}
+\newpage
+
+\subsection{Activity of the \texorpdfstring{$^{152}$Eu}{Eu-152} source}
+
+To determine the full-energy detection efficiency, the activity of the \qty{152}{Eu} source at the time of measurement is required. Starting from the reference activity
+\[
+  A_0 = \qty{4130}{\becquerel}
+\]
+at the reference date
+\[
+  t_0 = \text{01.10.2000},
+\]
+the activity at the measurement time
+\[
+  t_{\text{meas}} = \text{12.08.2025}
+\]
+is calculated using the radioactive decay law,
+\begin{equation*}
+  A(t_{\text{meas}}) = A_0 \exp\!\left( -\frac{\ln 2}{T_{1/2}} (t_{\text{meas}} - t_0) \right),
+  \label{eq:activity_decay}
+\end{equation*}
+where the half-life of \qty{152}{Eu} is
+\[
+  T_{1/2} = 13.537 a.
+\]
+This yields an activity at the time of measurement of
+\[
+  A(t_{\text{meas}}) = \qty{1156.23}{\becquerel}.
+\]
+
+The live time of the measurement is
+\[
+  t_{\text{live}} = \qty{6702}{\second}.
+\]
+
+\subsection{Determination of line contents}
+
+For each photopeak, the line content is determined by integrating the counts in a window around the peak maximum. A local background is estimated using two sidebands adjacent to the peak window and subtracted before integration. The procedure is characterized by the parameters
+\begin{align*}
+  \text{peak\_half\_width} &= 15, \\
+  \text{sideband\_width} &= 10, \\
+  \text{sideband\_gap} &= 4.
+\end{align*}
+
+An example of this procedure for the first \qty{152}{Eu} peak is shown in \autoref{fig:line_content_example}. This method is applied consistently for all subsequent spectra, with possible minor adjustments of the numerical parameters if required.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/line_content_example.pdf}
+    \caption{Example of the line content determination for a \qty{152}{Eu} photopeak. The central window defines the peak region, while the sidebands are used to estimate and subtract the local background.}
+    \label{fig:line_content_example}
+\end{figure}
+
+\subsection{Geometrical acceptance}
+
+The solid angle $\Omega$ subtended by the detector is calculated from the detector geometry using the expression given in the theory section. For a detector radius
+\[
+  r = \qty{2.25}{\centi\meter}
+\]
+and a source-to-detector distance
+\[
+  a = \qty{9.5}{\centi\meter},
+\]
+the solid angle is
+\[
+  \Omega = 0.169.
+\]
+This value is used to determine the geometrical acceptance of the detector.
+
+\subsection{Full-energy detection efficiency}
+
+Using the measured line contents, the known emission probabilities from \autoref{tab:eu_lines}, the activity from \autoref{eq:activity_decay}, the live time, and the geometrical acceptance, the full-energy detection efficiency is calculated according to the formula given in the theory section.
+
+The resulting efficiencies for the selected \qty{152}{Eu} lines are summarized in \autoref{tab:eu_efficiency}.
+
+\begin{table}
+    \centering
+    \caption{Measured line contents and full-energy detection efficiencies for selected \qty{152}{Eu} gamma lines.}
+    \label{tab:eu_efficiency}
+    \sisetup{table-format = 3.2}
+    \begin{tblr}{
+        colspec = {S S[table-format = 1.4] S[table-format = 4.0] S[table-format = 5.0] S[table-format = 1.3]},
+        row{1} = {guard, mode = math}
+    }
+        \toprule
+        E \mathbin{/} \unit{\kilo\electronvolt} &
+        I_\gamma &
+        \text{peak\_ch} &
+        N_{\text{line}} &
+        \varepsilon_{\text{FE}} \cdot \text{e}^{-3} \\
+        \midrule
+        121.78 & 0.2853 & 1030 & 16681 & 7.545 \\
+        244.7  & 0.0755 & 2060 &  2882 & 4.925 \\
+        344.28 & 0.2659 & 2898 &  6658 & 3.231 \\
+        411.12 & 0.0224 & 3459 &   441 & 2.541 \\
+        443.96 & 0.0283 & 3733 &   581 & 2.654 \\
+        778.9  & 0.1293 & 6548 &  1214 & 1.212 \\
+        964.06 & 0.1451 & 8094 &  526  & 0.467 \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+To parameterize the energy dependence of the full-energy detection efficiency, a power-law model of the form
+\begin{equation}
+  \varepsilon_{\text{FE}}(E) = a \, E^{\,b}
+  \label{eq:efficiency_powerlaw}
+\end{equation}
+is fitted to the data. Gamma energies below \qty{150}{\kilo\electronvolt} are excluded from the fit, since low-energy photons are significantly attenuated by the aluminium housing and the lithium-diffused dead layer of the detector.
+
+The fit yields the parameters
+\begin{align*}
+  a &= 5.56 \pm 3.82, \\
+  b &= -1.28 \pm 0.12.
+\end{align*}
+
+The resulting fit and the data points are shown in \autoref{fig:efficiency_powerlaw}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/efficiency_powerlaw_fit.pdf}
+    \caption{Full-energy detection efficiency as a function of gamma energy for \qty{152}{Eu}. The solid line represents the power-law fit according to \autoref{eq:efficiency_powerlaw}.}
+    \label{fig:efficiency_powerlaw}
+\end{figure}
+
+
+\subsection{Analysis of the \texorpdfstring{$^{137}$Cs}{Cs-137} spectrum}
+
+The background-subtracted $^{137}$Cs spectrum is shown in \autoref{fig:cs_overview}. The characteristic structures of a monochromatic gamma spectrum are clearly visible: the photopeak, the Compton continuum with its sharp Compton edge, and the backscatter peak. These features are indicated by vertical lines in the figure.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/Cs.pdf}
+    \caption{Background-subtracted \qty{137}{Cs} spectrum. The positions of the photopeak, the Compton edge, and the backscatter line are marked by vertical lines.}
+    \label{fig:cs_overview}
+\end{figure}
+
+From the calibrated energy axis, the characteristic energies are determined as
+\begin{align*}
+  E_{\text{photo}} &= \qty{661.64}{\kilo\electronvolt}, \\
+  E_{\text{Compton}} &= \qty{462.25}{\kilo\electronvolt}, \\
+  E_{\text{back}} &= \qty{193.37}{\kilo\electronvolt}.
+\end{align*}
+
+\subsubsection{Photopeak analysis}
+
+Focusing on the photopeak, the line content is determined using the same procedure as described previously for $^{152}$Eu. The parameters used for the peak integration are
+\begin{align*}
+  \text{peak\_half\_width} &= 23, \\
+  \text{sideband\_width} &= 10, \\
+  \text{sideband\_gap} &= 4.
+\end{align*}
+
+This yields a photopeak line content of
+\[
+  N_{\text{photo}} = 16705.31 \;\text{counts}.
+\]
+
+In addition, the energy resolution of the detector at $\qty{661}{\kilo\electronvolt}$ is quantified by determining the full width at half maximum (FWHM) and the tenth-width of the photopeak:
+\begin{align*}
+  \text{FWHM} &= \qty{2.50}{\kilo\electronvolt}, \\
+  \text{Tenth-width} &= \qty{4.17}{\kilo\electronvolt}.
+\end{align*}
+
+The ratio of these two quantities is therefore
+\[
+  \frac{\text{Tenth-width}}{\text{FWHM}} = 1.67.
+\]
+
+This result is illustrated in \autoref{fig:cs_twopanel}. The right panel shows a zoom into the photopeak, where the FWHM and tenth-width are highlighted, while the left panel displays a zoom into the Compton region. The expected ratio for a purely Gaussian peak shape is discussed later in the discussion section.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/Cs_analysis_twopanel.pdf}
+    \caption{Two-panel view of the $\qty{137}{Cs}$ spectrum. Left: zoom into the Compton region. Right: zoom into the photopeak with the FWHM and tenth-width indicated.}
+    \label{fig:cs_twopanel}
+\end{figure}
+
+\subsubsection{Compton continuum and Klein--Nishina fit}
+
+To analyze the Compton continuum quantitatively, the energy range from $\qty{350}{\kilo\electronvolt}$ up to the Compton edge at approximately $\qty{462}{\kilo\electronvolt}$ is considered. In this region, the spectrum is largely dominated by single Compton scattering.
+
+The measured distribution is fitted with the energy-dependent Klein--Nishina differential cross section introduced in the theory section, multiplied by an overall scale factor. In addition, a constant offset term is included to account for residual background contributions. The fit model therefore consists of a Klein--Nishina-based shape plus a constant term.
+
+The resulting fit parameters are
+\begin{align*}
+  A &= (1.86 \times 10^{3}) \pm 99.6, \\
+  B &= 8.67 \pm 0.516,
+\end{align*}
+where $A$ denotes the overall scale factor and $B$ the constant offset. The fit result is shown in \autoref{fig:cs_kn_fit}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/Cs_compton_KN_fit.pdf}
+    \caption{Fit of the Compton continuum in the $\qty{137}{Cs}$ spectrum using a Klein--Nishina–based model with an additional constant offset. The fit range is $\qtyrange{350}{462.2}{\kilo\electronvolt}$.}
+    \label{fig:cs_kn_fit}
+\end{figure}
+
+Integrating the fitted Klein--Nishina model from $\qty{50}{\kilo\electronvolt}$ up to the Compton edge yields an integrated Compton content of
+\[
+  N_{\text{Compton}} = 2714.02 \;\text{counts}.
+\]
+Including the constant offset contribution in the integration results in
+\[
+  N_{\text{Compton, offset}} = 6287.40 \;\text{counts}.
+\]
+
+\newpage
+\subsection{Analysis of the \texorpdfstring{$^{133}$Ba}{Ba-133} spectrum}
+
+The background-subtracted $^{133}$Ba spectrum is shown in \autoref{fig:ba_overview}. Five prominent photopeaks are visible and marked in the figure, together with their corresponding gamma energies.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/Ba.pdf}
+    \caption{Background-subtracted $^{133}$Ba spectrum. The five identified photopeaks are marked, and the corresponding gamma energies are indicated above the peaks.}
+    \label{fig:ba_overview}
+\end{figure}
+
+These peaks are analyzed using the previously determined full-energy detection efficiency curve. The gamma energies and emission probabilities used in the analysis are taken from \cite{radiacode_ba133} and are listed in \autoref{tab:ba_lines_and_activity}.
+
+\begin{table}
+    \centering
+    \caption{Gamma-ray lines of $\qty{133}{Ba}$ used for the activity determination.}
+    \label{tab:ba_lines_and_activity}
+    \sisetup{table-format = 3.2}
+    \begin{tblr}{
+        colspec = {S S[table-format = 2.2] S[table-format = 4.0] S},
+        row{1} = {guard, mode = math}
+    }
+        \toprule
+        E_\gamma \mathbin{/} \unit{\kilo\electronvolt} & 
+        I_\gamma \mathbin{/} \unit{\percent} &
+        N_{\text{line}} &
+        A \mathbin{/} \unit{\becquerel} \\
+        \midrule
+        81.00   & 32.9 & 7696 & 244.14 \\
+        276.40 & 7.16  & 1167 & 814.06 \\
+        302.85 & 18.34 & 2628 & 802.46 \\
+        356.01 & 62.05 & 7404 & 821.84 \\
+        383.85 & 8.94  & 1054 & 894.48 \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+For each peak, the line content is determined using the same window and sideband method as before. Together with the known emission probabilities and the efficiency curve, an activity is calculated independently for each gamma line. The numerical results are also summarized in \autoref{tab:ba_lines_and_activity}.
+
+Taking all five values into account yields a mean activity of
+\[
+  \bar{A} = 715.40 \;\unit{\becquerel}
+\]
+with a standard deviation of
+\[
+  \sigma = 237.82 \;\unit{\becquerel}.
+\]
+
+The activity derived from the $\qty{81}{\kilo\electronvolt}$ line deviates significantly from the other values. A closer inspection of this peak shows a pronounced asymmetry, which leads to an overestimation of the local background due to peak contributions leaking into the sidebands. Excluding this line from the averaging procedure results in
+\[
+  \bar{A} = 833.21 \;\unit{\becquerel}, \qquad
+  \sigma = 36.04 \;\unit{\becquerel}.
+\]
+
+\subsection{Analysis of the unknown source}
+
+The background-subtracted spectrum of the unknown source is shown in \autoref{fig:unknown_overview}. Several photopeaks are visible and marked in the figure. At this stage, the goal is to identify candidate energies and to extract approximate line contents for a subsequent qualitative and quantitative discussion.
+
+\begin{figure}
+    \centering
+    \includegraphics[width =0.9\textwidth]{build/unknown.pdf}
+    \caption{Background-subtracted spectrum of the unknown source. Identified peaks are marked at their respective energies.}
+    \label{fig:unknown_overview}
+\end{figure}
+
+The line contents are determined using the same peak window and sideband subtraction method as described in the previous sections. Applying this procedure yields the following results:
+\begin{align*}
+  N_{\text{line}}(77.04\,\unit{\kilo\electronvolt})  &= 7464, \\
+  N_{\text{line}}(92.42\,\unit{\kilo\electronvolt})  &= 5130, \\
+  N_{\text{line}}(185.86\,\unit{\kilo\electronvolt}) &= 9884, \\
+  N_{\text{line}}(241.99\,\unit{\kilo\electronvolt}) &= 9167, \\
+  N_{\text{line}}(295.15\,\unit{\kilo\electronvolt}) &= 18699, \\
+  N_{\text{line}}(352.00\,\unit{\kilo\electronvolt}) &= 30513, \\
+  N_{\text{line}}(609.32\,\unit{\kilo\electronvolt}) &= 18167, \\
+  N_{\text{line}}(960.80\,\unit{\kilo\electronvolt}) &= -143.
+\end{align*}
+
+It is important to note that the peaks at $\qty{77}{\kilo\electronvolt}$, $\qty{92}{\kilo\electronvolt}$, and $\qty{960}{\kilo\electronvolt}$ suffer from problematic sideband regions. In these cases, additional peaks are present within or close to the sidebands, which compromises the background estimation. This is reflected most clearly in the unphysical negative line content obtained for the $\qty{960.8}{\kilo\electronvolt}$ peak.
+
+A more rigorous analysis of the unknown source would therefore require an individual inspection of each peak and, if necessary, an adaptation of the sideband parameters or the use of alternative background models. For the purpose of this short analysis, however, the extracted line contents provide a sufficient basis for the qualitative identification and interpretation of the unknown source, which is addressed in the discussion section.

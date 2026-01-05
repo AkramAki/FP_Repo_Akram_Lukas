@@ -3,8 +3,8 @@ import numpy as np
 from datetime import datetime
 from scipy.optimize import curve_fit
 from plot_functions import read_spe, subtract_background, centroid_in_window
-from plot_functions import plot_spectrum, activity_at_time, pick_calibration_peaks
-from plot_functions import line_content_sideband, full_energy_efficiency, peak_widths_with_baseline
+from plot_functions import plot_spectrum, activity_at_time, pick_calibration_peaks, omega
+from plot_functions import line_content_sideband, full_energy_efficiency, peak_widths_with_baseline, klein_nishina_dsigma_dE
 
 # --- Eu-152 reference energies (keV) from Radiacode https://www.radiacode.com/isotope/eu-152?lang=de ---
 # key is energy in keV
@@ -194,17 +194,12 @@ for i, (E, c) in enumerate(zip(energies_keV, peak_centers)):
 # --- console output ---
 print(f"A(meassurment) = {A_meas:.6g} Bq")
 print(f"t_live  = {t_live_s:.0f} s")
+print(f"Omega is {omega(9.5e-2, 2.25e-2)}")
 print()
 print("E_keV\t\tI_gamma\t\tpeak_ch\t\tN_line\t\teps_FE")
 for E, I, c, N, e in rows:
     print(f"{E:8.3f}\t{I:0.5f}\t\t{c:7.2f}\t\t{N:10.2f}\t{e:0.6e}")
 print()
-
-# --- arrays ready for efficiency fit later ---
-# energies_keV: x-values
-# eps_FE:       y-values
-# N_lines:      line contents (if you need them later)
-
 
 # power-law model
 def efficiency_powerlaw(E_keV, a, b):
@@ -213,8 +208,8 @@ def efficiency_powerlaw(E_keV, a, b):
 # --- fit ---
 popt, pcov = curve_fit(
     efficiency_powerlaw,
-    energies_keV,
-    eps_FE,
+    energies_keV[1:], # only above 150kev should be considered
+    eps_FE[1:],
 )
 
 a_fit, b_fit = popt
@@ -230,7 +225,7 @@ E_plot = np.linspace(min(energies_keV)*0.9, max(energies_keV)*1.1, 300)
 
 fig, ax = plt.subplots()
 
-ax.plot(energies_keV, eps_FE * 100, "o", label="Measured values")
+ax.plot(energies_keV[1:], eps_FE[1:] * 100, "o", label="Measured values above 150keV")
 ax.plot(
     E_plot,
     efficiency_powerlaw(E_plot, a_fit, b_fit) * 100,
@@ -238,8 +233,8 @@ ax.plot(
     label=r"Fit: $Q(E) = a\,(E/1\,\mathrm{keV})^b$"
 )
 
-ax.set_xscale("log")
-ax.set_yscale("log")
+#ax.set_xscale("log")
+#ax.set_yscale("log")
 
 ax.set_xlabel(r"Energy $E$ (\unit{\kilo\electronvolt})")
 ax.set_ylabel(r"Efficiency $Q$ (\%)")
@@ -249,7 +244,6 @@ ax.grid(True, which="both", alpha=0.3, color="white")
 ax.set_facecolor("gainsboro")
 
 fig.savefig("build/efficiency_powerlaw_fit.pdf", bbox_inches="tight")
-
 
 
 
@@ -327,21 +321,55 @@ xL_10, xR_10, tenth_width_keV = widths[0.1]
 # 4) Compton edge and backscatter line (from above)
 E_compton_edge_keV = float(compton_edge_E)
 E_backscatter_keV = float(backscatter_E)
-# 5) Compton continuum content using the SAME baseline
-E_low_keV = 50.0
-
+# 5) Compton continuum content
+E_low_keV = 350.0
 mask_cont = (E_axis_keV >= E_low_keV) & (E_axis_keV <= E_compton_edge_keV)
 
-# exclude photopeak window if it somehow is included
-exclude_pp = 15
-pp_lo = max(photo_idx - exclude_pp, 0)
-pp_hi = min(photo_idx + exclude_pp, len(y_cs) - 1)
-mask_cont[pp_lo:pp_hi + 1] = False
+def fit_func(E, A, B): # A is scaling factor and B is constant offset
+    return klein_nishina_dsigma_dE(E, E_gamma_keV, A) + B
 
-# integration of the compton continuum
-N_compton_continuum = float(
-    np.sum(y_cs[mask_cont])
+popt, pcov = curve_fit(
+    fit_func,
+    E_axis_keV[mask_cont], y_cs[mask_cont],
+    maxfev=20000
 )
+
+A_fit, B_fit = popt
+A_err, B_err= np.sqrt(np.diag(pcov))
+
+print("\n--- Compton fit (Klein-Nishina-based) ---")
+print(f"Fit window: [{E_low_keV:.1f}, {E_compton_edge_keV:.1f}] keV")
+print(f"A  = {A_fit:.3g} ± {A_err:.3g}")
+print(f"B  = {B_fit:.3g} ± {B_err:.3g}")
+
+E_grid = np.linspace(50, E_compton_edge_keV, 6000) 
+y_model = fit_func(E_grid, A_fit, B_fit)
+
+# integrate only the Compton part (subtract fitted constant offset B)
+N_compton_continuum_fit = float(np.trapz(y_model - B_fit, E_grid))
+N_compton_continuum_fit_with_offset = float(np.trapz(y_model, E_grid))
+
+# ----------------------------
+# Diagnostic plot of the fit
+# ----------------------------
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.step(E_axis_keV, y_cs, where="mid", label="Cs spectrum")
+ax.plot(E_axis_keV[mask_cont], y_cs[mask_cont], "o", markersize=3, label="Fit region")
+ax.plot(E_grid, y_model, "-", label="KN fit")
+
+ax.axvline(E_compton_edge_keV, linestyle="--", linewidth=1, label="Measured Compton edge", color="red")
+ax.axvline(E_backscatter_keV, linestyle="--", linewidth=1, label="Backscatter peak", color="orange")
+
+ax.set_xlim(30, E_compton_edge_keV + 30)
+ax.set_ylim(1, 65)
+#ax.set_yscale("log")
+ax.set_xlabel(r"$E_{\mathrm{dep}}$ (keV)")
+ax.set_ylabel("Counts")
+ax.grid(True, which="both", alpha=0.3)
+ax.legend(fontsize=9)
+
+fig.savefig("build/Cs_compton_KN_fit.pdf", bbox_inches="tight")
+
 
 # ------------------------------------------------------------
 # Console output
@@ -350,10 +378,13 @@ print("\n=== Cs-137 monoenergetic spectrum results ===")
 print(f"Photopeak energy:        {E_gamma_keV:.2f} keV")
 print(f"FWHM (half-width):       {fwhm_keV:.2f} keV")
 print(f"Tenth-width (10%):       {tenth_width_keV:.2f} keV")
+print(f"half-width / Tenth-width:{(fwhm_keV / tenth_width_keV):.2f}")
+print(f"Tenth-width / half-width:{(tenth_width_keV / fwhm_keV):.2f}")
 print(f"Compton edge position:   {E_compton_edge_keV:.2f} keV")
 print(f"Backscatter line pos.:   {E_backscatter_keV:.2f} keV")
 print(f"Photopeak line content:  {N_photopeak:.2f} counts")
-print(f"Compton continuum cont.: {N_compton_continuum:.2f} counts")
+print(f"Integrated Compton content: {N_compton_continuum_fit:.2f} counts")
+print(f"Integrated Compton content with offset added: {N_compton_continuum_fit_with_offset:.2f} counts")
 
 ### Plot for all of these printed values
 fig, (ax_comp, ax_pp) = plt.subplots(
@@ -387,7 +418,7 @@ ax_pp.grid(True, which="both", alpha=0.3)
 # Left panel: Compton region
 # ============================================================
 ax_comp.step(E_axis_keV, y_cs, where="mid", color="C0")
-ax_comp.set_yscale("log")
+#ax_comp.set_yscale("log")
 
 # Compton features
 ax_comp.axvline(E_backscatter_keV, color="C1", linestyle="--", label="Backscatter peak")
@@ -401,8 +432,8 @@ ax_comp.axvspan(
 )
 
 # zoom on Compton region
-ax_comp.set_xlim(E_low_keV, E_compton_edge_keV * 1.05)
-ax_comp.set_ylim(1, 100)
+ax_comp.set_xlim(E_low_keV - 20, E_compton_edge_keV * 1.05)
+ax_comp.set_ylim(0, 60)
 
 ax_comp.set_xlabel(r"$E_{\mathrm{dep}}$ (keV)")
 ax_comp.set_title("Compton region")
@@ -423,29 +454,96 @@ fig.savefig("build/Cs_analysis_twopanel.pdf", bbox_inches="tight")
 
 
 ##### Next task
+# We now the full energy efficiency with efficiency_powerlaw(E, a_fit, b_fit)
 
 Ba_channels, Ba_time = read_spe("data/Ba_Akram_Lukas.Spe")
 
 Ba_channels_corrected = subtract_background(Ba_channels, Ba_time, background_channels, background_time)
+E_axis_keV = a * Ba_channels_corrected + b
+
+peaks_idx = pick_calibration_peaks(Ba_channels_corrected, prominence=35, distance=15, savepath="build/Ba_pick_peaks.pdf")
+picked_peaks = [1, 3, 4, 5, 6]
+peak_channels = peaks_idx[picked_peaks].astype(int)
+
 fig, ax = plot_spectrum(
     Ba_channels_corrected,
     calibration=(a, b),
     logy=True,
-    title="Ba — Calibrated.",
+    title="Ba with marked peaks for Aktivity calculation.",
+    peaks_idx=peak_channels,
+    matching_energies= a * peak_channels + b,
     savepath="build/Ba.pdf"
 )
+
+activitys = []
+I_gamma = [0.329, 0.0716, 0.1834, 0.6205, 0.0894] # https://www.radiacode.com/isotope/ba-133?lang=de
+
+
+for i, peak_position in enumerate(peak_channels):
+    E_i = a * peak_channels[i] + b
+    I_gamma_i = I_gamma[i]
+    N_line, _, _ = line_content_sideband(
+        spectrum=Ba_channels_corrected,
+        peak_center_idx=peak_position,
+        peak_half_width=15,
+        sideband_width=10,
+        sideband_gap=4,
+        plot_diagnostics=False, # set to true to see how the sideband background was calculated
+        savepath=f"build/sideband_Ba_peaknumber_{picked_peaks[i]}",
+        energy=E_i
+    )
+    eps_i = efficiency_powerlaw(E_i, a_fit, b_fit)
+    A_i = N_line / (I_gamma_i * eps_i * Ba_time)
+    activitys.append(A_i)
+    print(f"Activity for energy line {E_i:.2f} is {A_i:.2f}")
+    print(f"Its line content is {N_line:.0f}")
+A_mean = np.mean(activitys)
+A_std  = np.std(activitys)
+print(f"Mean: {A_mean:.2f}")
+print(f"Std: {A_std:.2f}")
+
+print("Without the first value")
+print(f"Mean: {np.mean(activitys[1:]):.2f}")
+print(f"Std: {np.std(activitys[1:]):.2f}")
 
 
 
 ##### Next task
 
-unknown_channels, unknown_time = read_spe("data/Ba_Akram_Lukas.Spe")
+unknown_channels, unknown_time = read_spe("data/unknown_Akram_Lukas.Spe")
 
 unknown_channels_corrected = subtract_background(unknown_channels, unknown_time, background_channels, background_time)
+E_axis_keV = a * Ba_channels_corrected + b
+
+peaks_idx = pick_calibration_peaks(unknown_channels_corrected, prominence=100, distance=15, savepath="build/unknown_pick_peaks.pdf")
+picked_peaks = [3, 7, 10, 11, 12, 13, 14, 15]
+peak_channels = peaks_idx[picked_peaks].astype(int)
+
 fig, ax = plot_spectrum(
     unknown_channels_corrected,
     calibration=(a, b),
     logy=True,
     title="unknown — Calibrated.",
+    peaks_idx=peak_channels,
+    matching_energies= a * peak_channels + b,
     savepath="build/unknown.pdf"
 )
+
+print("Peaks at energy 77, 92 and 960 keV have bad sideband calculation because there are other peaks in there side band region. Keep in mind!!!")
+for i, peak_position in enumerate(peak_channels):
+    E_i = a * peak_channels[i] + b
+    N_line, _, _ = line_content_sideband(
+        spectrum=unknown_channels_corrected,
+        peak_center_idx=peak_position,
+        peak_half_width=15,
+        sideband_width=10,
+        sideband_gap=4,
+        plot_diagnostics=False, # set to true to see how the sideband background was calculated
+        savepath=f"build/sideband_unknown_peaknumber_{picked_peaks[i]}",
+        energy=E_i
+    )
+    #eps_i = efficiency_powerlaw(E_i, a_fit, b_fit)
+    #A_i = N_line / (I_gamma_i * eps_i * Ba_time)
+    #activitys.append(A_i)
+    #print(f"Activity for energy line {E_i:.2f} is {A_i:.2f}")
+    print(f"Line content for energy {E_i:.2f} is {N_line:.0f}")

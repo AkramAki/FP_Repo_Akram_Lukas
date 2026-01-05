@@ -7,28 +7,6 @@ detection probability, and analyse characteristic spectral structures of monoene
 $\gamma$ radiation. The relevant physical processes are discussed below.
 
 
-\subsection{Photoelectric Effect}
-In the photoelectric effect, an incident $\gamma$ photon is completely absorbed by a
-bound atomic electron, which is ejected from the atom with kinetic energy
-\begin{equation}
-  E_e = E_\gamma - E_\text{B},
-\end{equation}
-where $E_\text{B}$ denotes the binding energy of the electron.
-The vacancy in the atomic shell is subsequently filled by outer electrons, leading to the
-emission of characteristic X-rays or Auger electrons, whose energies are typically absorbed
-locally in the detector.
-
-As a result, the full photon energy is deposited within the detector crystal, making the
-photoelectric effect the primary mechanism responsible for the formation of the photopeak
-in $\gamma$ spectra.
-The probability of photoelectric absorption increases strongly with the atomic number $Z$
-of the absorber material and decreases rapidly with increasing photon energy.
-
-For germanium detectors, the photoelectric effect dominates at low $\gamma$ energies and
-is essential for achieving high full-energy detection probabilities and precise energy
-measurements.
-
-
 \subsection{Interaction of Photons with Matter and the Extinction Coefficient}
 Photons interacting with matter are attenuated according to the exponential law
 \begin{equation}
@@ -59,6 +37,24 @@ kinematic threshold of
 \begin{equation}
   E_\gamma = 2 m_e c^2 \approx \qty{1.022}{\mega\electronvolt}.
 \end{equation}
+
+
+\subsection{Photoelectric Effect}
+In the photoelectric effect, an incident $\gamma$ photon is completely absorbed by a
+bound atomic electron, which is ejected from the atom with kinetic energy
+\begin{equation}
+  E_e = E_\gamma - E_\text{B},
+\end{equation}
+where $E_\text{B}$ denotes the binding energy of the electron.
+The vacancy in the atomic shell is subsequently filled by outer electrons, leading to the
+emission of characteristic X-rays or Auger electrons, whose energies are typically absorbed
+locally in the detector.
+
+As a result, the full photon energy is deposited within the detector crystal, making the
+photoelectric effect the primary mechanism responsible for the formation of the photopeak
+in $\gamma$ spectra.
+The probability of photoelectric absorption increases strongly with the atomic number $Z$
+of the absorber material and decreases rapidly with increasing photon energy.
 
 
 \subsection{Compton Scattering and Differential Cross Section}
@@ -93,6 +89,35 @@ Klein--Nishina differential cross section,
 \end{equation}
 where $r_e$ is the classical electron radius.
 This angular dependence directly shapes the Compton continuum observed in measured spectra.
+
+In many detector applications the scattering angle is not measured directly; instead, the deposited
+energy $E$ in the detector is observed. Using the Compton relation
+$E'_\gamma = \frac{E_\gamma}{1 + \frac{E_\gamma}{m_e c^2}(1-\cos\theta)}$ and the energy transfer
+$E = E_\gamma - E'_\gamma$, the angle $\theta$ can be eliminated in favour of $E$.
+The corresponding energy-differential cross section follows from a change of variables,
+\begin{equation}
+  \frac{\mathrm{d}\sigma}{\mathrm{d}E}
+  = \frac{\mathrm{d}\sigma}{\mathrm{d}\Omega}\,
+    \frac{\mathrm{d}\Omega}{\mathrm{d}E},
+  \qquad
+  \mathrm{d}\Omega = 2\pi \sin\theta\,\mathrm{d}\theta,
+\end{equation}
+which yields the Klein--Nishina distribution written as a function of the electron energy $E$:
+\begin{equation}
+  \frac{\mathrm{d}\sigma}{\mathrm{d}E}
+  = \frac{3}{8}\,\sigma_{\mathrm{Th}}\,
+    \frac{1}{m_e c^2}\left[
+      2
+      + \left(\frac{E}{E_\gamma - E}\right)^2
+      \left(
+        1 + \frac{E_\gamma - E}{E_\gamma}
+        - 2\,\frac{E_\gamma - E}{E}
+      \right)
+    \right],
+  \label{eq:kn_dsig_dE}
+\end{equation}
+with $\sigma_{\mathrm{Th}}$ the Thomson cross section and $m_e c^2$ the electron rest energy.
+
 
 
 \subsection{Pair Production}
@@ -269,7 +294,7 @@ the interaction and absorption processes within the detector material:
 \begin{equation}
   P_\text{det}(E)
   =
-  \frac{\Omega}{4\pi}
+  \frac{4\pi}{\Omega}
   \cdot
   \varepsilon_\text{FE}(E).
 \end{equation}
