@@ -110,6 +110,11 @@ T_pol=T[32:T_max_ind]
 def lin(x,m,a):
     return m*x+a
 
+# Print values for polarization method
+print("Polarization method data points: ")
+for t, i in zip(T_pol, I_pol):
+    print(rf" {t:.1f} & {1/t:.3e} & {np.log(noms(i)):.1f} \pm {stds((unp.log(i))):.1f} \\")
+
 params_pol, covariance_matrix_pol = curve_fit(lin, 1/T_pol, np.log(noms(I_pol)),sigma=stds(unp.log(I_pol)))
 
 uncertainties_pol = np.sqrt(np.diag(covariance_matrix_pol))
@@ -155,6 +160,11 @@ Int = Int_i[32:T_max_ind]
 Y = unp.log(Int / I_int)
 X = 1 / T_int
 
+
+# print important values for integral method
+print("Integration method values: ")
+for i, t, F in zip(I_int, T_int, Int):
+    print(rf" {t:.1f} & {1/t:.3e} & {np.log(noms(i)):.1f} \pm {stds((unp.log(i))):.1f} & {F:.1f} & {np.log(noms(F/i)):.1f} \pm {stds((unp.log(F/i))):.1f} \\")
 
 params_int, covariance_matrix_int = curve_fit(lin, X, noms(Y),sigma=stds(Y))
 
@@ -258,7 +268,7 @@ I_sig=I-uf(T,*params)
 # Print background corrected current
 print("Background corrected current: ")
 for t,i in zip(T,I_sig):
-    print(f" {t} \t {i} \n")
+    print(rf" {t:.1f} & {noms(i):.1f} $\pm$ {stds(i):.1f} \\")
 
 
 # Plot current without background
@@ -284,6 +294,11 @@ T_pol=T[15:T_max_ind]
 # Fit background
 def lin(x,m,a):
     return m*x+a
+
+# Print values for polarization method
+print("Polarization method data points: ")
+for t, i in zip(T_pol, I_pol):
+    print(rf" {t:.1f} & {1/t:.3e} & {np.log(noms(i)):.1f} \pm {stds((unp.log(i))):.1f} \\")
 
 params_pol, covariance_matrix_pol = curve_fit(lin, 1/T_pol, np.log(noms(I_pol)),sigma=stds((unp.log(I_pol))))
 
@@ -325,6 +340,10 @@ I_int = I_sig[15:T_max_ind]
 T_int = T[15:T_max_ind]
 Int = Int_i[15:T_max_ind]
 
+# print important values for integral method
+print("Integration method values: ")
+for i, t, F in zip(I_int, T_int, Int):
+    print(rf" {t:.1f} & {1/t:.3e} & {np.log(noms(i)):.1f} \pm {stds((unp.log(i))):.1f} & {F:.1f} & {np.log(noms(F/i)):.1f} \pm {stds((unp.log(F/i))):.1f} \\")
 
 
 # Define x and y for fitting

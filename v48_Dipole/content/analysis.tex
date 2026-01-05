@@ -39,7 +39,89 @@ The measured depolarization current with background fit is depicted in \autoref{
 This background is then removed from the measured current to obtain the depolarization current. 
 The corresponding values are listed in \autoref{tab:Current_1_no_background} and the resulting plot is shown in \autoref{fig:Current_1_no_background}. 
 
-%%% CORR: table of those values
+
+\begin{longtblr}[
+    % \centering
+    caption={Background-corrected depolarization current values at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.},
+    label={tab:Current_1_no_background},
+    ]
+    % \sisetup{table-format = 3.1}
+    % \begin{tblr}%  
+    {      
+        colspec = {S[table-format = 3.1] Q[c, mode=math]},
+        row{1} = {guard, mode = math},
+        }
+        \toprule
+        T \mathbin{/} \unit{\kelvin} & I \mathbin{/} \unit{\pico\ampere} \\
+        \midrule
+        203.1 &  0.12\pm0.16  \\
+        202.5 &  0.14\pm0.16  \\
+        202.5 &  0.13\pm0.16  \\
+        202.7 &  0.11\pm0.16  \\
+        203.0 &  0.08\pm0.16  \\
+        203.3 &  0.06\pm0.16  \\
+        203.7 &  0.03\pm0.17  \\
+        204.0 &  0.03\pm0.17  \\
+        204.5 &  0.01\pm0.17  \\
+        205.1 &  0.01\pm0.18  \\
+        205.5 &  -0.00\pm0.18  \\
+        206.1 &  -0.02\pm0.19  \\
+        206.7  &  -0.02\pm0.19  \\
+        207.5 &  -0.03\pm0.20  \\
+        208.2  &  -0.04\pm0.20  \\
+        209.0 &  -0.05\pm0.21  \\
+        210.0 &  -0.06\pm0.22  \\
+        211.2  &  -0.07\pm0.23  \\
+        212.5 &  -0.08\pm0.25  \\
+        214.1 &  -0.09\pm0.26  \\
+        216.0 &  -0.10\pm0.28  \\
+        218.0 &  -0.10\pm0.31  \\
+        220.45 &  -0.12\pm0.34  \\
+        222.5 &  -0.1\pm0.4  \\
+        224.6 &  -0.2\pm0.4  \\
+        226.7  &  -0.0\pm0.4  \\
+        228.7  &  -0.1\pm0.5  \\
+        230.8  &  -0.1\pm0.5  \\
+        232.8  &  -0.1\pm0.6  \\
+        234.7  &  -0.0\pm0.6  \\
+        236.5 &  0.0\pm0.6  \\
+        238.5 &  0.1\pm0.7  \\
+        240.5 &  0.2\pm0.7  \\
+        242.2  &  0.4\pm0.8  \\
+        244.0 &  0.6\pm0.8  \\
+        245.8  &  0.9\pm0.9  \\
+        247.6 &  1.2\pm0.9  \\
+        249.3  &  1.6\pm1.0  \\
+        251.0 &  2.2\pm1.0  \\
+        252.7  &  2.6\pm1.1  \\
+        254.3  &  3.2\pm1.1  \\
+        256.0   &  3.7\pm1.2  \\
+        257.7 &  4.1\pm1.3  \\
+        259.3 &  4.2\pm1.3  \\
+        260.8  &  4.1\pm1.4  \\
+        262.3  &  3.6\pm1.4  \\
+        264.0   &  2.9\pm1.5  \\
+        265.5 &  2.3\pm1.6  \\
+        267.0 &  1.4\pm1.6  \\
+        268.5 &  0.8\pm1.7  \\
+        267.0 &  0.3\pm1.8  \\
+        271.5 &  0.0\pm1.9  \\
+        272.8  &  -0.1\pm1.9  \\
+        274.2 &  -0.3\pm2.0  \\
+        275.5   &  -0.3\pm2.1  \\
+        277.0   &  -0.4\pm2.2  \\
+        278.5 &  -0.3\pm2.2  \\
+        279.8  &  -0.3\pm2.3  \\
+        281.3  &  -0.3\pm2.4  \\
+        282.7 &  -0.2\pm2.5  \\
+        284.0  &  -0.2\pm2.6  \\
+        285.3  &  -0.2\pm2.7  \\
+        286.8  &  -0.3\pm2.8  \\
+        288.3  &  -0.3\pm2.9  \\
+        \bottomrule
+    % \end{tblr}
+\end{longtblr}
+
 \begin{figure}
    \centering
    \includegraphics[width =0.7\textwidth]{build/Current1_no background.pdf}
@@ -51,10 +133,39 @@ The corresponding values are listed in \autoref{tab:Current_1_no_background} and
 The filtered current is then used to determine the activation energy $W$ according to the Polarizaiton method explained in \autoref{sec:theory}
 by fitting 
 \begin{equation*}
-    \ln(I)=\frac{m}{T}+n
+    \ln(I/1\,\unit{\ampere})=\frac{m}{T}+n
 \end{equation*}
 in the range $T\in[240.45\,\unit{\kelvin},T_{\text{max}}=259.25\,\unit{\kelvin}]$,
 where $T_{\text{max}}$ is the Temperature corresponding to the maximum depolarization current. 
+The corresponding values are shown in \autoref{tab:Polarization_method_1}.
+\begin{longtblr}[
+        % \centering
+        caption={Values used for the polarization method at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.},
+        label={tab:Polarization_method_1},
+        ]
+        % \sisetup{table-format = 3.1}
+        % \begin{tblr}%  
+        {      
+            colspec = {S[table-format = 3.1] S[table-format = 3.1] Q[c, mode=math]},
+            row{1} = {guard, mode = math},
+            }
+            \toprule
+            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & \ln(I/1\,\unit{\ampere})\\
+            \midrule
+            240.4 & 4.159 & -1.6 \pm 3.6 \\
+            242.2 & 4.128 & -1.0 \pm 2.1 \\
+            244.0 & 4.098 & -0.6 \pm 1.4 \\
+            245.8 & 4.068 & -0.1 \pm 1.0 \\
+            247.6 & 4.038 & 0.2 \pm 0.8 \\
+            249.3 & 4.010 & 0.5 \pm 0.6 \\
+            251.0 & 3.983 & 0.8 \pm 0.5 \\
+            252.7 & 3.956 & 1.0 \pm 0.4 \\
+            254.3 & 3.932 & 1.2 \pm 0.4 \\
+            256.0 & 3.905 & 1.3 \pm 0.3 \\
+            257.6 & 3.881 & 1.4 \pm 0.3 \\
+            \bottomrule
+        % \end{tblr}
+\end{longtblr}
 This fit is shown in \autoref{fig:Polarization_method1}.
 \begin{figure}
    \centering
@@ -63,12 +174,11 @@ This fit is shown in \autoref{fig:Polarization_method1}.
    \label{fig:Polarization_method1}
 \end{figure}
 
-%%% CORR: corresponding values
 
 This in turn yields
 \begin{align*}
     m &= -(8114\pm 595)\,\unit{\kelvin}\\
-    n &= 33\pm2 %%% CORR: Unit
+    n &= 33\pm2 
 \end{align*}
 therefore resulting in 
 \begin{equation*}
@@ -114,7 +224,35 @@ The corresponding fit is visualized in \autoref{fig:Integration_method1}.
 \end{figure}
 
 %%% CORR: Table with all values
-
+The values used for the calculations are shown in \autoref{tab:Integration_method_1}. 
+\begin{longtblr}[
+        % \centering
+        caption={Values used for the integration method at $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$.},
+        label={tab:Integration_method_1},
+        ]
+        % \sisetup{table-format = 3.1}
+        % \begin{tblr}%  
+        {      
+            colspec = {S[table-format = 3.1] S[table-format = 3.1] Q[c, mode=math] S[table-format = 2.1] Q[c, mode=math]},
+            row{1} = {guard, mode = math},
+            }
+            \toprule
+            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & I \mathbin{/} \unit{\pico\ampere} & F \mathbin{/} \unit{\pico\ampere\second} & \ln(F/I\cdot1\,\unit{\per\second})\\
+            \midrule
+            240.4 & 4.159 & -1.6 \pm 3.6 & 37.6 & 5.2 \pm 3.6 \\
+            242.2 & 4.128 & -1.0 \pm 2.1 & 37.1 & 4.6 \pm 2.1 \\
+            244.0 & 4.098 & -0.6 \pm 1.4 & 36.3 & 4.2 \pm 1.4 \\
+            245.8 & 4.068 & -0.1 \pm 1.0 & 35.0 & 3.7 \pm 1.0 \\
+            247.6 & 4.038 & 0.2 \pm 0.8 & 33.1 & 3.3 \pm 0.8 \\
+            249.3 & 4.010 & 0.5 \pm 0.6 & 30.7 & 2.9 \pm 0.6 \\
+            251.0 & 3.983 & 0.8 \pm 0.5 & 27.5 & 2.5 \pm 0.5 \\
+            252.7 & 3.956 & 1.0 \pm 0.4 & 23.4 & 2.2 \pm 0.4 \\
+            254.3 & 3.932 & 1.2 \pm 0.4 & 18.8 & 1.8 \pm 0.4 \\
+            256.0 & 3.905 & 1.3 \pm 0.3 & 12.9 & 1.2 \pm 0.3 \\
+            257.6 & 3.881 & 1.4 \pm 0.3 & 6.6 & 0.5 \pm 0.3 \\
+            \bottomrule
+        % \end{tblr}
+\end{longtblr}
 
 
 \subsection{Heating rate $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$}
@@ -145,6 +283,83 @@ The measured depolarization current with background fit is depicted in \autoref{
    \caption{Measured depolarization current $I$ and background fit at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.}
    \label{fig:data_2}
 \end{figure}
+The corrected depolarization current is listed in \autoref{tab:Current_2_no_background} 
+and the resulting plot is shown in \autoref{fig:Current_2_no_background}. 
+\begin{longtblr}[
+    % \centering
+    caption={Background-corrected depolarization current values at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.},
+    label={tab:Current_2_no_background},
+    ]
+    % \sisetup{table-format = 3.1}
+    % \begin{tblr}%  
+    {      
+        colspec = {S[table-format = 3.1] Q[c, mode=math]},
+        row{1} = {guard, mode = math},
+        }
+        \toprule
+        T \mathbin{/} \unit{\kelvin} & I \mathbin{/} \unit{\pico\ampere} \\
+        \midrule
+            214.2 &  0.8 \pm 13.6   \\
+            216.4 &  0.3 \pm 12.2   \\
+            218.4 &  -0.2\pm 11.0   \\
+            220.5 &  -0.7\pm 10.0   \\
+            222.5 &  -0.8\pm 9.1   \\
+            224.5 &  -1.0\pm 8.3   \\
+            226.6 &  0.5 \pm 7.5   \\
+            228.3 &  -0.2\pm 7.0   \\
+            230.2 &  -0.3\pm 6.4   \\
+            232.1 &  -0.2\pm 5.9   \\
+            233.9 &  0.1 \pm 5.5   \\
+            235.7 &  0.7 \pm 5.1   \\
+            237.5 &  0.6 \pm 4.7   \\
+            239.1 &  0.6 \pm 4.4   \\
+            240.8 &  0.6 \pm 4.1   \\
+            242.5 &  0.7 \pm 3.9   \\
+            244.0 &  0.9 \pm 3.7   \\
+            245.6 &  1.0 \pm 3.4   \\
+            247.2 &  1.2 \pm 3.2   \\
+            248.7 &  1.5 \pm 3.1   \\
+            250.2 &  1.8 \pm 2.9   \\
+            251.6 &  2.2 \pm 2.8   \\
+            253.0 &  2.6 \pm 2.6   \\
+            254.5 &  2.9 \pm 2.5   \\
+            255.9 &  3.2 \pm 2.4   \\
+            257.1 &  3.4 \pm 2.3   \\
+            258.4 &  3.4 \pm 2.2   \\
+            259.9 &  3.1 \pm 2.1   \\
+            261.0 &  2.8 \pm 2.0   \\
+            262.3 &  2.3 \pm 1.9   \\
+            263.6 &  1.8 \pm 1.8   \\
+            264.9 &  1.3 \pm 1.8   \\
+            266.1 &  0.7 \pm 1.7   \\
+            267.4 &  0.4 \pm 1.6   \\
+            268.6 &  0.1 \pm 1.6   \\
+            269.9 &  -0.2\pm 1.5   \\
+            271.1 &  -0.2\pm 1.4   \\
+            272.4 &  -0.3\pm 1.4   \\
+            273.6 &  -0.2\pm 1.3   \\
+            274.8 &  -0.2\pm 1.3   \\
+            275.9 &  -0.2\pm 1.3   \\
+            277.0 &  -0.1\pm 1.2   \\
+            278.1 &  -0.1\pm 1.2   \\
+            279.2 &  -0.1\pm 1.1   \\
+            280.2 &  -0.0\pm 1.1   \\
+            281.3 &  0.0 \pm 1.1   \\
+            282.2 &  0.0 \pm 1.1   \\
+            283.3 &  0.1 \pm 1.0   \\
+            284.3 &  0.1 \pm 1.0   \\
+            285.4 &  0.1 \pm 1.0   \\
+            286.4 &  0.1 \pm 0.9   \\
+            287.3 &  0.2 \pm 0.9   \\
+        \bottomrule
+    % \end{tblr}
+\end{longtblr}
+\begin{figure}
+   \centering
+   \includegraphics[width =0.7\textwidth]{build/Current2_no background.pdf}
+   \caption{Background corrected depolarization current at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.}
+   \label{fig:Current_2_no_background}
+\end{figure}
 
 \subsubsection{Polarization method}
 Analogously to the first dataset the activation energy $W$ is determined by fitting in the range $T\in[242.55\,\unit{\kelvin},T_{\text{max}}=258.45\,\unit{\kelvin}]$, 
@@ -158,6 +373,34 @@ which resuls in
 W_{\text{Pol,}2}&=(0.575\pm0.03)\,\unit{\electronvolt} \\
 \tau_{0_{\text{Pol,}2}}&=(4\pm6)\cdot10{-11}\,\unit{\second}
 \end{align*}
+The corresponding values are shown in \autoref{tab:Polarization_method_2}.
+\begin{longtblr}[
+        % \centering
+        caption={Values used for the polarization method at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.},
+        label={tab:Polarization_method_2},
+        ]
+        % \sisetup{table-format = 3.1}
+        % \begin{tblr}%  
+        {      
+            colspec = {S[table-format = 3.1] S[table-format = 3.1] Q[c, mode=math]},
+            row{1} = {guard, mode = math},
+            }
+            \toprule
+            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & \ln(I/1\,\unit{\ampere})\\
+            \midrule
+            242.5 & 4.123 & -0.4 \pm 5.5 \\
+            244.0 & 4.098 & -0.1 \pm 4.2 \\
+            245.6 & 4.071 & -0.0 \pm 3.4 \\
+            247.2 & 4.044 & 0.2 \pm 2.7 \\
+            248.7 & 4.020 & 0.4 \pm 2.0 \\
+            250.2 & 3.996 & 0.6 \pm 1.6 \\
+            251.6 & 3.974 & 0.8 \pm 1.2 \\
+            253.0 & 3.952 & 0.9 \pm 1.0 \\
+            254.5 & 3.929 & 1.1 \pm 0.9 \\
+            255.9 & 3.907 & 1.1 \pm 0.8 \\
+            \bottomrule
+        % \end{tblr}
+\end{longtblr}
 The fit is shown in \autoref{fig:Polarization_method2}.
 \begin{figure}
    \centering
@@ -185,6 +428,35 @@ The corresponding fit is visualized in \autoref{fig:Integration_method2}.
    \caption{Filtered depolarization current and fit according to integration method at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.}
    \label{fig:Integration_method2}
 \end{figure}
+
+The values used for the calculations are shown in \autoref{tab:Integration_method_2}. 
+\begin{longtblr}[
+        % \centering
+        caption={Values used for the integration method at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.},
+        label={tab:Integration_method_2},
+        ]
+        % \sisetup{table-format = 3.1}
+        % \begin{tblr}%  
+        {      
+            colspec = {S[table-format = 3.1] S[table-format = 3.1] Q[c, mode=math] S[table-format = 2.1] Q[c, mode=math]},
+            row{1} = {guard, mode = math},
+            }
+            \toprule
+            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & I \mathbin{/} \unit{\pico\ampere} & F \mathbin{/} \unit{\pico\ampere\second} & \ln(F/I\cdot1\,\unit{\per\second})\\
+            \midrule
+            242.5 & 4.123e-03 & -0.4 \pm 5.5 & 27.5 & 3.7 \pm 5.5 \\
+            244.0 & 4.098e-03 & -0.1 \pm 4.2 & 26.3 & 3.4 \pm 4.2 \\
+            245.6 & 4.071e-03 & -0.0 \pm 3.4 & 24.8 & 3.2 \pm 3.4 \\
+            247.2 & 4.044e-03 & 0.2 \pm 2.7 & 23.0 & 2.9 \pm 2.7 \\
+            248.7 & 4.020e-03 & 0.4 \pm 2.0 & 21.0 & 2.6 \pm 2.0 \\
+            250.2 & 3.996e-03 & 0.6 \pm 1.6 & 18.5 & 2.3 \pm 1.6 \\
+            251.6 & 3.974e-03 & 0.8 \pm 1.2 & 15.7 & 1.9 \pm 1.2 \\
+            253.0 & 3.952e-03 & 0.9 \pm 1.0 & 12.3 & 1.6 \pm 1.0 \\
+            254.5 & 3.929e-03 & 1.1 \pm 0.9 & 8.2 & 1.0 \pm 0.9 \\
+            255.9 & 3.907e-03 & 1.1 \pm 0.8 & 3.9 & 0.2 \pm 0.8 \\
+            \bottomrule
+        % \end{tblr}
+\end{longtblr}
 
 \subsection{Depolarization time}
 From these results, which read
