@@ -1,2 +1,61 @@
 \section{Discussion}
 \label{sec:discussion}
+\subsection{Calibration}
+The linear regression yields 
+\begin{equation*}
+    E(n) = 0.12\,\unit{\kilo\electronvolt} \cdot n -1.024\,\unit{\kilo\electronvolt}\,,
+\end{equation*}
+where the negative offset is likely due to uncertainties in the lower detection limit of the Multi-Channel Analyzer. 
+As visible in \autoref{fig:eu_calibration_assignment} the maximum deviation between calibrated and literature energies is $0.4\,\unit{\kilo\electronvolt}$,
+which is sufficiently small compared to the overall energy range of $100\,\unit{\kilo\electronvolt}$ to $1000\,\unit{\kilo\electronvolt}$ to justify the usage of this linear approximation. 
+
+\subsection{Full-energy detection efficiency}
+The efficiency $\epsilon_{\text{FE}}$ of the detector is fitted as 
+\begin{equation*}
+    \epsilon_{\text{FE}}(E) = a\cdot E^b
+\end{equation*}
+with
+\begin{align*}
+    a &= (5.56\pm 3.82)\,\unit{\per\kilo\electronvolt} \\
+    b &= -1.28 \pm 0.12 \,.
+\end{align*}
+where the large uncertainty in $a$ is due to the lack of data points at lower energies, as values below $150\,\unit{\kilo\electronvolt}$ could not be measured because of the detection limit. 
+Also there is an uncertainty resulting from the estimation of the line contents, but this should be much smaller, as the background is substraced and usually small compared to the peaks. 
+Still, as visualized in \autoref{fig:efficiency_powerlaw}, the fitted curve describes the measured values well. 
+\subsection{Caesium}
+The energies of the characteristic backscatter, compton and photo peaks are determined as
+\begin{align*}
+  E_{\text{photo}} &= \qty{661.64}{\kilo\electronvolt}, \\
+  E_{\text{Compton}} &= \qty{462.25}{\kilo\electronvolt}, \\
+  E_{\text{back}} &= \qty{193.37}{\kilo\electronvolt}.
+\end{align*}
+Theoretically expected is 
+\begin{equation*}
+    E_{\text{Compton,theo}} = \qty{477.3}{\kilo\electronvolt},
+\end{equation*}
+using equation \eqref{eq:compton} with $E_\gamma=662\,\unit{\kilo\electronvolt}$ \cite{Cs137}.
+Therefore the backscatte peak is expected at
+\begin{equation*}
+    E_{\text{back,theo}} = E_\gamma - E_{\text{Compton,theo}}(\pi) = \qty{184.7}{\kilo\electronvolt}.
+\end{equation*}
+While the photo peak matches the literature value very well, the compton peak deviates by a larger margin, 
+this might be due to uncertainties in the fit of the compton continuum, or due to rescattering of high energy photons within the detector. 
+
+\subsection{Barium activity}
+The measured photopeaks of the barium spectrum in \autoref{tab:ba_lines_and_activity} are in good agreement with the literature values from \cite{Ba133},
+and yields the activity
+\[
+  \bar{A} = 833.21 \;\unit{\becquerel}, \qquad
+  \sigma = 36.04 \;\unit{\becquerel}.
+\]
+The uncertainty could probably be reduced if more gamma lines were available in a different energy range, as the result also carries the uncertainties of the efficiency fit.
+
+\subsection{Unknown source}
+From the line energies in \autoref{fig:unknown_overview} the unknown source can be identified as $^{238}$U, as the peaks 
+\begin{align*}
+    E=92.4\,\unit{\kilo\electronvolt}, \\
+    E=185.9\,\unit{\kilo\electronvolt} \\
+    E=242.0\,\unit{\kilo\electronvolt} \\
+\end{align*}
+match the gamma lines of $^{234}$Th \cite{Th234} which is the first product produced by the decay of $^{238}$U, and the other peaks 
+correspond to $^{226}$Ra \cite{Ra226} and $^{214}$Pb \cite{Pb214} which are also part of the decay chain.
