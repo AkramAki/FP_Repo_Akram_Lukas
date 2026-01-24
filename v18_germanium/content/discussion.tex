@@ -40,6 +40,12 @@ Therefore the backscatte peak is expected at
 \end{equation*}
 While the photo peak matches the literature value very well, the compton peak deviates by a larger margin, 
 this might be due to uncertainties in the fit of the compton continuum, or due to rescattering of high energy photons within the detector. 
+The ratio of FWHM to tenth width is slightly smaller than expected for a gaussian peak which has 
+\[
+  \frac{\text{Tenth-width}}{\text{FWHM}} = \frac{\ln(10)}{\ln(2)} = 1.823.
+\]
+This indicates that the peak is slightly narrower in the tails compared to the gaussian. 
+Altough the deviation is small, a more complex peak shape might be more suitable, in order to account for asymmetries as well. 
 
 \subsection{Barium activity}
 The measured photopeaks of the barium spectrum in \autoref{tab:ba_lines_and_activity} are in good agreement with the literature values from \cite{Ba133},
@@ -58,4 +64,15 @@ From the line energies in \autoref{fig:unknown_overview} the unknown source can 
     E=242.0\,\unit{\kilo\electronvolt} \\
 \end{align*}
 match the gamma lines of $^{234}$Th \cite{Th234} which is the first product produced by the decay of $^{238}$U, and the other peaks 
-correspond to $^{226}$Ra \cite{Ra226} and $^{214}$Pb \cite{Pb214} which are also part of the decay chain.
+correspond to $^{226}$Ra \cite{Ra226} and $^{214}$Pb \cite{Pb214} which are also part of the decay chain. 
+From this the complete set of peaks can be identified as follows:
+\begin{enumerate}
+    \item $E=77.0\,\unit{\kilo\electronvolt}$: $^{234\text{m}}$Pa\cite{Pa234}
+    \item $E=92.4\,\unit{\kilo\electronvolt}$: $^{234}$Th
+    \item $E=185.9\,\unit{\kilo\electronvolt}$: $^{226}$Ra
+    \item $E=242.0\,\unit{\kilo\electronvolt}$: $^{214}$Pb
+    \item $E=295.2\,\unit{\kilo\electronvolt}$: $^{214}$Pb\cite{Pb214}
+    \item $E=352.0\,\unit{\kilo\electronvolt}$: $^{214}$Pb\cite{Pb214}
+    \item $E=609.3\,\unit{\kilo\electronvolt}$: $^{214}$Bi\cite{Bi214} 
+    \item $E=960.8\,\unit{\kilo\electronvolt}$: likely $^{214}$Bi\cite{Bi214}
+\end{enumerate}
