@@ -92,14 +92,23 @@ channels, counts, metadata = load_spe_file(spe_file)
 # print("Channel numbers:", channels)
 # print("Counts:", counts)
 
+fig, ax = plt.subplots(1, 1, layout="constrained")
+ax.plot(channels, counts, label="Spectrum Data")
+ax.set_xlabel(r"Channel number")
+ax.set_ylabel(r"Counts")
+ax.legend(loc="best")
+
+fig.savefig("build/Spectrum_raw.pdf")
+
+print("Total count number:", np.sum(counts))
 # cutoff channels at the end where every value is nearly zero
 cutoff_index = 235
-channels = channels[:cutoff_index]
-counts = counts[:cutoff_index]
+channels_cut = channels[:cutoff_index]
+counts_cut = counts[:cutoff_index]
 
 # print again
-# print("Cutoff Channel numbers:", channels)
-# print("Cutoff Counts:", counts)
+# print("Cutoff Channel numbers:", channels_cut)
+# print("Cutoff Counts:", counts_cut)
 
 
 # load calibration from txt (ignore header line)
@@ -113,7 +122,7 @@ def f(x,a,b):
 params, cov = curve_fit(f, channel_calib, delay)
 a= unp.uarray(params[0], np.sqrt(cov[0][0]))
 b= unp.uarray(params[1], np.sqrt(cov[1][1]))
-print(f"Calibration parameters: time per channel a = {a},Offset b = {b}")
+print(f"Calibration parameters: time per channel a = {a}, Offset b = {b}")
 
 # linspace for fitting
 x=np.linspace(channel_calib[0],channel_calib[-1],200)
@@ -130,10 +139,10 @@ fig.savefig("build/Calibration.pdf")
 
 # Convert channels to time using calibration
 t = f(channels, noms(a), noms(b))
-
+t_cut = f(channels_cut, noms(a), noms(b))
 # Plot spectrum
 fig, ax = plt.subplots(1, 1, layout="constrained")
-ax.plot(t, counts, label="Spectrum Data")
+ax.plot(t_cut, counts_cut, label="Spectrum Data")
 ax.set_xlabel(r"Time $\mathbin{/} \unit{\us}$")
 ax.set_ylabel(r"Counts")
 ax.legend(loc="best")
@@ -141,8 +150,8 @@ ax.legend(loc="best")
 fig.savefig("build/Spectrum.pdf")
 
 # fit with exponential decay
-def exp(x, A, tau):
-    return A * np.exp(-x / tau)
+def exp(x, A, tau, U):
+    return A * np.exp(-x / tau) + U
 
 # filter zeros at the beginning for fitting
 valid_indices = np.cumsum(counts) > 0
@@ -156,11 +165,11 @@ peak_indices = (t_fit < peak_start) | (t_fit > peak_end)
 t_fit = t_fit[peak_indices]
 counts_fit = counts_fit[peak_indices]
 
-params, cov = curve_fit(exp, t_fit, counts_fit, p0=[100, 5])
+params, cov = curve_fit(exp, t_fit, counts_fit, p0=[100, 5,1])
 uncertainties = np.sqrt(np.diag(cov))
 
 print("exp decay params: ")
-for name, value, uncertainty in zip("At", params, uncertainties):
+for name, value, uncertainty in zip("AtU", params, uncertainties):
     print(f"{name} = {value} ± {uncertainty}")
 
 # print values that are used for fitting
@@ -170,8 +179,10 @@ for name, value, uncertainty in zip("At", params, uncertainties):
 
 # Plot spectrum in log scale, lines at filtered regions
 fig, ax = plt.subplots(1, 1, layout="constrained")
-ax.semilogy(t, counts, label="Spectrum Data")
-ax.semilogy(t_fit, exp(t_fit, *params), label="Exponential Fit")
+ax.semilogy(t_cut, counts_cut, ".", markersize=3, label="Spectrum Data")
+# Limit fit plot to t_cut range
+t_fit_plot = t_fit[t_fit <= np.max(t_cut)]
+ax.semilogy(t_fit_plot, exp(t_fit_plot, *params), label="Exponential Fit", linewidth=2)
 ax.axvspan(0, f(valid_indices[-1], noms(a), noms(b)), color='blue', alpha=0.3, label="Excluded Leading Zeros")
 ax.axvspan(f(peak_start, noms(a), noms(b)), f(peak_end, noms(a), noms(b)), color='red', alpha=0.3, label="Excluded Peak Region")
 ax.set_xlabel(r"Time $\mathbin{/} \unit{\us}$")
