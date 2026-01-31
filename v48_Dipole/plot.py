@@ -139,7 +139,8 @@ fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.plot(1/T_pol,np.log(noms(I_pol)),".",label="Filtered current")
 # ax.plot(x_pol,np.exp(params_pol[0]/x_pol+params_pol[1]),"b",label="Activation fit")
 ax.plot(1/x_pol,params_pol[0]*(1/x_pol)+params_pol[1],"b",label="Activation fit")
-
+ax.set_xlabel(r"$\frac{1}{T} \mathbin{/} \unit{\kelvin^{-1}}$")
+ax.set_ylabel(r"$\ln\left(\frac{I}{\unit{\pico\ampere}}\right)$")
 
 ax.legend(loc="best")
 
@@ -186,6 +187,8 @@ fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.plot(X, noms(Y), ".", label="Data (ln(Int/I))")
 ax.plot(X_fit, Y_fit, "b", label="Activation fit")
 # ax.plot(x_int,Int/np.exp(params_int[0]/x_int+params_int[1]),"b",label="Activation fit")
+ax.set_xlabel(r"$\frac{1}{T} \mathbin{/} \unit{\kelvin^{-1}}$")
+ax.set_ylabel(r"$\ln\left(\frac{F}{I}\right)$")
 
 ax.legend(loc="best")
 
@@ -324,6 +327,8 @@ fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.plot(1/T_pol,noms(unp.log(I_pol)),".",label="Filtered current")
 # ax.plot(x_pol,np.exp(params_pol[0]/x_pol+params_pol[1]),"b",label="Activation fit")
 ax.plot(1/x_pol,params_pol[0]*(1/x_pol)+params_pol[1],"b",label="Activation fit")
+ax.set_xlabel(r"$\frac{1}{T} \mathbin{/} \unit{\kelvin^{-1}}$")
+ax.set_ylabel(r"$\ln\left(\frac{I}{\unit{\pico\ampere}}\right)$")
 
 ax.legend(loc="best")
 
@@ -371,7 +376,8 @@ fig, ax = plt.subplots(1, 1, layout="constrained")
 ax.plot(X, noms(Y), ".", label="Data (ln(Int/I))")
 ax.plot(X_fit, Y_fit, "b", label="Activation fit")
 # ax.plot(x_int,Int/np.exp(params_int[0]/x_int+params_int[1]),"b",label="Activation fit")
-
+ax.set_xlabel(r"$\frac{1}{T} \mathbin{/} \unit{\kelvin^{-1}}$")
+ax.set_ylabel(r"$\ln\left(\frac{F}{I}\right)$")
 
 ax.legend(loc="best")
 

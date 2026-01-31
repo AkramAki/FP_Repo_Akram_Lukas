@@ -133,7 +133,7 @@ The corresponding values are listed in \autoref{tab:Current_1_no_background} and
 The filtered current is then used to determine the activation energy $W$ according to the Polarizaiton method explained in \autoref{sec:theory}
 by fitting 
 \begin{equation*}
-    \ln(I/1\,\unit{\ampere})=\frac{m}{T}+n
+    \ln(I/1\,\unit{\pico\ampere})=\frac{m}{T}+n
 \end{equation*}
 in the range $T\in[240.45\,\unit{\kelvin},T_{\text{max}}=259.25\,\unit{\kelvin}]$,
 where $T_{\text{max}}$ is the Temperature corresponding to the maximum depolarization current. 
@@ -150,7 +150,7 @@ The corresponding values are shown in \autoref{tab:Polarization_method_1}.
             row{1} = {guard, mode = math},
             }
             \toprule
-            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & \ln(I/1\,\unit{\ampere})\\
+            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & \ln(I/1\,\unit{\pico\ampere})\\
             \midrule
             240.4 & 4.159 & -1.6 \pm 3.6 \\
             242.2 & 4.128 & -1.0 \pm 2.1 \\
@@ -194,6 +194,7 @@ which results in
 \begin{equation*}
 \tau_{0_{\text{Pol,}1}}=(1.3\pm3.0)\cdot10^{-13}\unit{\second}
 \end{equation*}
+where $T_{\text{max}}=259.25\,\unit{\kelvin}$ and $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$ were used as introduced before. 
 
 \subsubsection{Integration method}
 Analogously the activation energy $W$ is obtained using the integration method shown in \autoref{sec:theory}, by determining the integral
@@ -214,7 +215,7 @@ and results in
     W_{\text{Int,}1}&=(1.51\pm0.09)\,\unit{\electronvolt}  \\
     \tau_{0_{\text{Int,}1}}&=(1\pm4)\cdot10^{-29}\,\unit{\second} 
 \end{align*}
-where $tau_0$ was once again determined using \eqref{eq:tau0}. 
+where $\tau_0$ was once again determined using \eqref{eq:tau0} using $T_{\text{max}}=259.25\,\unit{\kelvin}$ and $b_1=(1.69\pm0.04)\,\unit{\kelvin\per\minute}$. 
 The corresponding fit is visualized in \autoref{fig:Integration_method1}.
 \begin{figure}
    \centering
@@ -373,12 +374,13 @@ which resuls in
 W_{\text{Pol,}2}&=(0.575\pm0.03)\,\unit{\electronvolt} \\
 \tau_{0_{\text{Pol,}2}}&=(4\pm6)\cdot10{-11}\,\unit{\second}
 \end{align*}
+where $T_{\text{max}}=258.45\,\unit{\kelvin}$ and $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$ were used. 
 The corresponding values are shown in \autoref{tab:Polarization_method_2}.
 \begin{longtblr}[
         % \centering
         caption={Values used for the polarization method at $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$.},
         label={tab:Polarization_method_2},
-        ]
+]
         % \sisetup{table-format = 3.1}
         % \begin{tblr}%  
         {      
@@ -386,7 +388,7 @@ The corresponding values are shown in \autoref{tab:Polarization_method_2}.
             row{1} = {guard, mode = math},
             }
             \toprule
-            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & \ln(I/1\,\unit{\ampere})\\
+            T \mathbin{/} \unit{\kelvin} & 1/T \cdot 10^{-3} \mathbin{/} \unit{\kelvin^{-1}} & \ln(I/1\,\unit{\pico\ampere})\\
             \midrule
             242.5 & 4.123 & -0.4 \pm 5.5 \\
             244.0 & 4.098 & -0.1 \pm 4.2 \\
@@ -420,7 +422,7 @@ in the range $T\in$, which results in
     W_{\text{Int,}2}&=(1.68\pm0.16)\,\unit{\electronvolt}  \\
     \tau_{0_{\text{Int,}2}}&=(0.5\pm3.5)\cdot10^{-35}\,\unit{\second}
 \end{align*}
-where $tau_0$ was once again determined using \eqref{eq:tau0}. 
+where $\tau_0$ was once again determined using \eqref{eq:tau0} and $T_{\text{max}}=258.45\,\unit{\kelvin}$ and $b_2=(1.44\pm0.05)\,\unit{\kelvin\per\minute}$. 
 The corresponding fit is visualized in \autoref{fig:Integration_method2}.
 \begin{figure}
    \centering
