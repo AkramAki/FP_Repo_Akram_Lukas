@@ -2,9 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 
-# Function to read the spe files 
+# Function to read the spe files
 # The channel meaning the index of the spectrum array is proportional to Energy
-# The number at each position in the spectrum array indicates the counts for that channel. 
+# The number at each position in the spectrum array indicates the counts for that channel.
+
+
 def read_spe(filename):
     """
     Plot a .Spe spectrum from filepath.
@@ -13,7 +15,7 @@ def read_spe(filename):
     ----------
     filepath : str
         Path to .Spe file.
-    
+
     Returns
     -------
     spectrum: float
@@ -32,8 +34,9 @@ def read_spe(filename):
 
             if line.startswith("$MEAS_TIM"):
                 lt_rt = next(f).strip().split()
-                live_time = float(lt_rt[0]) # there are two time values where one is the live time and the other the real time thus with dead times
-            
+                # there are two time values where one is the live time and the other the real time thus with dead times
+                live_time = float(lt_rt[0])
+
             # Enter data block (In Spe file after $DATA there are two numbers indicating channel start and end.
             # The data then comes until another section starts with $)
             if line.startswith("$DATA"):
@@ -62,19 +65,23 @@ def read_spe(filename):
 
     return spectrum, live_time
 
+
 def subtract_background(spec_sig, t_sig, spec_bg, t_bg):
     """
     Scale background spectrum to the live time of the signal spectrum and subtract.
     Returns background-corrected spectrum (float array).
     """
     if t_sig is None or t_bg is None:
-        raise ValueError("Need live times t_sig and t_bg for background subtraction.")
+        raise ValueError(
+            "Need live times t_sig and t_bg for background subtraction.")
 
     scale = t_sig / t_bg
     return spec_sig.astype(float) - scale * spec_bg.astype(float)
 
-# This function calculates and x-weighted average to refine the x position of our peak because channels are discrete. 
+# This function calculates and x-weighted average to refine the x position of our peak because channels are discrete.
 # This should improve the energy fitting if needed. For now kept it out
+
+
 def centroid_in_window(ch, y, center_idx, half_window=20):
     """
     Compute a simple centroid around a peak near center_idx using a window.
@@ -93,6 +100,7 @@ def centroid_in_window(ch, y, center_idx, half_window=20):
     if s <= 0:
         return float(center_idx)
     return float((xw * yw).sum() / s)
+
 
 def pick_calibration_peaks(
     spectrum_corr,
@@ -126,7 +134,9 @@ def pick_calibration_peaks(
     ax.set_facecolor('gainsboro')
 
     # mark peaks and label with running number
-    ax.plot(peaks_idx, y[peaks_idx], "x")
+    ax.plot(peaks_idx, y[peaks_idx], "x",
+            label="Peak candidates for energy calibration")
+    ax.legend()
     for k, p in enumerate(peaks_idx):
         ax.text(p, y[p], f"{k}", fontsize=9, va="bottom", ha="center")
 
@@ -134,9 +144,10 @@ def pick_calibration_peaks(
 
     return peaks_idx
 
+
 def plot_spectrum(
     spectrum,
-    *,                             # force keywords 
+    *,                             # force keywords
     calibration=None,              # None or (a, b) with E_keV = a*ch + b
     logy=True,
     xlim=None,
@@ -147,7 +158,8 @@ def plot_spectrum(
     show_grid=True,
     step_where="mid",
     peaks_idx=None,                # array-like of int indices in channel-space
-    matching_energies=None,                   # list/array of indices into peaks_idx to highlight
+    # list/array of indices into peaks_idx to highlight
+    matching_energies=None,
     marker_style="x",
 ):
     """
@@ -223,10 +235,12 @@ def plot_spectrum(
         if matching_energies is not None:
             matching_energies = np.asarray(matching_energies, dtype=float)
             if matching_energies.size != peaks_idx.size:
-                raise ValueError("matching_energies must have the same length as peaks_idx.")
+                raise ValueError(
+                    "matching_energies must have the same length as peaks_idx.")
 
             for xi, yi, Ei in zip(px, py, matching_energies):
-                ax.text(xi, yi, f"{Ei:.1f} keV", fontsize=9, va="bottom", ha="center")
+                ax.text(xi, yi, f"{Ei:.1f} keV", fontsize=9,
+                        va="bottom", ha="center")
 
     if label is not None:
         ax.legend()
@@ -235,9 +249,6 @@ def plot_spectrum(
         fig.savefig(savepath, bbox_inches="tight")
 
     return fig, ax
-
-import numpy as np
-
 
 
 def activity_at_time(A0_bq, t0, t, half_life_s):
@@ -264,8 +275,9 @@ def activity_at_time(A0_bq, t0, t, half_life_s):
     lam = np.log(2.0) / half_life_s
     return float(A0_bq * np.exp(-lam * dt_s))
 
+
 def omega(d, R):
-    return(2 * np.pi * (1 - (d / np.sqrt(d * d + R * R))))
+    return (2 * np.pi * (1 - (d / np.sqrt(d * d + R * R))))
 
 
 def full_energy_efficiency(N_photopeak, A_bq, t_live_s, I_gamma):
@@ -292,7 +304,7 @@ def full_energy_efficiency(N_photopeak, A_bq, t_live_s, I_gamma):
     denom = A_bq * t_live_s * I_gamma
     if denom <= 0:
         raise ValueError("A_bq, t_live_s, and I_gamma must be positive.")
-    return float(N_photopeak / denom ) 
+    return float(N_photopeak / denom)
 
 
 def line_content_sideband(
@@ -355,8 +367,10 @@ def line_content_sideband(
     right_lo = min(p_hi + sideband_gap + 1, n - 1)
     right_hi = min(right_lo + sideband_width - 1, n - 1)
 
-    left_band = y[left_lo:left_hi + 1] if left_hi >= left_lo else np.array([], float)
-    right_band = y[right_lo:right_hi + 1] if right_hi >= right_lo else np.array([], float)
+    left_band = y[left_lo:left_hi +
+                  1] if left_hi >= left_lo else np.array([], float)
+    right_band = y[right_lo:right_hi +
+                   1] if right_hi >= right_lo else np.array([], float)
 
     side = np.concatenate([left_band, right_band])
     if side.size == 0:
@@ -383,8 +397,9 @@ def line_content_sideband(
         ax.axvspan(p_lo, p_hi, alpha=0.2, label="Peak window")
 
         # sidebands
-        ax.axvspan(left_lo, left_hi, alpha=0.2, label="Sidebands")
-        ax.axvspan(right_lo, right_hi, alpha=0.2)
+        ax.axvspan(left_lo, left_hi, alpha=0.2,
+                   label="Sidebands", color="green")
+        ax.axvspan(right_lo, right_hi, alpha=0.2, color="green")
 
         # background level
         ax.hlines(
@@ -398,7 +413,8 @@ def line_content_sideband(
 
         ax.set_xlabel("Channel")
         ax.set_ylabel("Counts")
-        ax.set_title(f"Line content determination (peak @ energy {energy:.1f} keV)")
+        ax.set_title(
+            f"Line content determination (peak at energy {energy:.1f} keV)")
         ax.legend()
         ax.grid(True, alpha=0.3, color="white")
         ax.set_facecolor('gainsboro')
@@ -406,6 +422,7 @@ def line_content_sideband(
         fig.savefig(savepath, bbox_inches="tight")
 
     return N_line, N_peak_raw, bg_per_ch
+
 
 def peak_widths_with_baseline(x, y, peak_idx, bg_per_ch, levels=(0.5, 0.1)):
     """
@@ -440,7 +457,6 @@ def peak_widths_with_baseline(x, y, peak_idx, bg_per_ch, levels=(0.5, 0.1)):
 
     return widths, peak_height
 
-import numpy as np
 
 def klein_nishina_dsigma_dE(E, E_gamma, A=1.0, m_ec2=510.99895):
     """

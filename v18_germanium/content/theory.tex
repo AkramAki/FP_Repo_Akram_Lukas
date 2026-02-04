@@ -2,9 +2,10 @@
 \label{sec:theory}
 High-purity germanium (HPGe) detectors are widely used in $\gamma$-ray spectroscopy due
 to their excellent energy resolution and well-understood interaction mechanisms.
-In this experiment, the detector is employed to calibrate energy, determine the full-energy
-detection probability, and analyse characteristic spectral structures of monoenergetic
-$\gamma$ radiation. The relevant physical processes are discussed below.
+In this experiment, the detector is first calibrated in energy using a europium (Eu) source. 
+Subsequently, the full-energy detection probability is determined, and characteristic spectral features 
+of monoenergetic $\gamma$ radiation are analyzed. The relevant physical processes underlying these observations are 
+discussed below.
 
 
 \subsection{Interaction of Photons with Matter and the Extinction Coefficient}
@@ -32,11 +33,11 @@ corresponding to the photoelectric effect, Compton scattering, and pair producti
 At low photon energies, the photoelectric effect dominates,
 at intermediate energies, Compton scattering is the most probable interaction and depends
 primarily on the electron density of the material and
-at high energies, pair production becomes increasingly important, but only above the
-kinematic threshold of
+at high photon energies, pair production becomes increasingly important, but only above the kinematic threshold
 \begin{equation}
-  E_\gamma = 2 m_e c^2 \approx \qty{1.022}{\mega\electronvolt}.
+E_\gamma = 2 m_e c^2 \approx \qty{1.022}{\mega\electronvolt},
 \end{equation}
+where $m_e$ denotes the electron rest mass and $c$ is the speed of light in vacuum.
 
 
 \subsection{Photoelectric Effect}
@@ -92,8 +93,8 @@ where $r_e$ is the classical electron radius.
 This angular dependence directly shapes the Compton continuum observed in measured spectra.
 
 In many detector applications the scattering angle is not measured directly; instead, the deposited
-energy $E$ in the detector is observed. Using the Compton relation
-$E'_\gamma = \frac{E_\gamma}{1 + \frac{E_\gamma}{m_e c^2}(1-\cos\theta)}$ and the energy transfer
+energy $E$ in the detector is observed. Using the Compton relation in \autoref{eq:compton}
+and the energy transfer
 $E = E_\gamma - E'_\gamma$, the angle $\theta$ can be eliminated in favour of $E$.
 The corresponding energy-differential cross section follows from a change of variables,
 \begin{equation}
@@ -107,17 +108,18 @@ which yields the Klein--Nishina distribution written as a function of the electr
 \begin{equation}
   \frac{\mathrm{d}\sigma}{\mathrm{d}E}
   = \frac{3}{8}\,\sigma_{\mathrm{Th}}\,
-    \frac{1}{m_e c^2}\left[
+    \frac{1}{m_e c^2 \epsilon^2}\left[
       2
       + \left(\frac{E}{E_\gamma - E}\right)^2
       \left(
-        1 + \frac{E_\gamma - E}{E_\gamma}
-        - 2\,\frac{E_\gamma - E}{E}
+        \frac{1}{\epsilon^2} + \frac{E_\gamma - E}{E_\gamma}
+        - \frac{2}{\epsilon}\,\frac{E_\gamma - E}{E}
       \right)
     \right],
   \label{eq:kn_dsig_dE}
 \end{equation}
-with $\sigma_{\mathrm{Th}}$ the Thomson cross section and $m_e c^2$ the electron rest energy.
+with $\sigma_{\mathrm{Th}}$ the Thomson cross section, $m_e c^2$ the electron rest energy and 
+$\epsilon = \frac{E_\gamma}{m_e c^2}$.
 
 
 
@@ -234,6 +236,7 @@ detection probability:
   \frac{N_\text{photopeak}(E)}
   {A \cdot t_\text{live} \cdot I_\gamma(E)}
   }.
+  \label{eq:FullEnergy}
 \end{equation}
 
 The full-energy detection probability depends on the detector material and dimensions, the

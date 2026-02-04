@@ -22,31 +22,36 @@ eu152_lines = {
     1408.0130: {"intensity": 0.2087},
 }
 
-######### Read Data and create plot from which the peaks are picked 
+# Read Data and create plot from which the peaks are picked
 Eu_channels, Eu_time = read_spe("data/Eu_Akram_Lukas.Spe")
-background_channels, background_time = read_spe("data/Germanium_Background.Spe")
+background_channels, background_time = read_spe(
+    "data/Germanium_Background.Spe")
 
-eu_channels_corrected = subtract_background(Eu_channels, Eu_time, background_channels, background_time)
+eu_channels_corrected = subtract_background(
+    Eu_channels, Eu_time, background_channels, background_time)
 
-peaks_idx = pick_calibration_peaks(eu_channels_corrected, prominence=35, distance=15)
+peaks_idx = pick_calibration_peaks(
+    eu_channels_corrected, prominence=35, distance=15)
 print("Energys to pick from sorted:")
 print(sorted(eu152_lines.keys()))
 print()
 
 # Pick the indexes of the peaks to choose from the created plot stored in "build/pick_peaks.pdf"
-chosen = [3, 5, 6, 7, 8, 9, 10] # first pick [3, 5, 6, 7, 8, 9, 10]
+chosen = [3, 5, 6, 7, 8, 9, 10]  # first pick [3, 5, 6, 7, 8, 9, 10]
 if len(chosen) == 0:
-    raise ValueError("Look at build/pick_peaks.pdf and choose the peak positions to be used and matched.", 
-    "Do choose open plot.py and fill the \"chosen\" array. Match with the energies_keV array.")
+    raise ValueError("Look at build/pick_peaks.pdf and choose the peak positions to be used and matched.",
+                     "Do choose open plot.py and fill the \"chosen\" array. Match with the energies_keV array.")
 peak_channels = peaks_idx[chosen].astype(float)
 # Matched by hand by looking at plot and trying values until fit looked good
-matching_energies_keV = [121.7817, 244.6974, 344.2785, 411.1165, 443.9606, 778.9045, 964.057] 
+matching_energies_keV = [121.7817, 244.6974,
+                         344.2785, 411.1165, 443.9606, 778.9045, 964.057]
 
 if len(peak_channels) != len(matching_energies_keV):
-    raise ValueError("channels must have the same length as energies_keV (one channel per reference line).")
+    raise ValueError(
+        "channels must have the same length as energies_keV (one channel per reference line).")
 
 
-######### Do the linear fit
+# Do the linear fit
 # Fit E = a*ch + b
 a, b = np.polyfit(peak_channels, matching_energies_keV, deg=1)
 
@@ -67,7 +72,7 @@ fig, ax = plot_spectrum(
 )
 
 # add vertical lines at assigned gamma energies
-ymin = 0.1 # position where to start the text
+ymin = 0.1  # position where to start the text
 
 for E in matching_energies_keV:
     ax.axvline(
@@ -90,7 +95,7 @@ for E in matching_energies_keV:
 
 fig.savefig("build/Eu-152.pdf")
 
-############ Test the fit 
+# Test the fit
 
 # --- residuals ---
 E_fit = a * peak_channels + b
@@ -107,7 +112,8 @@ ax.axhline(0.0, linestyle="--", linewidth=1)
 ax.plot(matching_energies_keV, residuals_keV, "o")
 
 ax.set_xlabel(r"Literature energy $E_\gamma$ (\unit{\kilo\electronvolt})")
-ax.set_ylabel(r"Residual $E_\text{lit} - E_\text{fit}$ (\unit{\kilo\electronvolt})")
+ax.set_ylabel(
+    r"Residual $E_\text{lit} - E_\text{fit}$ (\unit{\kilo\electronvolt})")
 ax.set_title("Energy calibration residuals")
 
 ax.grid(True, alpha=0.3, color="white")
@@ -132,18 +138,14 @@ fig.savefig("build/calibration_fit.pdf", bbox_inches="tight")
 plt.close(fig)
 
 
-
-
-
-
-
-################# Efficiency part of the analysis
+# Efficiency part of the analysis
 # --- Activity decay correction example ---
 A0_bq = 4130.0  # activity given           TODO +-60 need to add uncertainty calculations
-t0 = datetime(2000, 10, 1, 0, 0, 0)   # reference date 
-t_meas = datetime(2025, 8, 12, 10, 20, 18)  # measurement date from $DATE_MEA in Eu_Akram_Lukas
+t0 = datetime(2000, 10, 1, 0, 0, 0)   # reference date
+# measurement date from $DATE_MEA in Eu_Akram_Lukas
+t_meas = datetime(2025, 8, 12, 10, 20, 18)
 
-half_life_s = 13.537 * 365.25 * 24 * 3600  #  half-life (~13.537 years)
+half_life_s = 13.537 * 365.25 * 24 * 3600  # half-life (~13.537 years)
 A_meas = activity_at_time(A0_bq, t0, t_meas, half_life_s)
 
 
@@ -162,7 +164,7 @@ energies_keV = np.asarray(matching_energies_keV, dtype=float)
 peak_centers = np.asarray(peak_channels, dtype=float)
 
 N_lines = np.empty_like(energies_keV, dtype=float)
-eps_FE  = np.empty_like(energies_keV, dtype=float)
+eps_FE = np.empty_like(energies_keV, dtype=float)
 
 rows = []
 
@@ -194,7 +196,7 @@ for i, (E, c) in enumerate(zip(energies_keV, peak_centers)):
 # --- console output ---
 print(f"A(meassurment) = {A_meas:.6g} Bq")
 print(f"t_live  = {t_live_s:.0f} s")
-print(f"Omega is {omega(9.5e-2, 2.25e-2)}")
+print(f"Omega is {omega(8e-2, 2.25e-2)}")
 print()
 print("E_keV\t\tI_gamma\t\tpeak_ch\t\tN_line\t\teps_FE")
 for E, I, c, N, e in rows:
@@ -202,13 +204,16 @@ for E, I, c, N, e in rows:
 print()
 
 # power-law model
+
+
 def efficiency_powerlaw(E_keV, a, b):
     return a * (E_keV)**b
+
 
 # --- fit ---
 popt, pcov = curve_fit(
     efficiency_powerlaw,
-    energies_keV[1:], # only above 150kev should be considered
+    energies_keV[1:],  # only above 150kev should be considered
     eps_FE[1:],
 )
 
@@ -225,7 +230,8 @@ E_plot = np.linspace(min(energies_keV)*0.9, max(energies_keV)*1.1, 300)
 
 fig, ax = plt.subplots()
 
-ax.plot(energies_keV[1:], eps_FE[1:] * 100, "o", label="Measured values above 150keV")
+ax.plot(energies_keV[1:], eps_FE[1:] * 100, "o",
+        label="Measured values above 150keV")
 ax.plot(
     E_plot,
     efficiency_powerlaw(E_plot, a_fit, b_fit) * 100,
@@ -233,8 +239,8 @@ ax.plot(
     label=r"Fit: $Q(E) = a\,(E/1\,\mathrm{keV})^b$"
 )
 
-#ax.set_xscale("log")
-#ax.set_yscale("log")
+# ax.set_xscale("log")
+# ax.set_yscale("log")
 
 ax.set_xlabel(r"Energy $E$ (\unit{\kilo\electronvolt})")
 ax.set_ylabel(r"Efficiency $Q$ (\%)")
@@ -246,19 +252,18 @@ ax.set_facecolor("gainsboro")
 fig.savefig("build/efficiency_powerlaw_fit.pdf", bbox_inches="tight")
 
 
-
-
-######## Next task
+# Next task
 
 Cs_channels, Cs_time = read_spe("data/Cs_Akram_Lukas.Spe")
 
-Cs_channels_corrected = subtract_background(Cs_channels, Cs_time, background_channels, background_time)
+Cs_channels_corrected = subtract_background(
+    Cs_channels, Cs_time, background_channels, background_time)
 fig, ax = plot_spectrum(
     Cs_channels_corrected,
     calibration=(a, b),
     logy=True,
     title="Cs — Calibrated.",
-    #savepath="build/Cs.pdf"
+    # savepath="build/Cs.pdf"
 )
 # --- find the three features by "largest bins" ---
 y = np.asarray(Cs_channels_corrected, dtype=float).copy()
@@ -280,7 +285,7 @@ backscatter_E = a * backscatter_idx + b
 compton_edge_E = a * compton_edge_idx + b
 
 # --- add vertical lines + labels to existing ax ---
-ymin = 1 # point where text should appear 
+ymin = 1  # point where text should appear
 
 for x, txt in [
     (backscatter_E, "backscatter peak"),
@@ -325,8 +330,10 @@ E_backscatter_keV = float(backscatter_E)
 E_low_keV = 350.0
 mask_cont = (E_axis_keV >= E_low_keV) & (E_axis_keV <= E_compton_edge_keV)
 
-def fit_func(E, A, B): # A is scaling factor and B is constant offset
+
+def fit_func(E, A, B):  # A is scaling factor and B is constant offset
     return klein_nishina_dsigma_dE(E, E_gamma_keV, A) + B
+
 
 popt, pcov = curve_fit(
     fit_func,
@@ -335,14 +342,14 @@ popt, pcov = curve_fit(
 )
 
 A_fit, B_fit = popt
-A_err, B_err= np.sqrt(np.diag(pcov))
+A_err, B_err = np.sqrt(np.diag(pcov))
 
 print("\n--- Compton fit (Klein-Nishina-based) ---")
 print(f"Fit window: [{E_low_keV:.1f}, {E_compton_edge_keV:.1f}] keV")
 print(f"A  = {A_fit:.3g} ± {A_err:.3g}")
 print(f"B  = {B_fit:.3g} ± {B_err:.3g}")
 
-E_grid = np.linspace(50, E_compton_edge_keV, 6000) 
+E_grid = np.linspace(50, E_compton_edge_keV, 6000)
 y_model = fit_func(E_grid, A_fit, B_fit)
 
 # integrate only the Compton part (subtract fitted constant offset B)
@@ -354,15 +361,18 @@ N_compton_continuum_fit_with_offset = float(np.trapz(y_model, E_grid))
 # ----------------------------
 fig, ax = plt.subplots(figsize=(7, 4))
 ax.step(E_axis_keV, y_cs, where="mid", label="Cs spectrum")
-ax.plot(E_axis_keV[mask_cont], y_cs[mask_cont], "o", markersize=3, label="Fit region")
+ax.plot(E_axis_keV[mask_cont], y_cs[mask_cont],
+        "o", markersize=3, label="Fit region")
 ax.plot(E_grid, y_model, "-", label="KN fit")
 
-ax.axvline(E_compton_edge_keV, linestyle="--", linewidth=1, label="Measured Compton edge", color="red")
-ax.axvline(E_backscatter_keV, linestyle="--", linewidth=1, label="Backscatter peak", color="orange")
+ax.axvline(E_compton_edge_keV, linestyle="--", linewidth=1,
+           label="Measured Compton edge", color="red")
+ax.axvline(E_backscatter_keV, linestyle="--", linewidth=1,
+           label="Backscatter peak", color="orange")
 
 ax.set_xlim(30, E_compton_edge_keV + 30)
 ax.set_ylim(1, 65)
-#ax.set_yscale("log")
+# ax.set_yscale("log")
 ax.set_xlabel(r"$E_{\mathrm{dep}}$ (keV)")
 ax.set_ylabel("Counts")
 ax.grid(True, which="both", alpha=0.3)
@@ -384,9 +394,10 @@ print(f"Compton edge position:   {E_compton_edge_keV:.2f} keV")
 print(f"Backscatter line pos.:   {E_backscatter_keV:.2f} keV")
 print(f"Photopeak line content:  {N_photopeak:.2f} counts")
 print(f"Integrated Compton content: {N_compton_continuum_fit:.2f} counts")
-print(f"Integrated Compton content with offset added: {N_compton_continuum_fit_with_offset:.2f} counts")
+print(
+    f"Integrated Compton content with offset added: {N_compton_continuum_fit_with_offset:.2f} counts")
 
-### Plot for all of these printed values
+# Plot for all of these printed values
 fig, (ax_comp, ax_pp) = plt.subplots(
     1, 2, figsize=(11, 4)
 )
@@ -418,11 +429,13 @@ ax_pp.grid(True, which="both", alpha=0.3)
 # Left panel: Compton region
 # ============================================================
 ax_comp.step(E_axis_keV, y_cs, where="mid", color="C0")
-#ax_comp.set_yscale("log")
+# ax_comp.set_yscale("log")
 
 # Compton features
-ax_comp.axvline(E_backscatter_keV, color="C1", linestyle="--", label="Backscatter peak")
-ax_comp.axvline(E_compton_edge_keV, color="C2", linestyle="--", label="Compton edge")
+ax_comp.axvline(E_backscatter_keV, color="C1",
+                linestyle="--", label="Backscatter peak")
+ax_comp.axvline(E_compton_edge_keV, color="C2",
+                linestyle="--", label="Compton edge")
 ax_comp.axvspan(
     E_low_keV,
     E_compton_edge_keV,
@@ -449,19 +462,17 @@ fig.tight_layout(rect=[0, 0, 1, 0.95])
 fig.savefig("build/Cs_analysis_twopanel.pdf", bbox_inches="tight")
 
 
-
-
-
-
-##### Next task
+# Next task
 # We now the full energy efficiency with efficiency_powerlaw(E, a_fit, b_fit)
 
 Ba_channels, Ba_time = read_spe("data/Ba_Akram_Lukas.Spe")
 
-Ba_channels_corrected = subtract_background(Ba_channels, Ba_time, background_channels, background_time)
+Ba_channels_corrected = subtract_background(
+    Ba_channels, Ba_time, background_channels, background_time)
 E_axis_keV = a * Ba_channels_corrected + b
 
-peaks_idx = pick_calibration_peaks(Ba_channels_corrected, prominence=35, distance=15, savepath="build/Ba_pick_peaks.pdf")
+peaks_idx = pick_calibration_peaks(
+    Ba_channels_corrected, prominence=35, distance=15, savepath="build/Ba_pick_peaks.pdf")
 picked_peaks = [1, 3, 4, 5, 6]
 peak_channels = peaks_idx[picked_peaks].astype(int)
 
@@ -469,14 +480,15 @@ fig, ax = plot_spectrum(
     Ba_channels_corrected,
     calibration=(a, b),
     logy=True,
-    title="Ba with marked peaks for Aktivity calculation.",
+    title="Ba with marked peaks for activity calculation.",
     peaks_idx=peak_channels,
-    matching_energies= a * peak_channels + b,
+    matching_energies=a * peak_channels + b,
     savepath="build/Ba.pdf"
 )
 
 activitys = []
-I_gamma = [0.329, 0.0716, 0.1834, 0.6205, 0.0894] # https://www.radiacode.com/isotope/ba-133?lang=de
+# https://www.radiacode.com/isotope/ba-133?lang=de
+I_gamma = [0.329, 0.0716, 0.1834, 0.6205, 0.0894]
 
 
 for i, peak_position in enumerate(peak_channels):
@@ -488,7 +500,7 @@ for i, peak_position in enumerate(peak_channels):
         peak_half_width=15,
         sideband_width=10,
         sideband_gap=4,
-        plot_diagnostics=False, # set to true to see how the sideband background was calculated
+        plot_diagnostics=False,  # set to true to see how the sideband background was calculated
         savepath=f"build/sideband_Ba_peaknumber_{picked_peaks[i]}",
         energy=E_i
     )
@@ -498,7 +510,7 @@ for i, peak_position in enumerate(peak_channels):
     print(f"Activity for energy line {E_i:.2f} is {A_i:.2f}")
     print(f"Its line content is {N_line:.0f}")
 A_mean = np.mean(activitys)
-A_std  = np.std(activitys)
+A_std = np.std(activitys)
 print(f"Mean: {A_mean:.2f}")
 print(f"Std: {A_std:.2f}")
 
@@ -507,15 +519,16 @@ print(f"Mean: {np.mean(activitys[1:]):.2f}")
 print(f"Std: {np.std(activitys[1:]):.2f}")
 
 
-
-##### Next task
+# Next task
 
 unknown_channels, unknown_time = read_spe("data/unknown_Akram_Lukas.Spe")
 
-unknown_channels_corrected = subtract_background(unknown_channels, unknown_time, background_channels, background_time)
+unknown_channels_corrected = subtract_background(
+    unknown_channels, unknown_time, background_channels, background_time)
 E_axis_keV = a * Ba_channels_corrected + b
 
-peaks_idx = pick_calibration_peaks(unknown_channels_corrected, prominence=100, distance=15, savepath="build/unknown_pick_peaks.pdf")
+peaks_idx = pick_calibration_peaks(
+    unknown_channels_corrected, prominence=100, distance=15, savepath="build/unknown_pick_peaks.pdf")
 picked_peaks = [3, 7, 10, 11, 12, 13, 14, 15]
 peak_channels = peaks_idx[picked_peaks].astype(int)
 
@@ -525,7 +538,7 @@ fig, ax = plot_spectrum(
     logy=True,
     title="unknown — Calibrated.",
     peaks_idx=peak_channels,
-    matching_energies= a * peak_channels + b,
+    matching_energies=a * peak_channels + b,
     savepath="build/unknown.pdf"
 )
 
@@ -538,12 +551,12 @@ for i, peak_position in enumerate(peak_channels):
         peak_half_width=15,
         sideband_width=10,
         sideband_gap=4,
-        plot_diagnostics=False, # set to true to see how the sideband background was calculated
+        plot_diagnostics=False,  # set to true to see how the sideband background was calculated
         savepath=f"build/sideband_unknown_peaknumber_{picked_peaks[i]}",
         energy=E_i
     )
-    #eps_i = efficiency_powerlaw(E_i, a_fit, b_fit)
-    #A_i = N_line / (I_gamma_i * eps_i * Ba_time)
-    #activitys.append(A_i)
-    #print(f"Activity for energy line {E_i:.2f} is {A_i:.2f}")
+    # eps_i = efficiency_powerlaw(E_i, a_fit, b_fit)
+    # A_i = N_line / (I_gamma_i * eps_i * Ba_time)
+    # activitys.append(A_i)
+    # print(f"Activity for energy line {E_i:.2f} is {A_i:.2f}")
     print(f"Line content for energy {E_i:.2f} is {N_line:.0f}")
