@@ -165,7 +165,11 @@ X = 1 / T_int
 # print important values for integral method
 print("Integration method values: ")
 for i, t, F in zip(I_int, T_int, Int):
-    print(rf" {t:.1f} & {1/t:.3e} & {np.log(noms(i)):.1f} \pm {stds((unp.log(i))):.1f} & {F:.1f} & {np.log(noms(F/i)):.1f} \pm {stds((unp.log(F/i))):.1f} \\")
+    print(rf" {t:.1f} & {1/t:.3e} & {noms(i):.1f} \pm {stds(i):.1f} & {F:.1f} & {np.log(noms(F/i)):.1f} \pm {stds((unp.log(F/i))):.1f} \\")
+
+# only I with noms and stds as print:
+for i in I_int:
+    print(rf"  {noms(i):.1f} \pm {stds(i):.1f}")
 
 params_int, covariance_matrix_int = curve_fit(lin, X, noms(Y),sigma=stds(Y))
 
@@ -348,7 +352,11 @@ Int = Int_i[15:T_max_ind]
 # print important values for integral method
 print("Integration method values: ")
 for i, t, F in zip(I_int, T_int, Int):
-    print(rf" {t:.1f} & {1/t:.3e} & {np.log(noms(i)):.1f} \pm {stds((unp.log(i))):.1f} & {F:.1f} & {np.log(noms(F/i)):.1f} \pm {stds((unp.log(F/i))):.1f} \\")
+    print(rf" {t:.1f} & {1/t:.3e} & {noms(i):.1f} \pm {stds(i):.1f} & {F:.1f} & {np.log(noms(F/i)):.1f} \pm {stds((unp.log(F/i))):.1f} \\")
+
+    # only I with noms and stds as print:
+for i in I_int:
+    print(rf"  {noms(i):.1f} \pm {stds(i):.1f}")
 
 
 # Define x and y for fitting
@@ -400,6 +408,8 @@ ax.plot(x_tau,noms(tau_zero_pol_2)*np.exp(noms(W2)/(kB*x_tau)),label=r"Polarizat
 ax.plot(x_tau,noms(tau_zero_int_2)*np.exp(noms(W2_int)/(kB*x_tau)),label=r"Integration method $b_2$")
 
 ax.set_yscale("log")
+ax.set_xlabel(r"$T \mathbin{/} \unit{\kelvin}$")
+ax.set_ylabel(r"$\tau \mathbin{/} \unit{\second}$")
 ax.legend(loc="best")
 
 fig.savefig("build/tau.pdf")
