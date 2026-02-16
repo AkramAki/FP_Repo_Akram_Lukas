@@ -321,6 +321,62 @@ Including the constant offset contribution in the integration results in
   N_{\text{Compton, offset}} = 6287.40 \;\text{counts}.
 \]
 
+\subsubsection{Absorption probability in germanium at \texorpdfstring{$\qty{661.6}{\kilo\electronvolt}$}{661.6 keV} and origin of the photopeak}
+
+To estimate the absorption probability of $\qty{661.64}{\kilo\electronvolt}$ photons in the germanium crystal, the extinction coefficients for the photoelectric effect and Compton scattering are taken from the NIST XCOM database \cite{nist_xcom}. For germanium at
+\[
+E_\gamma = \qty{0.6616}{\mega\electronvolt}
+\]
+the mass attenuation coefficients are given as
+\begin{align*}
+  \left(\frac{\mu}{\rho}\right)_{\text{Compton}} &= 6.771 \times 10^{-2} \;\unit{\centi\meter^2\per\gram}, \\
+  \left(\frac{\mu}{\rho}\right)_{\text{photo}}   &= 1.764 \times 10^{-3} \;\unit{\centi\meter^2\per\gram}, \\
+  \left(\frac{\mu}{\rho}\right)_{\text{total}}   &= 6.947 \times 10^{-2} \;\unit{\centi\meter^2\per\gram}.
+\end{align*}
+
+Using the density of germanium
+\[
+\rho_{\text{Ge}} = \qty{5.32}{\gram\per\centi\meter^3}
+\]
+from \cite{nist_ge_density}, the corresponding linear attenuation coefficients are obtained via
+\[
+\mu = \left(\frac{\mu}{\rho}\right)\rho.
+\]
+
+This yields
+\begin{align*}
+  \mu_{\text{Compton}} &= 0.06771 \times 5.32
+  = \qty{0.360}{\per\centi\meter}, \\
+  \mu_{\text{photo}} &= 0.001764 \times 5.32
+  = \qty{0.00939}{\per\centi\meter}, \\
+  \mu_{\text{total}} &= 0.06947 \times 5.32
+  = \qty{0.369}{\per\centi\meter}.
+\end{align*}
+
+With the crystal length
+\[
+L = \qty{39}{\milli\meter} = \qty{3.9}{\centi\meter},
+\]
+the probability that a $\qty{661.6}{\kilo\electronvolt}$ photon interacts at least once inside the crystal is
+\begin{align*}
+  P_{\text{abs}}
+  &= 1 - \exp(-\mu_{\text{total}} L) \\
+  &= 1 - \exp(-0.369 \cdot 3.9) \\
+  &= 1 - \exp(-1.439) \\
+  &\approx 0.763.
+\end{align*}
+
+Thus, approximately $\qty{76}{\percent}$ of incident photons interact at least once within the germanium crystal.
+
+A comparison of the partial coefficients shows that
+\[
+\mu_{\text{Compton}} \gg \mu_{\text{photo}},
+\]
+with Compton scattering being nearly forty times more probable than direct photoelectric absorption at this energy. Consequently, most initial interactions are Compton scatterings rather than photoelectric events.
+
+Nevertheless, a pronounced photopeak is observed in the spectrum. This implies that the photoline does not primarily arise from single-step photoelectric absorption. Instead, it is predominantly produced by photons that undergo one or several Compton scatterings within the detector volume and subsequently deposit their remaining energy through a final photoelectric absorption. As long as the entire photon energy is absorbed inside the crystal, the detector measures the full deposited energy, and the event contributes to the photopeak.
+
+
 \newpage
 \subsection{Analysis of the \texorpdfstring{$^{133}$Ba}{Ba-133} spectrum}
 
